@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block title %}Verify Certificate - PenAsia LMS{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg">
+                <div class="card-header bg-warning text-dark text-center py-4">
+                    <h3 class="mb-0"><i class="fas fa-shield-alt me-2"></i>Certificate Verification</h3>
+                </div>
+                <div class="card-body p-5 text-center">
+                    {% if certificate %}
+                        {% if certificate.is_valid %}
+                            <!-- Valid Certificate -->
+                            <div class="mb-4">
+                                <i class="fas fa-check-circle text-success fa-5x mb-3"></i>
+                                <h4 class="text-success">Certificate Verified Successfully!</h4>
+                                <p class="text-muted">This certificate is authentic and valid.</p>
+                            </div>
+                            
+                            <div class="text-start bg-light p-4 rounded">
+                                <h5 class="mb-3">Certificate Details:</h5>
+                                
+                                <div class="row mb-2">
+                                    <div class="col-md-4"><strong>Certificate Number:</strong></div>
+                                    <div class="col-md-8">{{ certificate.certificate_number }}</div>
+                                </div>
+                                
+                                <div class="row mb-2">
+                                    <div class="col-md-4"><strong>Recipient:</strong></div>
+                                    <div class="col-md-8">{{ certificate.user.full_name }}</div>
+                                </div>
+                                
+                                <div class="row mb-2">
+                                    <div class="col-md-4"><strong>Course:</strong></div>
+                                    <div class="col-md-8">{{ certificate.course.title }}</div>
+                                </div>
+                                
+                                <div class="row mb-2">
+                                    <div class="col-md-4"><strong>Course Code:</strong></div>
+                                    <div class="col-md-8">{{ certificate.course.course_code }}</div>
+                                </div>
+                                
+                                <div class="row mb-2">
+                                    <div class="col-md-4"><strong>Issue Date:</strong></div>
+                                    <div class="col-md-8">{{ certificate.issue_date.strftime('%B %d, %Y') }}</div>
+                                </div>
+                                
+                                <div class="row mb-2">
+                                    <div class="col-md-4"><strong>Completion Date:</strong></div>
+                                    <div class="col-md-8">{{ certificate.completion_date.strftime('%B %d, %Y') }}</div>
+                                </div>
+                                
+                                {% if certificate.final_grade %}
+                                <div class="row mb-2">
+                                    <div class="col-md-4"><strong>Final Grade:</strong></div>
+                                    <div class="col-md-8">{{ certificate.display_grade }}</div>
+                                </div>
+                                {% endif %}
+                                
+                                {% if certificate.honors %}
+                                <div class="row mb-2">
+                                    <div class="col-md-4"><strong>Honors:</strong></div>
+                                    <div class="col-md-8">
+                                        <span class="{{ 'text-success' if certificate.honors == 'Distinction' else 'text-info' if certificate.honors == 'Merit' else '' }}">
+                                            {{ certificate.honors }}
+                                        </span>
+                                    </div>
+                                </div>
+                                {% endif %}
+                                
+                                {% if certificate.attendance_percentage %}
+                                <div class="row mb-2">
+                                    <div class="col-md-4"><strong>Attendance:</strong></div>
+                                    <div class="col-md-8">{{ certificate.attendance_percentage }}%</div>
+                                </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="mt-4 alert alert-success">
+                                <i class="fas fa-info-circle me-2"></i>
+                                This certificate was issued by PenAsia Continuing Education Centre (License No. 593958) and is officially recognized.
+                            </div>
+                        {% else %}
+                            <!-- Revoked Certificate -->
+                            <div class="mb-4">
+                                <i class="fas fa-times-circle text-danger fa-5x mb-3"></i>
+                                <h4 class="text-danger">Certificate Revoked</h4>
+                                <p class="text-muted">{{ message }}</p>
+                            </div>
+                            
+                            <div class="alert alert-danger">
+                                <strong>Warning:</strong> This certificate has been revoked and is no longer valid.
+                                {% if certificate.revoked_reason %}
+                                <br><strong>Reason:</strong> {{ certificate.revoked_reason }}
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <!-- Certificate Not Found -->
+                        <div class="mb-4">
+                            <i class="fas fa-exclamation-triangle text-warning fa-5x mb-3"></i>
+                            <h4 class="text-warning">Certificate Not Found</h4>
+                            <p class="text-muted">{{ message }}</p>
+                        </div>
+                        
+                        <div class="alert alert-warning">
+                            <strong>Note:</strong> Please check the verification code and try again. If you believe this is an error, contact PenAsia at (852) 2529 6138.
+                        </div>
+                    {% endif %}
+                    
+                    <!-- Verification Form -->
+                    <div class="mt-5 pt-4 border-top">
+                        <h5 class="mb-3">Verify Another Certificate</h5>
+                        <form method="GET" action="{{ url_for('verify_certificate', code='') }}" class="row g-3">
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" name="code" placeholder="Enter verification code" required>
+                            </div>
+                            <div class="col-md-3">
+                                <button type="submit" class="btn btn-warning w-100">
+                                    <i class="fas fa-search me-1"></i>Verify
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="card-footer text-center text-muted">
+                    <p class="mb-0 small">
+                        <i class="fas fa-phone me-2"></i>(852) 2529 6138 |
+                        <i class="fas fa-envelope me-2 ms-3"></i>enquiry@penasia.edu.hk
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

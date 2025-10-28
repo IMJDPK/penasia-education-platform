@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+
+{% block title %}All Courses - PenAsia Continuing Education Centre{% endblock %}
+
+{% block extra_head %}
+<style>
+.courses-hero {
+    background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+    color: white;
+    padding: 5rem 0;
+}
+
+.courses-hero .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: white;
+}
+
+.courses-hero .hero-subtitle {
+    font-size: 1.2rem;
+    color: rgba(255,255,255,0.9);
+}
+
+.course-card-premium {
+    border: none;
+    box-shadow: var(--shadow-light);
+    border-radius: var(--radius-medium);
+    transition: var(--transition-medium);
+}
+
+.course-card-premium:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-heavy);
+}
+
+.course-icon-premium {
+    color: var(--accent-gold) !important;
+}
+
+.btn-primary-premium {
+    background: var(--accent-gold);
+    border: none;
+    border-radius: var(--radius-large);
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    transition: var(--transition-medium);
+}
+
+.btn-primary-premium:hover {
+    background: #B8941F;
+    transform: translateY(-2px);
+}
+
+.btn-outline-premium {
+    border: 2px solid var(--accent-gold);
+    color: var(--accent-gold);
+    border-radius: var(--radius-large);
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    transition: var(--transition-medium);
+}
+
+.btn-outline-premium:hover {
+    background: var(--accent-gold);
+    color: white;
+}
+
+.section-title-premium {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: var(--primary-blue);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="courses-hero">
+    <div class="container text-center">
+        <h1 class="hero-title">Our Courses</h1>
+        <p class="hero-subtitle">Discover our comprehensive range of professional development programs</p>
+    </div>
+</section>
+
+<!-- Courses Grid -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            {% for course in courses %}
+            <div class="col-lg-6 mb-4">
+                <div class="card course-card-premium h-100">
+                    {% if course.id == 169 %}
+                    <img src="{{ url_for('static', filename='images/courses/courses_01.jpg') }}" class="card-img-top" alt="{{ course.title }}">
+                    {% elif course.id == 1 %}
+                    <img src="{{ url_for('static', filename='images/courses/courses_02.jpg') }}" class="card-img-top" alt="{{ course.title }}">
+                    {% elif course.id == 171 %}
+                    <img src="{{ url_for('static', filename='images/courses/courses_03.jpg') }}" class="card-img-top" alt="{{ course.title }}">
+                    {% elif course.id == 179 %}
+                    <img src="{{ url_for('static', filename='images/courses/courses_01.jpg') }}" class="card-img-top" alt="{{ course.title }}">
+                    {% else %}
+                    <img src="{{ url_for('static', filename='images/courses/courses_01.jpg') }}" class="card-img-top" alt="{{ course.title }}">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ course.title }}</h5>
+                        <p class="text-muted">Course Code: {{ course.course_code }}</p>
+                        <p class="card-text">{{ course.description }}</p>
+                        <ul class="list-unstyled">
+                            <li class="mb-1"><i class="fas fa-calendar course-icon-premium"></i> <strong>Duration:</strong> 
+                                {% if course.duration_weeks %}
+                                    {{ course.duration_weeks }} weeks
+                                    {% if course.duration_hours %} ({{ course.duration_hours }} hours){% endif %}
+                                {% else %}
+                                    {{ course.duration_hours }} hours
+                                {% endif %}
+                            </li>
+                            <li class="mb-1"><i class="fas fa-dollar-sign course-icon-premium"></i> <strong>Fee:</strong> HK${{ "{:,.0f}".format(course.fee_hkd) }}</li>
+                            <li class="mb-1"><i class="fas fa-language course-icon-premium"></i> <strong>Language:</strong> {{ course.language }}</li>
+                            {% if course.level %}
+                            <li class="mb-1"><i class="fas fa-graduation-cap course-icon-premium"></i> <strong>Level:</strong> {{ course.level }}</li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{{ url_for('course_detail', course_id=course.id) }}" class="btn btn-primary-premium">View Details</a>
+                        {% if current_user.is_authenticated %}
+                            <a href="{{ url_for('apply_course', course_id=course.id) }}" class="btn btn-outline-premium">Apply Now</a>
+                        {% else %}
+                            <a href="{{ url_for('login', next=url_for('apply_course', course_id=course.id)) }}" class="btn btn-outline-premium">Apply Now</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Course Comparison -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="section-title-premium">Course Comparison</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                                    <thead>
+                    <tr>
+                        <th>Course</th>
+                        <th>Duration</th>
+                        <th>Fee (HK$)</th>
+                        <th>Language</th>
+                        <th>Level</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for course in courses %}
+                    <tr>
+                        <td><strong>{{ course.title }}</strong></td>
+                        <td>
+                            {% if course.duration_weeks %}
+                                {{ course.duration_weeks }} weeks
+                                {% if course.duration_hours %} ({{ course.duration_hours }} hours){% endif %}
+                            {% else %}
+                                {{ course.duration_hours }} hours
+                            {% endif %}
+                        </td>
+                        <td>{{ "{:,.0f}".format(course.fee_hkd) }}</td>
+                        <td>{{ course.language }}</td>
+                        <td>{{ course.level or '-' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="py-5 bg-primary text-white">
+    <div class="container text-center">
+        <h2 class="mb-4">Ready to Start Your Learning Journey?</h2>
+        <p class="lead mb-4">Choose the program that best fits your career goals and start your application today.</p>
+        <a href="{{ url_for('courses') }}" class="btn btn-light btn-lg me-3">Apply Now</a>
+        <a href="{{ url_for('contact') }}" class="btn btn-outline-light btn-lg">Contact Us</a>
+    </div>
+</section>
+{% endblock %}

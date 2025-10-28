@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block title %}Course Management - Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-lg-10 mx-auto">
+            <!-- Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2><i class="fas fa-graduation-cap me-2"></i>Course Management</h2>
+                    <p class="text-muted">Manage all courses and programs</p>
+                </div>
+                <div>
+                    <button class="btn btn-outline-primary btn-sm me-2 help-button" data-module="admin_courses" data-bs-toggle="tooltip" title="Learn how to create and manage courses">
+                        <i class="fas fa-question-circle me-1"></i>Help
+                    </button>
+                    <button class="btn btn-primary me-2" onclick="showAddCourseModal()">
+                        <i class="fas fa-plus me-2"></i>Add New Course
+                    </button>
+                    <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                    </a>
+                </div>
+            </div>
+
+            <!-- Courses Table -->
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-graduation-cap me-2"></i>All Courses ({{ courses|length }})
+                    </h5>
+                </div>
+                <div class="card-body p-0">
+                    {% if courses %}
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Course Code</th>
+                                    <th>Title</th>
+                                    <th>Duration</th>
+                                    <th>Fee (HKD)</th>
+                                    <th>Max Students</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for course in courses %}
+                                <tr>
+                                    <td>
+                                        <strong>{{ course.course_code }}</strong>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <strong>{{ course.title }}</strong><br>
+                                            <small class="text-muted">{{ course.category }}</small>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {{ course.duration_weeks }} weeks<br>
+                                        <small class="text-muted">{{ course.duration_hours }} hours</small>
+                                    </td>
+                                    <td>
+                                        <strong>HK${{ "{:,.0f}".format(course.fee_hkd) }}</strong>
+                                    </td>
+                                    <td>{{ course.max_students }}</td>
+                                    <td>
+                                        {% if course.is_active %}
+                                            <span class="badge bg-success">Active</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">Inactive</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a href="{{ url_for('admin_course_content', course_id=course.id) }}" 
+                                               class="btn btn-sm btn-outline-success" title="Manage Content">
+                                                <i class="fas fa-list-ol"></i>
+                                            </a>
+                                            <button class="btn btn-sm btn-outline-primary" title="Edit" onclick="editCourse({{ course.id }})">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-info" title="View Details" onclick="viewCourse({{ course.id }})">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            {% if course.is_active %}
+                                            <button class="btn btn-sm btn-outline-warning" title="Deactivate" onclick="toggleCourse({{ course.id }}, false)">
+                                                <i class="fas fa-pause"></i>
+                                            </button>
+                                            {% else %}
+                                            <button class="btn btn-sm btn-outline-success" title="Activate" onclick="toggleCourse({{ course.id }}, true)">
+                                                <i class="fas fa-play"></i>
+                                            </button>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-5">
+                        <i class="fas fa-graduation-cap fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">No Courses Found</h5>
+                        <p class="text-muted">Start by adding your first course</p>
+                        <button class="btn btn-primary" onclick="showAddCourseModal()">
+                            <i class="fas fa-plus me-2"></i>Add Course
+                        </button>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function showAddCourseModal() {
+    alert('Add Course functionality coming in Phase 5!');
+}
+
+function editCourse(courseId) {
+    alert(`Edit Course ${courseId} functionality coming in Phase 5!`);
+}
+
+function viewCourse(courseId) {
+    window.open(`/courses/${courseId}`, '_blank');
+}
+
+function toggleCourse(courseId, activate) {
+    const action = activate ? 'activate' : 'deactivate';
+    if (confirm(`Are you sure you want to ${action} this course?`)) {
+        alert(`${action} course functionality coming in Phase 5!`);
+    }
+}
+</script>
+{% endblock %}

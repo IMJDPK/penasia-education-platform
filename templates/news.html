@@ -1,0 +1,333 @@
+{% extends "base.html" %}
+
+{% block title %}News & Events - PenAsia Continuing Education Centre{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="py-5 bg-primary text-white">
+    <div class="container text-center">
+        <h1 class="display-4 mb-4">News & Events</h1>
+        <p class="lead">Stay updated with the latest news, events, and achievements</p>
+    </div>
+</section>
+
+<!-- Latest News -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Latest News</h2>
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- Featured News -->
+                <article class="card mb-4">
+                    <img src="{{ url_for('static', filename='images/hero/hero_01.jpg') }}" class="card-img-top" alt="News">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="badge bg-primary">Featured</span>
+                            <small class="text-muted">December 15, 2024</small>
+                        </div>
+                        <h3 class="card-title">PenAsia Celebrates Outstanding Graduate Achievements in 2024</h3>
+                        <p class="card-text">Our graduates continue to excel in the hospitality and culinary industry, with over 95% finding employment within 6 months of graduation. This year saw remarkable achievements including graduates winning regional culinary competitions and securing positions at 5-star hotels.</p>
+                        <a href="#" class="btn btn-primary">Read More</a>
+                    </div>
+                </article>
+                
+                <!-- News Grid -->
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <article class="card h-100">
+                            <img src="{{ url_for('static', filename='images/courses/courses_01.jpg') }}" class="card-img-top" alt="New Program">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="badge bg-success">Program Update</span>
+                                    <small class="text-muted">December 10, 2024</small>
+                                </div>
+                                <h5 class="card-title">New BTEC Intake Starting January 2025</h5>
+                                <p class="card-text">We're pleased to announce a new intake for our BTEC Level 5 Business Management program starting January 2025...</p>
+                                <a href="#" class="btn btn-outline-primary btn-sm">Read More</a>
+                            </div>
+                        </article>
+                    </div>
+                    
+                    <div class="col-md-6 mb-4">
+                        <article class="card h-100">
+                            <img src="{{ url_for('static', filename='images/facilities/facilities_01.jpg') }}" class="card-img-top" alt="Facility Upgrade">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="badge bg-info">Facility News</span>
+                                    <small class="text-muted">December 5, 2024</small>
+                                </div>
+                                <h5 class="card-title">State-of-the-Art Kitchen Equipment Installed</h5>
+                                <p class="card-text">Our culinary training facilities have been upgraded with the latest professional kitchen equipment to enhance student learning...</p>
+                                <a href="#" class="btn btn-outline-primary btn-sm">Read More</a>
+                            </div>
+                        </article>
+                    </div>
+                    
+                    <div class="col-md-6 mb-4">
+                        <article class="card h-100">
+                            <img src="{{ url_for('static', filename='images/testimonials/testimonials_01.jpg') }}" class="card-img-top" alt="Student Achievement">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="badge bg-warning">Achievement</span>
+                                    <small class="text-muted">November 28, 2024</small>
+                                </div>
+                                <h5 class="card-title">Student Wins Hong Kong Young Chef Competition</h5>
+                                <p class="card-text">Sarah Chen, our Hotel Culinary Management student, won first place in the prestigious Hong Kong Young Chef Competition...</p>
+                                <a href="#" class="btn btn-outline-primary btn-sm">Read More</a>
+                            </div>
+                        </article>
+                    </div>
+                    
+                    <div class="col-md-6 mb-4">
+                        <article class="card h-100">
+                            <img src="{{ url_for('static', filename='images/about/about_02.jpg') }}" class="card-img-top" alt="Partnership">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="badge bg-secondary">Partnership</span>
+                                    <small class="text-muted">November 20, 2024</small>
+                                </div>
+                                <h5 class="card-title">New Partnership with Leading Hotels Group</h5>
+                                <p class="card-text">PenAsia announces strategic partnership with international hotel chain for student internships and job placements...</p>
+                                <a href="#" class="btn btn-outline-primary btn-sm">Read More</a>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                
+                <!-- Pagination -->
+                <nav aria-label="News pagination">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1">Previous</a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <!-- Upcoming Events -->
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Upcoming Events</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <h6 class="fw-bold">Open House 2025</h6>
+                            <small class="text-muted">January 15, 2025 | 2:00 PM - 5:00 PM</small>
+                            <p class="small mt-1">Visit our campus and learn about all our programs. Meet faculty and current students.</p>
+                        </div>
+                        <hr>
+                        <div class="mb-3">
+                            <h6 class="fw-bold">Career Fair</h6>
+                            <small class="text-muted">February 5, 2025 | 10:00 AM - 4:00 PM</small>
+                            <p class="small mt-1">Connect with potential employers and explore job opportunities in hospitality and business.</p>
+                        </div>
+                        <hr>
+                        <div class="mb-3">
+                            <h6 class="fw-bold">Culinary Masterclass</h6>
+                            <small class="text-muted">February 20, 2025 | 6:00 PM - 8:00 PM</small>
+                            <p class="small mt-1">Join renowned Chef Alan Thompson for an exclusive cooking demonstration.</p>
+                        </div>
+                        <a href="#" class="btn btn-outline-primary btn-sm">View All Events</a>
+                    </div>
+                </div>
+                
+                <!-- Quick Links -->
+                <div class="card mb-4">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">Quick Links</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <a href="{{ url_for('apply') }}" class="text-decoration-none">
+                                    <i class="fas fa-edit text-primary me-2"></i>Apply Online
+                                </a>
+                            </li>
+                            <li class="mb-2">
+                                <a href="{{ url_for('courses') }}" class="text-decoration-none">
+                                    <i class="fas fa-book text-success me-2"></i>Browse Programs
+                                </a>
+                            </li>
+                            <li class="mb-2">
+                                <a href="{{ url_for('admissions') }}" class="text-decoration-none">
+                                    <i class="fas fa-info-circle text-warning me-2"></i>Admissions Info
+                                </a>
+                            </li>
+                            <li class="mb-2">
+                                <a href="{{ url_for('contact') }}" class="text-decoration-none">
+                                    <i class="fas fa-phone text-info me-2"></i>Contact Us
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Newsletter Signup -->
+                <div class="card">
+                    <div class="card-header bg-warning text-dark">
+                        <h5 class="mb-0">Stay Updated</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="small">Subscribe to our newsletter to receive the latest news and updates.</p>
+                        <form>
+                            <div class="mb-3">
+                                <input type="email" class="form-control" placeholder="Your email address" required>
+                            </div>
+                            <button type="submit" class="btn btn-warning w-100">Subscribe</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- News Categories -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">News Categories</h2>
+        <div class="row">
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="card text-center h-100">
+                    <div class="card-body">
+                        <i class="fas fa-trophy fa-3x text-primary mb-3"></i>
+                        <h5>Student Achievements</h5>
+                        <p class="card-text">Celebrating our students' success and accomplishments in competitions and careers.</p>
+                        <a href="#" class="btn btn-outline-primary">View Articles</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="card text-center h-100">
+                    <div class="card-body">
+                        <i class="fas fa-graduation-cap fa-3x text-success mb-3"></i>
+                        <h5>Program Updates</h5>
+                        <p class="card-text">Latest updates on our programs, new courses, and curriculum enhancements.</p>
+                        <a href="#" class="btn btn-outline-success">View Articles</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="card text-center h-100">
+                    <div class="card-body">
+                        <i class="fas fa-building fa-3x text-info mb-3"></i>
+                        <h5>Campus News</h5>
+                        <p class="card-text">Updates about our facilities, equipment, and campus improvements.</p>
+                        <a href="#" class="btn btn-outline-info">View Articles</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="card text-center h-100">
+                    <div class="card-body">
+                        <i class="fas fa-handshake fa-3x text-warning mb-3"></i>
+                        <h5>Industry Partnerships</h5>
+                        <p class="card-text">News about our partnerships with industry leaders and collaboration opportunities.</p>
+                        <a href="#" class="btn btn-outline-warning">View Articles</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Events -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Featured Events</h2>
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <div class="card">
+                    <img src="{{ url_for('static', filename='images/hero/hero_02.jpg') }}" class="card-img-top" alt="Open House">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="badge bg-primary">Open House</span>
+                            <small class="text-muted">Jan 15, 2025</small>
+                        </div>
+                        <h5 class="card-title">Annual Open House 2025</h5>
+                        <p class="card-text">Join us for our annual open house event. Tour our facilities, meet faculty, and learn about our programs.</p>
+                        <ul class="list-unstyled small">
+                            <li><i class="fas fa-clock text-primary"></i> 2:00 PM - 5:00 PM</li>
+                            <li><i class="fas fa-map-marker-alt text-primary"></i> Main Campus</li>
+                            <li><i class="fas fa-dollar-sign text-primary"></i> Free Admission</li>
+                        </ul>
+                        <a href="#" class="btn btn-primary">Register</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 mb-4">
+                <div class="card">
+                    <img src="{{ url_for('static', filename='images/courses/courses_01.jpg') }}" class="card-img-top" alt="Career Fair">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="badge bg-success">Career Event</span>
+                            <small class="text-muted">Feb 5, 2025</small>
+                        </div>
+                        <h5 class="card-title">Hospitality Career Fair</h5>
+                        <p class="card-text">Connect with leading employers in the hospitality industry. Great opportunity for students and graduates.</p>
+                        <ul class="list-unstyled small">
+                            <li><i class="fas fa-clock text-success"></i> 10:00 AM - 4:00 PM</li>
+                            <li><i class="fas fa-map-marker-alt text-success"></i> Exhibition Hall</li>
+                            <li><i class="fas fa-users text-success"></i> 50+ Employers</li>
+                        </ul>
+                        <a href="#" class="btn btn-success">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 mb-4">
+                <div class="card">
+                    <img src="{{ url_for('static', filename='images/facilities/facilities_01.jpg') }}" class="card-img-top" alt="Masterclass">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="badge bg-warning">Workshop</span>
+                            <small class="text-muted">Feb 20, 2025</small>
+                        </div>
+                        <h5 class="card-title">Culinary Masterclass</h5>
+                        <p class="card-text">Exclusive cooking demonstration by Chef Alan Thompson. Learn advanced culinary techniques.</p>
+                        <ul class="list-unstyled small">
+                            <li><i class="fas fa-clock text-warning"></i> 6:00 PM - 8:00 PM</li>
+                            <li><i class="fas fa-map-marker-alt text-warning"></i> Training Kitchen</li>
+                            <li><i class="fas fa-dollar-sign text-warning"></i> HK$200</li>
+                        </ul>
+                        <a href="#" class="btn btn-warning">Book Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="py-5 bg-primary text-white">
+    <div class="container text-center">
+        <h2 class="mb-4">Stay Connected with PenAsia</h2>
+        <p class="lead mb-4">Follow us on social media and subscribe to our newsletter to stay updated with the latest news and events.</p>
+        <div class="row justify-content-center">
+            <div class="col-auto">
+                <a href="#" class="btn btn-light btn-lg me-2 mb-2">
+                    <i class="fab fa-facebook-f me-2"></i>Facebook
+                </a>
+                <a href="#" class="btn btn-light btn-lg me-2 mb-2">
+                    <i class="fab fa-linkedin-in me-2"></i>LinkedIn
+                </a>
+                <a href="#" class="btn btn-light btn-lg me-2 mb-2">
+                    <i class="fab fa-youtube me-2"></i>YouTube
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

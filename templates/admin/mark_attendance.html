@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block title %}Mark Attendance - PenAsia LMS{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Class Information -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Class Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Course:</strong> {{ schedule.course.course_code }} - {{ schedule.course.title }}</p>
+                            <p><strong>Date:</strong> {{ schedule.class_date.strftime('%B %d, %Y') }}</p>
+                            <p><strong>Time:</strong> {{ schedule.start_time.strftime('%I:%M %p') }} - {{ schedule.end_time.strftime('%I:%M %p') }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Topic:</strong> {{ schedule.topic or 'N/A' }}</p>
+                            <p><strong>Location:</strong> {{ schedule.location or 'N/A' }}</p>
+                            <p><strong>Instructor:</strong> {{ schedule.instructor_name or 'N/A' }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Attendance Marking Form -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="fas fa-clipboard-check me-2"></i>Mark Attendance</h5>
+                    <span class="badge bg-light text-dark">{{ enrollments|length }} Students</span>
+                </div>
+                <div class="card-body">
+                    <form method="POST" id="attendanceForm">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th style="width: 50px;">#</th>
+                                        <th>Student Name</th>
+                                        <th>Email</th>
+                                        <th class="text-center" style="width: 120px;">Present</th>
+                                        <th class="text-center" style="width: 120px;">Absent</th>
+                                        <th class="text-center" style="width: 120px;">Late</th>
+                                        <th class="text-center" style="width: 120px;">Excused</th>
+                                        <th style="width: 200px;">Notes</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for enrollment in enrollments %}
+                                    {% set student = enrollment.student %}
+                                    {% set existing = attendance_records.get(student.id) %}
+                                    <tr>
+                                        <td>{{ loop.index }}</td>
+                                        <td>
+                                            <strong>{{ student.full_name }}</strong>
+                                        </td>
+                                        <td>{{ student.email }}</td>
+                                        <td class="text-center">
+                                            <input type="radio" class="form-check-input" 
+                                                   name="attendance_{{ student.id }}" 
+                                                   value="present" 
+                                                   {% if existing and existing.status == 'present' %}checked{% endif %}
+                                                   {% if not existing %}checked{% endif %}>
+                                        </td>
+                                        <td class="text-center">
+                                            <input type="radio" class="form-check-input" 
+                                                   name="attendance_{{ student.id }}" 
+                                                   value="absent"
+                                                   {% if existing and existing.status == 'absent' %}checked{% endif %}>
+                                        </td>
+                                        <td class="text-center">
+                                            <input type="radio" class="form-check-input" 
+                                                   name="attendance_{{ student.id }}" 
+                                                   value="late"
+                                                   {% if existing and existing.status == 'late' %}checked{% endif %}>
+                                        </td>
+                                        <td class="text-center">
+                                            <input type="radio" class="form-check-input" 
+                                                   name="attendance_{{ student.id }}" 
+                                                   value="excused"
+                                                   {% if existing and existing.status == 'excused' %}checked{% endif %}>
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control form-control-sm" 
+                                                   name="notes_{{ student.id }}" 
+                                                   value="{{ existing.notes if existing else '' }}"
+                                                   placeholder="Optional notes">
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Quick Select Buttons -->
+                        <div class="alert alert-info">
+                            <strong><i class="fas fa-magic me-2"></i>Quick Actions:</strong>
+                            <button type="button" class="btn btn-sm btn-success ms-2" onclick="markAllPresent()">
+                                <i class="fas fa-check-circle me-1"></i>Mark All Present
+                            </button>
+                            <button type="button" class="btn btn-sm btn-danger ms-2" onclick="markAllAbsent()">
+                                <i class="fas fa-times-circle me-1"></i>Mark All Absent
+                            </button>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="{{ url_for('admin_attendance') }}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-1"></i>Back
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-save me-1"></i>Save Attendance
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function markAllPresent() {
+    document.querySelectorAll('input[type="radio"][value="present"]').forEach(radio => {
+        radio.checked = true;
+    });
+}
+
+function markAllAbsent() {
+    document.querySelectorAll('input[type="radio"][value="absent"]').forEach(radio => {
+        radio.checked = true;
+    });
+}
+</script>
+{% endblock %}

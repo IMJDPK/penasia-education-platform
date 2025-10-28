@@ -1,0 +1,274 @@
+{% extends "base.html" %}
+
+{% block title %}Schedule New Class - Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('admin_dashboard') }}">Admin Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('admin_schedules') }}">Class Schedules</a></li>
+                    <li class="breadcrumb-item active">Schedule New Class</li>
+                </ol>
+            </nav>
+            
+            <h1 class="h3 mb-2">Schedule New Class</h1>
+            <p class="text-muted">Create a new class session for students</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Schedule Form -->
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-calendar-plus me-2"></i>Class Details</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        <!-- Course Selection -->
+                        <div class="mb-3">
+                            <label for="course_id" class="form-label">Course *</label>
+                            <select class="form-select" id="course_id" name="course_id" required>
+                                <option value="">Select Course</option>
+                                {% for course in courses %}
+                                <option value="{{ course.id }}">{{ course.course_code }} - {{ course.title }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Class Topic and Type -->
+                        <div class="row mb-3">
+                            <div class="col-md-8">
+                                <label for="topic" class="form-label">Class Topic/Title *</label>
+                                <input type="text" class="form-control" id="topic" name="topic" required 
+                                       placeholder="Enter class topic or lesson title">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="class_type" class="form-label">Class Type *</label>
+                                <select class="form-select" id="class_type" name="class_type" required>
+                                    <option value="">Select Type</option>
+                                    <option value="lecture">Lecture</option>
+                                    <option value="lab">Laboratory/Practical</option>
+                                    <option value="seminar">Seminar</option>
+                                    <option value="workshop">Workshop</option>
+                                    <option value="exam">Examination</option>
+                                    <option value="field_trip">Field Trip</option>
+                                    <option value="presentation">Presentation</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control" id="description" name="description" rows="3" 
+                                      placeholder="Brief description of what will be covered in this class"></textarea>
+                        </div>
+
+                        <!-- Date and Time -->
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="class_date" class="form-label">Class Date *</label>
+                                <input type="date" class="form-control" id="class_date" name="class_date" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="start_time" class="form-label">Start Time *</label>
+                                <input type="time" class="form-control" id="start_time" name="start_time" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="end_time" class="form-label">End Time *</label>
+                                <input type="time" class="form-control" id="end_time" name="end_time" required>
+                            </div>
+                        </div>
+
+                        <!-- Location and Instructor -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="location" class="form-label">Location *</label>
+                                <input type="text" class="form-control" id="location" name="location" required 
+                                       placeholder="Classroom, building, or online platform">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="instructor" class="form-label">Instructor</label>
+                                <input type="text" class="form-control" id="instructor" name="instructor" 
+                                       placeholder="Instructor name">
+                            </div>
+                        </div>
+
+                        <!-- Maximum Participants -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="max_participants" class="form-label">Maximum Participants</label>
+                                <input type="number" class="form-control" id="max_participants" name="max_participants" 
+                                       value="20" min="1" max="100">
+                                <small class="form-text text-muted">Leave blank for unlimited capacity</small>
+                            </div>
+                        </div>
+
+                        <!-- Submit Buttons -->
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Schedule Class
+                            </button>
+                            <button type="button" class="btn btn-outline-success" onclick="scheduleAndNotify()">
+                                <i class="fas fa-bell me-2"></i>Schedule & Notify Students
+                            </button>
+                            <a href="{{ url_for('admin_schedules') }}" class="btn btn-outline-secondary">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scheduling Guidelines -->
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0"><i class="fas fa-info-circle me-2"></i>Scheduling Guidelines</h6>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <h6>Class Types</h6>
+                        <ul class="list-unstyled small">
+                            <li><strong>Lecture:</strong> Traditional classroom instruction</li>
+                            <li><strong>Lab:</strong> Hands-on practical sessions</li>
+                            <li><strong>Seminar:</strong> Discussion-based learning</li>
+                            <li><strong>Workshop:</strong> Interactive skill building</li>
+                            <li><strong>Exam:</strong> Assessment sessions</li>
+                            <li><strong>Field Trip:</strong> Off-site educational visits</li>
+                            <li><strong>Presentation:</strong> Student presentations</li>
+                        </ul>
+                    </div>
+
+                    <div class="mb-3">
+                        <h6>Best Practices</h6>
+                        <ul class="list-unstyled small">
+                            <li>• Schedule classes during appropriate hours</li>
+                            <li>• Allow adequate time between sessions</li>
+                            <li>• Consider student and instructor availability</li>
+                            <li>• Book rooms in advance</li>
+                            <li>• Notify students of any changes</li>
+                        </ul>
+                    </div>
+
+                    <div class="alert alert-info small">
+                        <i class="fas fa-lightbulb me-2"></i>
+                        <strong>Tip:</strong> Students will automatically see new classes on their dashboard and can view their personal schedule.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Templates -->
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h6 class="mb-0"><i class="fas fa-clock me-2"></i>Quick Time Slots</h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-outline-primary btn-sm" onclick="setTimeSlot('09:00', '12:00')">
+                            Morning (9:00 AM - 12:00 PM)
+                        </button>
+                        <button class="btn btn-outline-primary btn-sm" onclick="setTimeSlot('14:00', '17:00')">
+                            Afternoon (2:00 PM - 5:00 PM)
+                        </button>
+                        <button class="btn btn-outline-primary btn-sm" onclick="setTimeSlot('18:30', '21:30')">
+                            Evening (6:30 PM - 9:30 PM)
+                        </button>
+                        <button class="btn btn-outline-primary btn-sm" onclick="setTimeSlot('10:00', '16:00')">
+                            Full Day (10:00 AM - 4:00 PM)
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Room Suggestions -->
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h6 class="mb-0"><i class="fas fa-map-marker-alt me-2"></i>Common Locations</h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-1">
+                        <button class="btn btn-outline-secondary btn-sm" onclick="setLocation('Room 101')">Room 101</button>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="setLocation('Room 201')">Room 201</button>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="setLocation('Computer Lab')">Computer Lab</button>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="setLocation('Workshop Room')">Workshop Room</button>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="setLocation('Online - Zoom')">Online - Zoom</button>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="setLocation('Main Auditorium')">Main Auditorium</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function setTimeSlot(startTime, endTime) {
+    document.getElementById('start_time').value = startTime;
+    document.getElementById('end_time').value = endTime;
+}
+
+function setLocation(location) {
+    document.getElementById('location').value = location;
+}
+
+function scheduleAndNotify() {
+    // Add a hidden field to indicate notification should be sent
+    const form = document.querySelector('form');
+    const hiddenField = document.createElement('input');
+    hiddenField.type = 'hidden';
+    hiddenField.name = 'notify_students';
+    hiddenField.value = 'true';
+    form.appendChild(hiddenField);
+    
+    // Submit the form
+    form.submit();
+}
+
+// Auto-populate instructor based on course selection
+document.getElementById('course_id').addEventListener('change', function() {
+    const courseId = this.value;
+    if (courseId) {
+        // In a real implementation, you might fetch instructor data
+        // For now, we'll just set a placeholder
+        const instructors = {
+            '1': 'Dr. Smith',
+            '169': 'Chef Wong',
+            '171': 'Ms. Johnson',
+            '179': 'Chef Li'
+        };
+        
+        const instructor = instructors[courseId];
+        if (instructor) {
+            document.getElementById('instructor').value = instructor;
+        }
+    }
+});
+
+// Set minimum date to today
+document.addEventListener('DOMContentLoaded', function() {
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('class_date').min = today;
+    
+    // Set default date to today
+    document.getElementById('class_date').value = today;
+});
+
+// Form validation
+document.querySelector('form').addEventListener('submit', function(e) {
+    const startTime = document.getElementById('start_time').value;
+    const endTime = document.getElementById('end_time').value;
+    
+    if (startTime && endTime && startTime >= endTime) {
+        e.preventDefault();
+        alert('End time must be after start time.');
+        return false;
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,428 @@
+{% extends "base.html" %}
+
+{% block title %}{{ student.full_name }} - Assignment Management{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('admin_dashboard') }}">Admin Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('admin_students') }}">Students</a></li>
+                    <li class="breadcrumb-item active">{{ student.full_name }} - Assignments</li>
+                </ol>
+            </nav>
+            
+            <h1 class="h3 mb-2">{{ student.full_name }} - Assignment Progress</h1>
+            <p class="text-muted">Track and manage individual student assignment progress</p>
+        </div>
+        <div class="col-md-4 text-md-end">
+            <div class="btn-group">
+                <a href="{{ url_for('admin_student_schedules', student_id=student.id) }}" class="btn btn-outline-primary">
+                    <i class="fas fa-calendar me-2"></i>View Schedules
+                </a>
+                <a href="{{ url_for('admin_students') }}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Students
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Student Info Card -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar-lg bg-primary text-white rounded-circle me-3 d-flex align-items-center justify-content-center">
+                            <i class="fas fa-user fa-2x"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-1">{{ student.full_name }}</h5>
+                            <p class="text-muted mb-0">{{ student.email }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h6 class="text-muted">Enrolled Courses</h6>
+                            <h4>{{ student.enrollments|length }}</h4>
+                        </div>
+                        <div class="col-md-3">
+                            <h6 class="text-muted">Total Assignments</h6>
+                            <h4>{{ assignment_data|length }}</h4>
+                        </div>
+                        <div class="col-md-3">
+                            <h6 class="text-muted">Submitted</h6>
+                            <h4 class="text-success">{{ assignment_data|selectattr('submission')|list|length }}</h4>
+                        </div>
+                        <div class="col-md-3">
+                            <h6 class="text-muted">Pending</h6>
+                            <h4 class="text-warning">{{ assignment_data|rejectattr('submission')|list|length }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Assignment Progress -->
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">
+                <i class="fas fa-tasks me-2"></i>Assignment Progress
+            </h5>
+        </div>
+        <div class="card-body">
+            {% if assignment_data %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Assignment</th>
+                            <th>Course</th>
+                            <th>Due Date</th>
+                            <th>Status</th>
+                            <th>Grade</th>
+                            <th>Submission Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in assignment_data %}
+                        {% set assignment = item.assignment %}
+                        {% set submission = item.submission %}
+                        <tr>
+                            <td>
+                                <div>
+                                    <strong>{{ assignment.title }}</strong>
+                                    <br><small class="text-muted">{{ assignment.assignment_type.title() }} • {{ assignment.max_points }} points</small>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge bg-primary">{{ assignment.course.course_code }}</span>
+                                <br><small class="text-muted">{{ assignment.course.title[:30] }}{% if assignment.course.title|length > 30 %}...{% endif %}</small>
+                            </td>
+                            <td>
+                                {% if assignment.due_date %}
+                                <div class="{% if assignment.is_overdue %}text-danger{% else %}text-muted{% endif %}">
+                                    {{ assignment.due_date.strftime('%b %d, %Y') }}<br>
+                                    <small>{{ assignment.due_date.strftime('%I:%M %p') }}</small>
+                                </div>
+                                {% if assignment.is_overdue and not submission %}
+                                <small class="badge bg-danger">Overdue</small>
+                                {% endif %}
+                                {% else %}
+                                <span class="text-muted">No due date</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if submission %}
+                                    {% if submission.status == 'graded' %}
+                                    <span class="badge bg-success">Graded</span>
+                                    {% elif submission.status == 'submitted' %}
+                                    <span class="badge bg-info">Submitted</span>
+                                    {% elif submission.status == 'returned' %}
+                                    <span class="badge bg-warning">Returned</span>
+                                    {% endif %}
+                                    {% if submission.is_late %}
+                                    <br><small class="badge bg-danger mt-1">Late</small>
+                                    {% endif %}
+                                {% else %}
+                                    {% if assignment.is_overdue %}
+                                    <span class="badge bg-danger">Not Submitted</span>
+                                    {% else %}
+                                    <span class="badge bg-secondary">Pending</span>
+                                    {% endif %}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if submission and submission.grade is not none %}
+                                <div class="text-center">
+                                    <strong class="{% if submission.grade_percentage >= 80 %}text-success{% elif submission.grade_percentage >= 60 %}text-warning{% else %}text-danger{% endif %}">
+                                        {{ submission.grade }}/{{ assignment.max_points }}
+                                    </strong>
+                                    <br><small class="text-muted">{{ submission.grade_letter }}</small>
+                                </div>
+                                {% else %}
+                                <span class="text-muted">-</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if submission %}
+                                {{ submission.submission_date.strftime('%b %d, %Y') }}<br>
+                                <small class="text-muted">{{ submission.submission_date.strftime('%I:%M %p') }}</small>
+                                {% else %}
+                                <span class="text-muted">Not submitted</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    {% if submission %}
+                                    <button class="btn btn-sm btn-outline-primary" title="View Submission" 
+                                            onclick="viewSubmission({{ submission.id }})">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    {% if submission.status != 'graded' %}
+                                    <button class="btn btn-sm btn-outline-success" title="Grade Assignment" 
+                                            onclick="gradeSubmission({{ submission.id }})">
+                                        <i class="fas fa-star"></i>
+                                    </button>
+                                    {% endif %}
+                                    <button class="btn btn-sm btn-outline-info" title="Send Feedback" 
+                                            onclick="sendFeedback({{ submission.id }})">
+                                        <i class="fas fa-comment"></i>
+                                    </button>
+                                    {% else %}
+                                    <button class="btn btn-sm btn-outline-warning" title="Send Reminder" 
+                                            onclick="sendReminder({{ assignment.id }}, {{ student.id }})">
+                                        <i class="fas fa-bell"></i>
+                                    </button>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center py-5">
+                <i class="fas fa-clipboard-list fa-3x text-muted mb-3"></i>
+                <h4>No Assignments Available</h4>
+                <p class="text-muted">This student is not enrolled in any courses with assignments.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Performance Summary -->
+    {% if assignment_data %}
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0"><i class="fas fa-chart-line me-2"></i>Performance Overview</h6>
+                </div>
+                <div class="card-body">
+                    {% set graded_submissions = assignment_data|selectattr('submission')|selectattr('submission.grade', 'defined')|list %}
+                    {% if graded_submissions %}
+                    {% set total_points = graded_submissions|sum(attribute='submission.grade') %}
+                    {% set max_possible = graded_submissions|sum(attribute='assignment.max_points') %}
+                    {% set average_percentage = (total_points / max_possible * 100)|round(1) if max_possible > 0 else 0 %}
+                    
+                    <div class="text-center mb-3">
+                        <h3 class="{% if average_percentage >= 80 %}text-success{% elif average_percentage >= 60 %}text-warning{% else %}text-danger{% endif %}">
+                            {{ average_percentage }}%
+                        </h3>
+                        <p class="text-muted">Overall Grade Average</p>
+                    </div>
+                    
+                    <div class="progress mb-3">
+                        <div class="progress-bar {% if average_percentage >= 80 %}bg-success{% elif average_percentage >= 60 %}bg-warning{% else %}bg-danger{% endif %}" 
+                             style="width: {{ average_percentage }}%"></div>
+                    </div>
+                    
+                    <div class="row text-center">
+                        <div class="col">
+                            <h6>{{ total_points|int }}</h6>
+                            <small class="text-muted">Points Earned</small>
+                        </div>
+                        <div class="col">
+                            <h6>{{ max_possible|int }}</h6>
+                            <small class="text-muted">Points Possible</small>
+                        </div>
+                    </div>
+                    {% else %}
+                    <p class="text-muted text-center">No graded assignments yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0"><i class="fas fa-clock me-2"></i>Submission Timeliness</h6>
+                </div>
+                <div class="card-body">
+                    {% set submitted = assignment_data|selectattr('submission')|list %}
+                    {% if submitted %}
+                    {% set on_time = submitted|rejectattr('submission.is_late')|list|length %}
+                    {% set late = submitted|selectattr('submission.is_late')|list|length %}
+                    {% set total_submitted = submitted|length %}
+                    
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span>On Time</span>
+                            <span class="text-success">{{ on_time }}/{{ total_submitted }}</span>
+                        </div>
+                        <div class="progress mb-2">
+                            <div class="progress-bar bg-success" style="width: {{ (on_time / total_submitted * 100)|round }}%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span>Late Submissions</span>
+                            <span class="text-warning">{{ late }}/{{ total_submitted }}</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar bg-warning" style="width: {{ (late / total_submitted * 100)|round }}%"></div>
+                        </div>
+                    </div>
+                    
+                    {% set not_submitted = assignment_data|rejectattr('submission')|list|length %}
+                    {% if not_submitted > 0 %}
+                    <div class="alert alert-warning small">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        {{ not_submitted }} assignment(s) still pending submission
+                    </div>
+                    {% endif %}
+                    {% else %}
+                    <p class="text-muted text-center">No submissions yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Grade Assignment Modal -->
+<div class="modal fade" id="gradeModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Grade Assignment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="gradeForm">
+                    <div class="mb-3">
+                        <label class="form-label">Grade (Points)</label>
+                        <input type="number" class="form-control" id="gradeInput" min="0" step="0.5" required>
+                        <small class="text-muted">Maximum points: <span id="maxPoints"></span></small>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Feedback</label>
+                        <textarea class="form-control" id="feedbackInput" rows="4" placeholder="Provide feedback to the student..."></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="submitGrade()">Save Grade</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.avatar-lg {
+    width: 64px;
+    height: 64px;
+}
+
+.progress {
+    height: 8px;
+}
+</style>
+
+<script>
+let currentSubmissionId = null;
+
+function viewSubmission(submissionId) {
+    // This would open a modal or redirect to view the submission details
+    window.open(`/admin/submissions/${submissionId}/view`, '_blank');
+}
+
+function gradeSubmission(submissionId) {
+    currentSubmissionId = submissionId;
+    
+    // Get assignment max points and current grade if exists
+    fetch(`/admin/submissions/${submissionId}/details`)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('maxPoints').textContent = data.max_points;
+            document.getElementById('gradeInput').max = data.max_points;
+            document.getElementById('gradeInput').value = data.current_grade || '';
+            document.getElementById('feedbackInput').value = data.current_feedback || '';
+            
+            new bootstrap.Modal(document.getElementById('gradeModal')).show();
+        });
+}
+
+function submitGrade() {
+    const grade = document.getElementById('gradeInput').value;
+    const feedback = document.getElementById('feedbackInput').value;
+    
+    if (!grade) {
+        alert('Please enter a grade.');
+        return;
+    }
+    
+    fetch(`/admin/submissions/${currentSubmissionId}/grade`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            grade: parseFloat(grade),
+            feedback: feedback
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        } else {
+            alert('Error saving grade: ' + data.message);
+        }
+    });
+}
+
+function sendFeedback(submissionId) {
+    const feedback = prompt('Enter feedback for this submission:');
+    if (feedback) {
+        fetch(`/admin/submissions/${submissionId}/feedback`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({feedback: feedback})
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Feedback sent successfully!');
+            } else {
+                alert('Error sending feedback: ' + data.message);
+            }
+        });
+    }
+}
+
+function sendReminder(assignmentId, studentId) {
+    if (confirm('Send assignment reminder to this student?')) {
+        fetch(`/admin/assignments/${assignmentId}/remind/${studentId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Reminder sent successfully!');
+            } else {
+                alert('Error sending reminder: ' + data.message);
+            }
+        });
+    }
+}
+</script>
+{% endblock %}

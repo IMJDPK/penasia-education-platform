@@ -1,0 +1,265 @@
+{% extends "base.html" %}
+
+{% block title %}Create Assignment - Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('admin_dashboard') }}">Admin Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('admin_assignments') }}">Assignments</a></li>
+                    <li class="breadcrumb-item active">Create Assignment</li>
+                </ol>
+            </nav>
+            
+            <h1 class="h3 mb-2">Create New Assignment</h1>
+            <p class="text-muted">Create and configure a new assignment for students</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Assignment Form -->
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-plus me-2"></i>Assignment Details</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        <!-- Basic Information -->
+                        <div class="row mb-3">
+                            <div class="col-md-8">
+                                <label for="title" class="form-label">Assignment Title *</label>
+                                <input type="text" class="form-control" id="title" name="title" required 
+                                       placeholder="Enter assignment title">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="assignment_type" class="form-label">Assignment Type *</label>
+                                <select class="form-select" id="assignment_type" name="assignment_type" required>
+                                    <option value="">Select Type</option>
+                                    <option value="essay">Essay</option>
+                                    <option value="project">Project</option>
+                                    <option value="quiz">Quiz</option>
+                                    <option value="report">Report</option>
+                                    <option value="presentation">Presentation</option>
+                                    <option value="reflection">Reflection</option>
+                                    <option value="case_study">Case Study</option>
+                                    <option value="lab_work">Lab Work</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Course Selection -->
+                        <div class="mb-3">
+                            <label for="course_id" class="form-label">Course *</label>
+                            <select class="form-select" id="course_id" name="course_id" required>
+                                <option value="">Select Course</option>
+                                {% for course in courses %}
+                                <option value="{{ course.id }}">{{ course.course_code }} - {{ course.title }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control" id="description" name="description" rows="3" 
+                                      placeholder="Brief description of the assignment"></textarea>
+                        </div>
+
+                        <!-- Instructions -->
+                        <div class="mb-3">
+                            <label for="instructions" class="form-label">Detailed Instructions</label>
+                            <textarea class="form-control" id="instructions" name="instructions" rows="6" 
+                                      placeholder="Provide detailed instructions for students"></textarea>
+                        </div>
+
+                        <!-- Due Date and Points -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="due_date" class="form-label">Due Date & Time</label>
+                                <input type="datetime-local" class="form-control" id="due_date" name="due_date">
+                                <small class="form-text text-muted">Leave blank for no due date</small>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="max_points" class="form-label">Maximum Points *</label>
+                                <input type="number" class="form-control" id="max_points" name="max_points" 
+                                       value="100" min="1" max="1000" required>
+                            </div>
+                        </div>
+
+                        <!-- Submit Buttons -->
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Create Assignment
+                            </button>
+                            <a href="{{ url_for('admin_assignments') }}" class="btn btn-outline-secondary">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Assignment Guidelines -->
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0"><i class="fas fa-info-circle me-2"></i>Assignment Guidelines</h6>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <h6>Assignment Types</h6>
+                        <ul class="list-unstyled small">
+                            <li><strong>Essay:</strong> Written composition assignment</li>
+                            <li><strong>Project:</strong> Comprehensive project work</li>
+                            <li><strong>Quiz:</strong> Quick assessment or test</li>
+                            <li><strong>Report:</strong> Formal report writing</li>
+                            <li><strong>Presentation:</strong> Oral presentation task</li>
+                            <li><strong>Reflection:</strong> Reflective writing</li>
+                            <li><strong>Case Study:</strong> Analysis of real scenarios</li>
+                            <li><strong>Lab Work:</strong> Practical laboratory work</li>
+                        </ul>
+                    </div>
+
+                    <div class="mb-3">
+                        <h6>Best Practices</h6>
+                        <ul class="list-unstyled small">
+                            <li>• Provide clear, detailed instructions</li>
+                            <li>• Set realistic due dates</li>
+                            <li>• Use appropriate point values</li>
+                            <li>• Include grading criteria</li>
+                            <li>• Consider student workload</li>
+                        </ul>
+                    </div>
+
+                    <div class="alert alert-info small">
+                        <i class="fas fa-lightbulb me-2"></i>
+                        <strong>Tip:</strong> Students will receive automatic notifications when new assignments are created.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Assignment Templates (Future Feature) -->
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h6 class="mb-0"><i class="fas fa-template me-2"></i>Quick Templates</h6>
+                </div>
+                <div class="card-body">
+                    <button class="btn btn-outline-primary btn-sm w-100 mb-2" onclick="loadTemplate('essay')">
+                        <i class="fas fa-file-text me-2"></i>Essay Template
+                    </button>
+                    <button class="btn btn-outline-success btn-sm w-100 mb-2" onclick="loadTemplate('project')">
+                        <i class="fas fa-project-diagram me-2"></i>Project Template
+                    </button>
+                    <button class="btn btn-outline-info btn-sm w-100" onclick="loadTemplate('quiz')">
+                        <i class="fas fa-question-circle me-2"></i>Quiz Template
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function loadTemplate(type) {
+    const templates = {
+        essay: {
+            title: 'Essay Assignment',
+            description: 'Write a comprehensive essay on the given topic',
+            instructions: `Please write a well-structured essay that includes:
+
+1. Introduction with clear thesis statement
+2. Body paragraphs with supporting evidence
+3. Conclusion that summarizes key points
+4. Proper citations and references
+
+Requirements:
+- Minimum 1000 words
+- APA format
+- At least 3 scholarly sources
+- Original work only
+
+Grading Criteria:
+- Content and analysis (40%)
+- Organization and structure (30%)
+- Grammar and style (20%)
+- Citations and references (10%)`
+        },
+        project: {
+            title: 'Course Project',
+            description: 'Complete a comprehensive project demonstrating course concepts',
+            instructions: `This project should demonstrate your understanding of course materials through practical application.
+
+Project Requirements:
+1. Project proposal (10% of grade)
+2. Research and development phase
+3. Final presentation (20% of grade)
+4. Written report (70% of grade)
+
+Deliverables:
+- Project proposal (500 words)
+- Final project/product
+- Written report (2000-3000 words)
+- 10-minute presentation
+
+Timeline:
+- Week 1: Submit proposal
+- Week 6: Progress check
+- Week 10: Final submission and presentation`
+        },
+        quiz: {
+            title: 'Module Assessment Quiz',
+            description: 'Quick assessment of module understanding',
+            instructions: `This quiz covers material from the current module.
+
+Format:
+- Multiple choice questions (70%)
+- Short answer questions (30%)
+- Time limit: 30 minutes
+- One attempt only
+
+Content Coverage:
+- Key concepts and definitions
+- Practical applications
+- Case study analysis
+
+Preparation:
+- Review all module materials
+- Complete practice exercises
+- Attend review session if available`
+        }
+    };
+
+    const template = templates[type];
+    if (template) {
+        document.getElementById('title').value = template.title;
+        document.getElementById('description').value = template.description;
+        document.getElementById('instructions').value = template.instructions;
+        
+        // Set assignment type
+        document.getElementById('assignment_type').value = type;
+    }
+}
+
+// Form validation
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form');
+    form.addEventListener('submit', function(e) {
+        const title = document.getElementById('title').value.trim();
+        const courseId = document.getElementById('course_id').value;
+        const assignmentType = document.getElementById('assignment_type').value;
+        
+        if (!title || !courseId || !assignmentType) {
+            e.preventDefault();
+            alert('Please fill in all required fields.');
+            return false;
+        }
+    });
+});
+</script>
+{% endblock %}

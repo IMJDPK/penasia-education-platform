@@ -1,0 +1,253 @@
+{% extends "base.html" %}
+
+{% block title %}Submit Assignment - {{ assignment.title }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('assignment_detail', assignment_id=assignment.id) }}">{{ assignment.title }}</a></li>
+                    <li class="breadcrumb-item active">Submit Assignment</li>
+                </ol>
+            </nav>
+            
+            <h1 class="h3 mb-2">Submit Assignment: {{ assignment.title }}</h1>
+            <div class="mb-3">
+                <span class="badge bg-primary me-2">{{ assignment.course.course_code }}</span>
+                <span class="badge bg-{% if assignment.assignment_type == 'project' %}info{% elif assignment.assignment_type == 'essay' %}warning{% else %}secondary{% endif %} me-2">
+                    {{ assignment.assignment_type.title() }}
+                </span>
+                <span class="badge bg-light text-dark">{{ assignment.max_points }} points</span>
+                {% if assignment.due_date %}
+                <span class="badge bg-{% if assignment.is_overdue %}danger{% else %}success{% endif %} ms-2">
+                    Due: {{ assignment.due_date.strftime('%b %d, %Y at %I:%M %p') }}
+                </span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    {% if assignment.is_overdue %}
+    <div class="alert alert-warning mb-4">
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        <strong>Warning:</strong> This assignment is overdue. Your submission may be subject to late penalties.
+    </div>
+    {% endif %}
+
+    <div class="row">
+        <!-- Submission Form -->
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-upload me-2"></i>Submit Your Work</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        {{ form.hidden_tag() }}
+                        
+                        <!-- Assignment Type-specific Fields -->
+                        {% if assignment.assignment_type in ['essay', 'report', 'reflection'] %}
+                        <div class="mb-4">
+                            {{ form.submission_text.label(class="form-label") }}
+                            {% if assignment.assignment_type == 'essay' %}
+                            <small class="form-text text-muted mb-2">Write or paste your essay content below. Make sure to include proper formatting and citations.</small>
+                            {% elif assignment.assignment_type == 'report' %}
+                            <small class="form-text text-muted mb-2">Provide your report content below. Include executive summary, findings, and conclusions.</small>
+                            {% elif assignment.assignment_type == 'reflection' %}
+                            <small class="form-text text-muted mb-2">Share your reflections and learnings. Be specific about insights gained.</small>
+                            {% endif %}
+                            {{ form.submission_text(class="form-control", rows="15", placeholder="Enter your submission content here...") }}
+                            {% if form.submission_text.errors %}
+                                {% for error in form.submission_text.errors %}
+                                    <div class="text-danger small">{{ error }}</div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                        {% else %}
+                        <div class="mb-4">
+                            {{ form.submission_text.label(class="form-label") }}
+                            <small class="form-text text-muted mb-2">Provide a description of your submission or any additional notes.</small>
+                            {{ form.submission_text(class="form-control", rows="8", placeholder="Describe your submission...") }}
+                            {% if form.submission_text.errors %}
+                                {% for error in form.submission_text.errors %}
+                                    <div class="text-danger small">{{ error }}</div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                        {% endif %}
+
+                        <!-- File Upload -->
+                        <div class="mb-4">
+                            {{ form.file_upload.label(class="form-label") }}
+                            <small class="form-text text-muted mb-2">
+                                Upload supporting files (PDF, DOC, DOCX, PPT, PPTX, ZIP). Maximum size: 10MB per file.
+                            </small>
+                            {{ form.file_upload(class="form-control", accept=".pdf,.doc,.docx,.ppt,.pptx,.zip") }}
+                            {% if form.file_upload.errors %}
+                                {% for error in form.file_upload.errors %}
+                                    <div class="text-danger small">{{ error }}</div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+
+                        <!-- Additional Comments -->
+                        <div class="mb-4">
+                            {{ form.comments.label(class="form-label") }}
+                            <small class="form-text text-muted mb-2">Any additional comments or notes for your instructor (optional).</small>
+                            {{ form.comments(class="form-control", rows="4", placeholder="Additional comments...") }}
+                        </div>
+
+                        <!-- Submission Confirmation -->
+                        <div class="mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="confirmSubmission" required>
+                                <label class="form-check-label" for="confirmSubmission">
+                                    I confirm that this work is my own and I understand the academic integrity policy.
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Submit Buttons -->
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-paper-plane me-2"></i>Submit Assignment
+                            </button>
+                            <a href="{{ url_for('assignment_detail', assignment_id=assignment.id) }}" class="btn btn-outline-secondary">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Assignment Info Sidebar -->
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0"><i class="fas fa-info-circle me-2"></i>Assignment Requirements</h6>
+                </div>
+                <div class="card-body">
+                    {% if assignment.description %}
+                    <div class="mb-3">
+                        <strong>Description:</strong><br>
+                        <span class="text-muted">{{ assignment.description }}</span>
+                    </div>
+                    {% endif %}
+                    
+                    {% if assignment.instructions %}
+                    <div class="mb-3">
+                        <strong>Instructions:</strong><br>
+                        <div class="text-muted small">
+                            {{ assignment.instructions|nl2br|safe }}
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="mb-3">
+                        <strong>Due Date:</strong><br>
+                        {% if assignment.due_date %}
+                        <span class="{% if assignment.is_overdue %}text-danger{% else %}text-success{% endif %}">
+                            {{ assignment.due_date.strftime('%B %d, %Y at %I:%M %p') }}
+                        </span>
+                        {% else %}
+                        <span class="text-muted">No due date</span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <strong>Points:</strong><br>
+                        <span class="text-muted">{{ assignment.max_points }} points</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submission Guidelines -->
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h6 class="mb-0"><i class="fas fa-clipboard-list me-2"></i>Submission Guidelines</h6>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success me-2"></i>
+                            <small>Review all requirements before submitting</small>
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success me-2"></i>
+                            <small>Ensure proper file formats (PDF preferred)</small>
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success me-2"></i>
+                            <small>Check file size limits (10MB max)</small>
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success me-2"></i>
+                            <small>Proofread your submission text</small>
+                        </li>
+                        <li class="mb-0">
+                            <i class="fas fa-check text-success me-2"></i>
+                            <small>Submit before the due date</small>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            {% if assignment.attachment_path %}
+            <!-- Assignment Resources -->
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h6 class="mb-0"><i class="fas fa-download me-2"></i>Resources</h6>
+                </div>
+                <div class="card-body">
+                    <a href="{{ assignment.attachment_path }}" target="_blank" class="btn btn-outline-primary btn-sm w-100">
+                        <i class="fas fa-file-download me-2"></i>Download Assignment Files
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+// Auto-save draft functionality (optional enhancement)
+document.addEventListener('DOMContentLoaded', function() {
+    const textArea = document.getElementById('submission_text');
+    const draftKey = 'assignment_{{ assignment.id }}_draft';
+    
+    // Load saved draft
+    const savedDraft = localStorage.getItem(draftKey);
+    if (savedDraft && textArea.value === '') {
+        textArea.value = savedDraft;
+        // Show draft notification
+        const draftAlert = document.createElement('div');
+        draftAlert.className = 'alert alert-info alert-dismissible fade show mt-2';
+        draftAlert.innerHTML = `
+            <i class="fas fa-info-circle me-2"></i>
+            Draft restored from previous session.
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        textArea.parentNode.insertBefore(draftAlert, textArea.nextSibling);
+    }
+    
+    // Auto-save on typing
+    let saveTimeout;
+    textArea.addEventListener('input', function() {
+        clearTimeout(saveTimeout);
+        saveTimeout = setTimeout(function() {
+            localStorage.setItem(draftKey, textArea.value);
+        }, 1000); // Save after 1 second of no typing
+    });
+    
+    // Clear draft on successful submission
+    document.querySelector('form').addEventListener('submit', function() {
+        localStorage.removeItem(draftKey);
+    });
+});
+</script>
+{% endblock %}

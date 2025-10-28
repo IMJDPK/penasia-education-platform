@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+
+{% block title %}Contact Inquiries - Admin{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-lg-10 mx-auto">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2><i class="fas fa-envelope me-2"></i>Contact Inquiries</h2>
+                    <p class="text-muted mb-0">Manage prospective student inquiries</p>
+                </div>
+                <div>
+                    <button class="btn btn-outline-primary btn-sm me-2 help-button" data-module="admin_contact" data-bs-toggle="tooltip" title="Learn how to manage contact inquiries">
+                        <i class="fas fa-question-circle me-1"></i>Help
+                    </button>
+                    <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Back to Dashboard
+                    </a>
+                </div>
+            </div>
+
+            <!-- Filter Tabs -->
+            <ul class="nav nav-tabs mb-4">
+                <li class="nav-item">
+                    <a class="nav-link {{ 'active' if status_filter == 'all' else '' }}" 
+                       href="{{ url_for('admin_contact_inquiries', status='all') }}">
+                        All Inquiries
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ 'active' if status_filter == 'new' else '' }}" 
+                       href="{{ url_for('admin_contact_inquiries', status='new') }}">
+                        New
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ 'active' if status_filter == 'in_progress' else '' }}" 
+                       href="{{ url_for('admin_contact_inquiries', status='in_progress') }}">
+                        In Progress
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ 'active' if status_filter == 'resolved' else '' }}" 
+                       href="{{ url_for('admin_contact_inquiries', status='resolved') }}">
+                        Resolved
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Inquiries List -->
+            {% if inquiries %}
+                <div class="row">
+                    {% for inquiry in inquiries %}
+                    <div class="col-12 mb-3">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>{{ inquiry.first_name }} {{ inquiry.last_name }}</strong>
+                                    <span class="badge bg-{{ 'success' if inquiry.status == 'resolved' else 'warning' if inquiry.status == 'in_progress' else 'primary' }} ms-2">
+                                        {{ inquiry.status }}
+                                    </span>
+                                </div>
+                                <small class="text-muted">{{ inquiry.created_at.strftime('%Y-%m-%d %H:%M') }}</small>
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <p class="mb-1">
+                                            <strong><i class="fas fa-envelope"></i> Email:</strong> 
+                                            <a href="mailto:{{ inquiry.email }}">{{ inquiry.email }}</a>
+                                        </p>
+                                        {% if inquiry.phone %}
+                                        <p class="mb-1">
+                                            <strong><i class="fas fa-phone"></i> Phone:</strong> {{ inquiry.phone }}
+                                        </p>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p class="mb-1">
+                                            <strong><i class="fas fa-tag"></i> Subject:</strong> 
+                                            <span class="badge bg-info">{{ inquiry.subject }}</span>
+                                        </p>
+                                        {% if inquiry.program_interest %}
+                                        <p class="mb-1">
+                                            <strong><i class="fas fa-graduation-cap"></i> Program Interest:</strong> {{ inquiry.program_interest }}
+                                        </p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <strong><i class="fas fa-comment"></i> Message:</strong>
+                                    <div class="p-3 bg-light rounded mt-2">
+                                        {{ inquiry.message }}
+                                    </div>
+                                </div>
+
+                                {% if inquiry.subscribe_newsletter %}
+                                <p class="mb-3">
+                                    <span class="badge bg-secondary">
+                                        <i class="fas fa-bell"></i> Subscribed to newsletter
+                                    </span>
+                                </p>
+                                {% endif %}
+
+                                {% if inquiry.status == 'resolved' and inquiry.resolved_by %}
+                                <div class="alert alert-success mb-3">
+                                    <strong>Resolved by:</strong> {{ inquiry.resolved_by.full_name }}
+                                    <br>
+                                    <strong>Date:</strong> {{ inquiry.resolved_at.strftime('%Y-%m-%d %H:%M') }}
+                                    {% if inquiry.admin_notes %}
+                                    <br>
+                                    <strong>Notes:</strong> {{ inquiry.admin_notes }}
+                                    {% endif %}
+                                </div>
+                                {% endif %}
+
+                                <!-- Action Buttons -->
+                                <div class="btn-group" role="group">
+                                    {% if inquiry.status == 'new' %}
+                                    <form method="POST" action="{{ url_for('update_contact_inquiry', inquiry_id=inquiry.id) }}" style="display: inline;">
+                                        <input type="hidden" name="action" value="in_progress">
+                                        <button type="submit" class="btn btn-warning btn-sm">
+                                            <i class="fas fa-clock"></i> Mark In Progress
+                                        </button>
+                                    </form>
+                                    {% endif %}
+                                    
+                                    {% if inquiry.status in ['new', 'in_progress'] %}
+                                    <button type="button" class="btn btn-success btn-sm" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#resolveModal{{ inquiry.id }}">
+                                        <i class="fas fa-check"></i> Mark Resolved
+                                    </button>
+                                    {% endif %}
+                                    
+                                    {% if inquiry.status == 'resolved' %}
+                                    <form method="POST" action="{{ url_for('update_contact_inquiry', inquiry_id=inquiry.id) }}" style="display: inline;">
+                                        <input type="hidden" name="action" value="reopen">
+                                        <button type="submit" class="btn btn-secondary btn-sm">
+                                            <i class="fas fa-redo"></i> Reopen
+                                        </button>
+                                    </form>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Resolve Modal -->
+                        <div class="modal fade" id="resolveModal{{ inquiry.id }}" tabindex="-1">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Resolve Inquiry</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <form method="POST" action="{{ url_for('update_contact_inquiry', inquiry_id=inquiry.id) }}">
+                                        <div class="modal-body">
+                                            <input type="hidden" name="action" value="resolve">
+                                            <div class="mb-3">
+                                                <label for="admin_notes{{ inquiry.id }}" class="form-label">
+                                                    Resolution Notes (optional)
+                                                </label>
+                                                <textarea class="form-control" 
+                                                          id="admin_notes{{ inquiry.id }}" 
+                                                          name="admin_notes" 
+                                                          rows="3" 
+                                                          placeholder="Add any notes about how this inquiry was resolved..."></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                            <button type="submit" class="btn btn-success">Mark as Resolved</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i> No contact inquiries found
+                    {% if status_filter != 'all' %} with status "{{ status_filter }}"{% endif %}.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

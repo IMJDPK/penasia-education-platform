@@ -1,0 +1,295 @@
+{% extends "base.html" %}
+
+{% block title %}Apply for {{ course.name }} - PenAsia{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <!-- Course Header -->
+            <div class="card bg-primary text-white mb-4">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h1 class="card-title mb-0">{{ course.name }}</h1>
+                            <p class="card-text mb-0">{{ course.code }} | {{ course.language }} | {{ course.duration }}</p>
+                        </div>
+                        <div class="col-md-4 text-md-end">
+                            <h2 class="mb-0">HK${{ "{:,.0f}".format(course.fee_hkd) }}</h2>
+                            <small>Course Fee</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Application Form -->
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title mb-0">
+                                <i class="fas fa-file-alt me-2"></i>Course Application
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            {% with messages = get_flashed_messages(with_categories=true) %}
+                                {% if messages %}
+                                    {% for category, message in messages %}
+                                        <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show" role="alert">
+                                            {{ message }}
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endwith %}
+
+                            <form method="POST" enctype="multipart/form-data">
+                                {{ form.hidden_tag() }}
+                                
+                                <!-- Personal Information -->
+                                <h5 class="border-bottom pb-2 mb-3">Personal Information</h5>
+                                
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        {{ form.first_name.label(class="form-label") }}
+                                        {{ form.first_name(class="form-control") }}
+                                        {% if form.first_name.errors %}
+                                            <div class="text-danger small">
+                                                {% for error in form.first_name.errors %}{{ error }}{% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-6">
+                                        {{ form.last_name.label(class="form-label") }}
+                                        {{ form.last_name(class="form-control") }}
+                                        {% if form.last_name.errors %}
+                                            <div class="text-danger small">
+                                                {% for error in form.last_name.errors %}{{ error }}{% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        {{ form.email.label(class="form-label") }}
+                                        {{ form.email(class="form-control") }}
+                                        {% if form.email.errors %}
+                                            <div class="text-danger small">
+                                                {% for error in form.email.errors %}{{ error }}{% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-6">
+                                        {{ form.phone.label(class="form-label") }}
+                                        {{ form.phone(class="form-control") }}
+                                        {% if form.phone.errors %}
+                                            <div class="text-danger small">
+                                                {% for error in form.phone.errors %}{{ error }}{% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    {{ form.address.label(class="form-label") }}
+                                    {{ form.address(class="form-control") }}
+                                    {% if form.address.errors %}
+                                        <div class="text-danger small">
+                                            {% for error in form.address.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <!-- Educational Background -->
+                                <h5 class="border-bottom pb-2 mb-3 mt-4">Educational Background</h5>
+                                
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        {{ form.education_level.label(class="form-label") }}
+                                        {{ form.education_level(class="form-select") }}
+                                        {% if form.education_level.errors %}
+                                            <div class="text-danger small">
+                                                {% for error in form.education_level.errors %}{{ error }}{% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-6">
+                                        {{ form.english_level.label(class="form-label") }}
+                                        {{ form.english_level(class="form-select") }}
+                                        {% if form.english_level.errors %}
+                                            <div class="text-danger small">
+                                                {% for error in form.english_level.errors %}{{ error }}{% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <!-- Work Experience -->
+                                <h5 class="border-bottom pb-2 mb-3 mt-4">Work Experience</h5>
+                                
+                                <div class="mb-3">
+                                    {{ form.work_experience.label(class="form-label") }}
+                                    {{ form.work_experience(class="form-control", rows="4") }}
+                                    {% if form.work_experience.errors %}
+                                        <div class="text-danger small">
+                                            {% for error in form.work_experience.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <!-- Motivation -->
+                                <div class="mb-3">
+                                    {{ form.motivation.label(class="form-label") }}
+                                    {{ form.motivation(class="form-control", rows="4") }}
+                                    {% if form.motivation.errors %}
+                                        <div class="text-danger small">
+                                            {% for error in form.motivation.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <!-- Documents Upload -->
+                                <h5 class="border-bottom pb-2 mb-3 mt-4">Required Documents</h5>
+                                
+                                <div class="mb-3">
+                                    {{ form.documents.label(class="form-label") }}
+                                    {{ form.documents(class="form-control") }}
+                                    <div class="form-text">
+                                        Upload your CV, educational certificates, and ID card (PDF format, max 10MB total)
+                                    </div>
+                                    {% if form.documents.errors %}
+                                        <div class="text-danger small">
+                                            {% for error in form.documents.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <!-- Payment Method -->
+                                <h5 class="border-bottom pb-2 mb-3 mt-4">Payment Method</h5>
+                                
+                                <div class="mb-3">
+                                    {{ form.payment_method.label(class="form-label") }}
+                                    {{ form.payment_method(class="form-select") }}
+                                    {% if form.payment_method.errors %}
+                                        <div class="text-danger small">
+                                            {% for error in form.payment_method.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <!-- Special Requirements -->
+                                <div class="mb-4">
+                                    {{ form.special_requirements.label(class="form-label") }}
+                                    {{ form.special_requirements(class="form-control", rows="3") }}
+                                    <div class="form-text">
+                                        Any dietary restrictions, accessibility needs, or other special requirements
+                                    </div>
+                                    {% if form.special_requirements.errors %}
+                                        <div class="text-danger small">
+                                            {% for error in form.special_requirements.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <!-- Terms and Conditions -->
+                                <div class="mb-4">
+                                    <div class="form-check">
+                                        {{ form.terms_accepted(class="form-check-input") }}
+                                        {{ form.terms_accepted.label(class="form-check-label") }}
+                                        {% if form.terms_accepted.errors %}
+                                            <div class="text-danger small">
+                                                {% for error in form.terms_accepted.errors %}{{ error }}{% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <!-- Submit Button -->
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary btn-lg">
+                                        <i class="fas fa-paper-plane me-2"></i>Submit Application
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course Information Sidebar -->
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Course Details</h5>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-sm">
+                                <tr>
+                                    <td><strong>Course Code:</strong></td>
+                                    <td>{{ course.code }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Duration:</strong></td>
+                                    <td>{{ course.duration }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Language:</strong></td>
+                                    <td>{{ course.language }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Schedule:</strong></td>
+                                    <td>{{ course.schedule or 'TBA' }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Class Size:</strong></td>
+                                    <td>Max {{ course.max_students }} students</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Fee:</strong></td>
+                                    <td><strong>HK${{ "{:,.0f}".format(course.fee_hkd) }}</strong></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Entry Requirements</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="requirements-text">
+                                {{ course.requirements | safe }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Next Steps</h5>
+                        </div>
+                        <div class="card-body">
+                            <ol class="small">
+                                <li>Submit your application</li>
+                                <li>Wait for application review (3-5 business days)</li>
+                                <li>Attend interview (if required)</li>
+                                <li>Receive admission decision</li>
+                                <li>Complete payment</li>
+                                <li>Receive course materials</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.requirements-text ul {
+    padding-left: 1rem;
+}
+.requirements-text li {
+    margin-bottom: 0.5rem;
+}
+</style>
+{% endblock %}

@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block title %}Add Module - {{ course.title }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h1 class="h3 mb-0">
+                        <i class="fas fa-plus me-2"></i>Add New Module
+                    </h1>
+                    <p class="text-muted mb-0">Course: {{ course.title }}</p>
+                </div>
+                <a href="{{ url_for('admin_course_content', course_id=course.id) }}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Content
+                </a>
+            </div>
+
+            <!-- Add Module Form -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-list-ol me-2"></i>Module Details
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        {{ csrf_token() }}
+                        
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Module Title *</label>
+                            <input type="text" class="form-control" id="title" name="title" required 
+                                   placeholder="e.g., Introduction to Business Management">
+                            <div class="form-text">Give your module a clear, descriptive title.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control" id="description" name="description" rows="4"
+                                      placeholder="Describe what students will learn in this module..."></textarea>
+                            <div class="form-text">Optional: Provide an overview of the module content.</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="estimated_hours" class="form-label">Estimated Learning Hours</label>
+                                    <input type="number" class="form-control" id="estimated_hours" name="estimated_hours" 
+                                           min="0" max="100" value="1">
+                                    <div class="form-text">How many hours should students spend on this module?</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Publishing Status</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="is_published" name="is_published">
+                                        <label class="form-check-label" for="is_published">
+                                            Publish immediately
+                                        </label>
+                                    </div>
+                                    <div class="form-text">Published modules are visible to students.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Module Order Info -->
+                        <div class="alert alert-info" role="alert">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Module Order:</strong> This module will be added at the end of the existing modules. 
+                            You can reorder modules later.
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ url_for('admin_course_content', course_id=course.id) }}" class="btn btn-secondary">
+                                Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Create Module
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Help Section -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="fas fa-question-circle me-2"></i>Creating Effective Modules
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Best Practices:</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success me-2"></i>Use clear, descriptive titles</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Keep modules focused on one topic</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Estimate realistic learning time</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Start with draft status for review</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Next Steps:</h6>
+                            <ol class="list-unstyled">
+                                <li><span class="badge bg-secondary me-2">1</span>Create the module</li>
+                                <li><span class="badge bg-secondary me-2">2</span>Add lessons to the module</li>
+                                <li><span class="badge bg-secondary me-2">3</span>Review and publish</li>
+                                <li><span class="badge bg-secondary me-2">4</span>Test with students</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

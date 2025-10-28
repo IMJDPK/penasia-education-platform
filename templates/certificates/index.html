@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block title %}My Certificates - PenAsia LMS{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-warning text-dark">
+                    <h4 class="mb-0"><i class="fas fa-certificate me-2"></i>My Certificates</h4>
+                </div>
+                <div class="card-body">
+                    {% if certificates %}
+                        <div class="row">
+                            {% for certificate in certificates %}
+                            <div class="col-md-6 mb-4">
+                                <div class="card border-warning h-100">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-start mb-3">
+                                            <div>
+                                                <h5 class="card-title text-warning">
+                                                    <i class="fas fa-award me-2"></i>{{ certificate.course.title }}
+                                                </h5>
+                                                <p class="text-muted mb-0">{{ certificate.course.course_code }}</p>
+                                            </div>
+                                            {% if certificate.is_valid %}
+                                                <span class="badge bg-success">Valid</span>
+                                            {% else %}
+                                                <span class="badge bg-danger">Revoked</span>
+                                            {% endif %}
+                                        </div>
+                                        
+                                        <hr>
+                                        
+                                        <div class="row mb-3">
+                                            <div class="col-6">
+                                                <small class="text-muted">Certificate Number:</small>
+                                                <p class="mb-0"><strong>{{ certificate.certificate_number }}</strong></p>
+                                            </div>
+                                            <div class="col-6">
+                                                <small class="text-muted">Issue Date:</small>
+                                                <p class="mb-0"><strong>{{ certificate.issue_date.strftime('%B %d, %Y') }}</strong></p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row mb-3">
+                                            <div class="col-6">
+                                                <small class="text-muted">Final Grade:</small>
+                                                <p class="mb-0"><strong>{{ certificate.display_grade }}</strong></p>
+                                            </div>
+                                            <div class="col-6">
+                                                <small class="text-muted">Honors:</small>
+                                                <p class="mb-0">
+                                                    <strong>
+                                                        {% if certificate.honors == 'Distinction' %}
+                                                            <span class="text-success">{{ certificate.honors }}</span>
+                                                        {% elif certificate.honors == 'Merit' %}
+                                                            <span class="text-info">{{ certificate.honors }}</span>
+                                                        {% else %}
+                                                            {{ certificate.honors }}
+                                                        {% endif %}
+                                                    </strong>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        
+                                        {% if certificate.attendance_percentage %}
+                                        <div class="mb-3">
+                                            <small class="text-muted">Attendance:</small>
+                                            <div class="progress" role="progressbar">
+                                                <div class="progress-bar bg-{{ 'success' if certificate.attendance_percentage >= 80 else 'warning' }}" 
+                                                     style="width: {{ certificate.attendance_percentage }}%;">
+                                                    {{ certificate.attendance_percentage }}%
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                        
+                                        <div class="d-grid gap-2">
+                                            <a href="{{ url_for('download_certificate', certificate_id=certificate.id) }}" 
+                                               class="btn btn-warning">
+                                                <i class="fas fa-eye me-1"></i>View Certificate
+                                            </a>
+                                            <button class="btn btn-outline-secondary btn-sm" 
+                                                    onclick="copyVerificationCode('{{ certificate.verification_code }}')">
+                                                <i class="fas fa-copy me-1"></i>Copy Verification Code
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer text-muted small">
+                                        <i class="fas fa-shield-alt me-1"></i>Verification Code: 
+                                        <code id="code-{{ certificate.id }}">{{ certificate.verification_code[:16] }}...</code>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-certificate fa-4x text-muted mb-3"></i>
+                            <h5 class="text-muted">No Certificates Yet</h5>
+                            <p class="text-muted">Complete your courses to earn certificates!</p>
+                            <a href="{{ url_for('dashboard') }}" class="btn btn-primary">
+                                <i class="fas fa-book-reader me-1"></i>View My Courses
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Verification Info -->
+            <div class="card mt-4 border-info">
+                <div class="card-body">
+                    <h6 class="card-title"><i class="fas fa-info-circle text-info me-2"></i>Certificate Verification</h6>
+                    <p class="mb-0">All certificates can be verified using the verification code. Employers or institutions can verify your certificate authenticity at our verification portal.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function copyVerificationCode(code) {
+    navigator.clipboard.writeText(code).then(function() {
+        alert('Verification code copied to clipboard!');
+    }, function(err) {
+        console.error('Could not copy text: ', err);
+    });
+}
+</script>
+{% endblock %}

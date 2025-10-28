@@ -1,0 +1,518 @@
+{% extends "base.html" %}
+
+{% block title %}{{ course.title }} - PenAsia Continuing Education Centre{% endblock %}
+
+{% block extra_head %}
+<style>
+.course-hero-premium {
+    position: relative;
+    height: 60vh;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    color: white;
+}
+
+.course-hero-premium::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(27, 54, 93, 0.8), rgba(46, 89, 132, 0.6));
+}
+
+.course-hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.course-stats {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: var(--radius-medium);
+    padding: 1.5rem;
+    margin-top: 2rem;
+}
+
+.course-stat-item {
+    text-align: center;
+    padding: 1rem;
+}
+
+.course-stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-gold);
+    display: block;
+}
+
+.course-sidebar {
+    background: white;
+    border-radius: var(--radius-medium);
+    box-shadow: var(--shadow-medium);
+    padding: 2rem;
+    position: sticky;
+    top: 100px;
+}
+
+.course-price {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-blue);
+    margin-bottom: 0.5rem;
+}
+
+.course-feature {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid #e1e5e9;
+}
+
+.course-feature:last-child {
+    border-bottom: none;
+}
+
+.feature-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--light-blue);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-blue);
+}
+
+.curriculum-module {
+    background: white;
+    border-radius: var(--radius-small);
+    border: 1px solid #e1e5e9;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    transition: var(--transition-medium);
+}
+
+.curriculum-module:hover {
+    box-shadow: var(--shadow-light);
+    border-color: var(--primary-blue);
+}
+
+.module-title {
+    color: var(--primary-blue);
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.career-path {
+    background: var(--light-blue);
+    border-radius: var(--radius-small);
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    border-left: 4px solid var(--accent-gold);
+}
+
+.career-title {
+    font-weight: 600;
+    color: var(--primary-blue);
+    margin-bottom: 0.5rem;
+}
+
+.career-salary {
+    color: var(--accent-gold);
+    font-weight: 600;
+}
+
+.faq-item {
+    border: 1px solid #e1e5e9;
+    border-radius: var(--radius-small);
+    margin-bottom: 1rem;
+}
+
+.faq-question {
+    background: none;
+    border: none;
+    width: 100%;
+    padding: 1.5rem;
+    text-align: left;
+    font-weight: 600;
+    color: var(--primary-blue);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.faq-answer {
+    display: none;
+    padding: 0 1.5rem 1.5rem;
+    color: var(--text-medium);
+}
+
+.faq-answer.show {
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .course-hero-premium {
+        height: 50vh;
+    }
+    
+    .course-sidebar {
+        position: static;
+        margin-top: 2rem;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Course Hero Section -->
+<section class="course-hero-premium" style="background-image: url('{{ url_for('static', filename='images/courses/courses_01.jpg') }}');">
+    <div class="container-premium">
+        <div class="course-hero-content">
+            <div class="row">
+                <div class="col-lg-8">
+                    <h1 class="hero-title hero-title-white mb-3">{{ course.title }}</h1>
+                    <p class="hero-subtitle mb-4">{{ course.description }}</p>
+                    
+                    <div class="d-flex gap-3 flex-wrap mb-4">
+                        <span class="badge bg-primary fs-6 px-3 py-2">
+                            <i class="fas fa-clock me-2"></i>{{ course.duration }}
+                        </span>
+                        <span class="badge bg-warning fs-6 px-3 py-2">
+                            <i class="fas fa-users me-2"></i>{{ course.class_size }} Students Max
+                        </span>
+                        <span class="badge bg-info fs-6 px-3 py-2">
+                            <i class="fas fa-certificate me-2"></i>Accredited Program
+                        </span>
+                    </div>
+                    
+                    <div class="d-flex gap-3 flex-wrap">
+                        <a href="{{ url_for('apply') }}" class="btn-primary-premium">
+                            <i class="fas fa-graduation-cap me-2"></i>Apply Now
+                        </a>
+                        <a href="#curriculum" class="btn-outline-premium">
+                            <i class="fas fa-book me-2"></i>View Curriculum
+                        </a>
+                        <a href="https://wa.me/85228936788?text=I%27m%20interested%20in%20{{ course.title|urlencode }}" 
+                           class="btn-outline-premium" target="_blank">
+                            <i class="fab fa-whatsapp me-2"></i>Ask Questions
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="course-stats">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="course-stat-item">
+                                    <span class="course-stat-number">98%</span>
+                                    <small>Employment Rate</small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="course-stat-item">
+                                    <span class="course-stat-number">4.8/5</span>
+                                    <small>Student Rating</small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="course-stat-item">
+                                    <span class="course-stat-number">250+</span>
+                                    <small>Graduates</small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="course-stat-item">
+                                    <span class="course-stat-number">15+</span>
+                                    <small>Industry Partners</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Course Details -->
+<section class="section-premium">
+    <div class="container-premium">
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- Program Overview -->
+                <div class="mb-5">
+                    <h2 class="section-title text-left">Program Overview</h2>
+                    <p class="body-text-premium">{{ course.long_description or course.description }}</p>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <h5 class="mb-3">What You'll Learn</h5>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Professional culinary techniques</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Kitchen management principles</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Food safety and hygiene</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Menu planning and costing</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Customer service excellence</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 class="mb-3">Entry Requirements</h5>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="fas fa-graduation-cap text-primary me-2"></i>{{ course.entry_requirements or 'Secondary school completion' }}</li>
+                                <li class="mb-2"><i class="fas fa-language text-primary me-2"></i>{{ course.language_requirements or 'Basic English proficiency' }}</li>
+                                <li class="mb-2"><i class="fas fa-heart text-primary me-2"></i>Passion for culinary arts</li>
+                                <li class="mb-2"><i class="fas fa-clock text-primary me-2"></i>Commitment to full-time study</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Curriculum Section -->
+                <div class="mb-5" id="curriculum">
+                    <h2 class="section-title text-left">Curriculum</h2>
+                    <p class="body-text-premium mb-4">Our comprehensive curriculum is designed by industry experts to ensure you graduate with practical skills and theoretical knowledge.</p>
+                    
+                    <div class="curriculum-module">
+                        <h5 class="module-title">Year 1: Foundation Skills</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">• Basic Culinary Techniques</li>
+                                    <li class="mb-2">• Food Safety & Hygiene</li>
+                                    <li class="mb-2">• Kitchen Organization</li>
+                                    <li class="mb-2">• Knife Skills & Equipment</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">• Introduction to Hospitality</li>
+                                    <li class="mb-2">• Customer Service</li>
+                                    <li class="mb-2">• Basic Nutrition</li>
+                                    <li class="mb-2">• Cost Control Fundamentals</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="curriculum-module">
+                        <h5 class="module-title">Year 2: Advanced Practice & Management</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">• Advanced Cooking Techniques</li>
+                                    <li class="mb-2">• Menu Planning & Design</li>
+                                    <li class="mb-2">• Kitchen Management</li>
+                                    <li class="mb-2">• International Cuisine</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">• Business Operations</li>
+                                    <li class="mb-2">• Leadership Skills</li>
+                                    <li class="mb-2">• Industry Internship</li>
+                                    <li class="mb-2">• Final Project</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Career Outcomes -->
+                <div class="mb-5">
+                    <h2 class="section-title text-left">Career Opportunities</h2>
+                    <p class="body-text-premium mb-4">Our graduates work in leading establishments across Hong Kong's dynamic hospitality industry.</p>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="career-path">
+                                <h6 class="career-title">Sous Chef</h6>
+                                <p class="mb-2">Lead kitchen operations and supervise junior staff in professional kitchens.</p>
+                                <div class="career-salary">Starting: HK$28,000 - HK$35,000/month</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="career-path">
+                                <h6 class="career-title">Kitchen Manager</h6>
+                                <p class="mb-2">Oversee all kitchen operations, staff management, and cost control.</p>
+                                <div class="career-salary">Starting: HK$32,000 - HK$42,000/month</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="career-path">
+                                <h6 class="career-title">Restaurant Supervisor</h6>
+                                <p class="mb-2">Manage front-of-house operations and customer experience.</p>
+                                <div class="career-salary">Starting: HK$25,000 - HK$32,000/month</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="career-path">
+                                <h6 class="career-title">Culinary Entrepreneur</h6>
+                                <p class="mb-2">Start your own restaurant or catering business.</p>
+                                <div class="career-salary">Potential: HK$50,000+/month</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FAQ Section -->
+                <div class="mb-5">
+                    <h2 class="section-title text-left">Frequently Asked Questions</h2>
+                    
+                    <div class="faq-item">
+                        <button class="faq-question" onclick="toggleFAQ(this)">
+                            What are the entry requirements?
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>You need to have completed secondary education (Form 5 or equivalent) and demonstrate basic English proficiency. A passion for culinary arts and commitment to full-time study are essential.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <button class="faq-question" onclick="toggleFAQ(this)">
+                            What support is available for career placement?
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>We provide comprehensive career support including job placement assistance, industry networking opportunities, and ongoing career guidance for our graduates.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <button class="faq-question" onclick="toggleFAQ(this)">
+                            What facilities are available for practical training?
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Our campus features state-of-the-art commercial kitchens, modern equipment, and specialized training areas that mirror professional hotel environments.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <button class="faq-question" onclick="toggleFAQ(this)">
+                            Are internships included in the program?
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Yes, the program includes mandatory internships with our industry partners, including leading hotels and restaurants in Hong Kong.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <div class="course-sidebar">
+                    <div class="course-price">HK${{ "{:,}".format(course.total_fee) }}</div>
+                    <p class="text-muted mb-4">Total Program Fee</p>
+                    
+                    <div class="alert alert-info">
+                        <strong>Quality Education!</strong><br>
+                        Accredited program with industry recognition
+                    </div>
+                    
+                    <div class="course-feature">
+                        <div class="feature-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div>
+                            <strong>Duration</strong><br>
+                            <span class="text-muted">{{ course.duration }}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="course-feature">
+                        <div class="feature-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div>
+                            <strong>Schedule</strong><br>
+                            <span class="text-muted">{{ course.schedule or 'Monday to Friday, 9:00 AM - 5:00 PM' }}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="course-feature">
+                        <div class="feature-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div>
+                            <strong>Class Size</strong><br>
+                            <span class="text-muted">Maximum {{ course.class_size }} students</span>
+                        </div>
+                    </div>
+                    
+                    <div class="course-feature">
+                        <div class="feature-icon">
+                            <i class="fas fa-language"></i>
+                        </div>
+                        <div>
+                            <strong>Language</strong><br>
+                            <span class="text-muted">{{ course.language or 'English with Cantonese support' }}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="course-feature">
+                        <div class="feature-icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div>
+                            <strong>Next Intake</strong><br>
+                            <span class="text-muted">{{ course.next_intake or 'September 2025' }}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <a href="{{ url_for('apply') }}" class="btn-primary-premium w-100 mb-3">
+                            <i class="fas fa-graduation-cap me-2"></i>Apply Now
+                        </a>
+                        <a href="https://wa.me/85228936788?text=I%27m%20interested%20in%20{{ course.title|urlencode }}" 
+                           class="btn-secondary-premium w-100" target="_blank">
+                            <i class="fab fa-whatsapp me-2"></i>WhatsApp Us
+                        </a>
+                    </div>
+                    
+                    <div class="mt-4 text-center">
+                        <p class="text-muted mb-2">Need more information?</p>
+                        <p class="mb-1"><i class="fas fa-phone me-2"></i>+852 2893 6788</p>
+                        <p class="mb-0"><i class="fas fa-envelope me-2"></i>info@penasia.edu.hk</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+function toggleFAQ(button) {
+    const answer = button.nextElementSibling;
+    const icon = button.querySelector('i');
+    
+    if (answer.classList.contains('show')) {
+        answer.classList.remove('show');
+        icon.classList.remove('fa-chevron-up');
+        icon.classList.add('fa-chevron-down');
+    } else {
+        // Close other FAQs
+        document.querySelectorAll('.faq-answer.show').forEach(item => {
+            item.classList.remove('show');
+        });
+        document.querySelectorAll('.faq-question i').forEach(item => {
+            item.classList.remove('fa-chevron-up');
+            item.classList.add('fa-chevron-down');
+        });
+        
+        // Open this FAQ
+        answer.classList.add('show');
+        icon.classList.remove('fa-chevron-down');
+        icon.classList.add('fa-chevron-up');
+    }
+}
+</script>
+{% endblock %}

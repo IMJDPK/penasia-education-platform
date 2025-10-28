@@ -1,0 +1,363 @@
+{% extends "base.html" %}
+
+{% block title %}Book a Consultation - PenAsia Education Group{% endblock %}
+
+{% block extra_css %}
+<style>
+.consultation-header {
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+    color: white;
+    padding: 4rem 0 2rem;
+    text-align: center;
+}
+
+.consultation-form {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    padding: 3rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    margin-top: -2rem;
+    position: relative;
+    z-index: 2;
+}
+
+.form-section {
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #eee;
+}
+
+.form-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.section-title {
+    color: var(--primary-blue);
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    font-weight: 600;
+    color: var(--primary-blue);
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.form-control, .form-select {
+    padding: 0.75rem 1rem;
+    border: 2px solid #e1e5e9;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--accent-gold);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+}
+
+.consultation-benefits {
+    background: var(--light-blue);
+    padding: 2rem;
+    border-radius: 8px;
+    margin: 2rem 0;
+}
+
+.benefit-list {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+}
+
+.benefit-list li {
+    padding: 0.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.benefit-list i {
+    color: var(--accent-gold);
+    font-size: 1.1rem;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+    border: none;
+    padding: 1rem 3rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(27, 54, 93, 0.3);
+}
+
+.contact-info {
+    background: #f8f9fa;
+    padding: 2rem;
+    border-radius: 8px;
+    margin-top: 3rem;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .consultation-form {
+        margin: 1rem;
+        padding: 2rem;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .consultation-header {
+        padding: 3rem 0 1rem;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="consultation-header">
+    <div class="container">
+        <h1 class="display-4 mb-3">Book Your Free Consultation</h1>
+        <p class="lead">Get personalized guidance from our education experts</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="consultation-benefits">
+        <div class="row">
+            <div class="col-md-6">
+                <h4 class="text-primary mb-3"><i class="fas fa-star me-2"></i>What You'll Get</h4>
+                <ul class="benefit-list">
+                    <li><i class="fas fa-check-circle"></i> Personalized course recommendations</li>
+                    <li><i class="fas fa-check-circle"></i> Career pathway guidance</li>
+                    <li><i class="fas fa-check-circle"></i> CEF funding advice</li>
+                    <li><i class="fas fa-check-circle"></i> Admission requirements review</li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h4 class="text-primary mb-3"><i class="fas fa-clock me-2"></i>Consultation Details</h4>
+                <ul class="benefit-list">
+                    <li><i class="fas fa-user-tie"></i> Expert education counselors</li>
+                    <li><i class="fas fa-calendar"></i> 30-minute dedicated session</li>
+                    <li><i class="fas fa-video"></i> Online, phone, or in-person</li>
+                    <li><i class="fas fa-dollar-sign"></i> Completely free of charge</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <form method="POST" class="consultation-form">
+        {{ form.hidden_tag() }}
+        
+        <!-- Personal Information -->
+        <div class="form-section">
+            <h3 class="section-title">
+                <i class="fas fa-user"></i>
+                Personal Information
+            </h3>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    {{ form.first_name.label(class="form-label") }}
+                    {{ form.first_name(class="form-control") }}
+                    {% if form.first_name.errors %}
+                        <div class="text-danger small">{{ form.first_name.errors[0] }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    {{ form.last_name.label(class="form-label") }}
+                    {{ form.last_name(class="form-control") }}
+                    {% if form.last_name.errors %}
+                        <div class="text-danger small">{{ form.last_name.errors[0] }}</div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    {{ form.email.label(class="form-label") }}
+                    {{ form.email(class="form-control") }}
+                    {% if form.email.errors %}
+                        <div class="text-danger small">{{ form.email.errors[0] }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    {{ form.phone.label(class="form-label") }}
+                    {{ form.phone(class="form-control", placeholder="e.g., +852 1234 5678") }}
+                    {% if form.phone.errors %}
+                        <div class="text-danger small">{{ form.phone.errors[0] }}</div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Consultation Preferences -->
+        <div class="form-section">
+            <h3 class="section-title">
+                <i class="fas fa-calendar-alt"></i>
+                Consultation Preferences
+            </h3>
+            
+            <div class="form-group">
+                {{ form.consultation_type.label(class="form-label") }}
+                {{ form.consultation_type(class="form-select") }}
+                {% if form.consultation_type.errors %}
+                    <div class="text-danger small">{{ form.consultation_type.errors[0] }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    {{ form.preferred_date.label(class="form-label") }}
+                    {{ form.preferred_date(class="form-control", min=today) }}
+                    {% if form.preferred_date.errors %}
+                        <div class="text-danger small">{{ form.preferred_date.errors[0] }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    {{ form.preferred_time.label(class="form-label") }}
+                    {{ form.preferred_time(class="form-select") }}
+                    {% if form.preferred_time.errors %}
+                        <div class="text-danger small">{{ form.preferred_time.errors[0] }}</div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="form-group">
+                {{ form.meeting_type.label(class="form-label") }}
+                {{ form.meeting_type(class="form-select") }}
+                {% if form.meeting_type.errors %}
+                    <div class="text-danger small">{{ form.meeting_type.errors[0] }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                {{ form.course_id.label(class="form-label") }}
+                {{ form.course_id(class="form-select") }}
+                {% if form.course_id.errors %}
+                    <div class="text-danger small">{{ form.course_id.errors[0] }}</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Additional Information -->
+        <div class="form-section">
+            <h3 class="section-title">
+                <i class="fas fa-comment"></i>
+                Additional Information
+            </h3>
+            
+            <div class="form-group">
+                {{ form.message.label(class="form-label") }}
+                {{ form.message(class="form-control", rows="4", placeholder="Tell us about your educational goals, questions, or any specific topics you'd like to discuss...") }}
+                {% if form.message.errors %}
+                    <div class="text-danger small">{{ form.message.errors[0] }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                {{ form.special_requirements.label(class="form-label") }}
+                {{ form.special_requirements(class="form-control", rows="3", placeholder="Any accessibility needs or special accommodations?") }}
+                {% if form.special_requirements.errors %}
+                    <div class="text-danger small">{{ form.special_requirements.errors[0] }}</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary btn-lg">
+                <i class="fas fa-calendar-check me-2"></i>
+                Book My Free Consultation
+            </button>
+        </div>
+    </form>
+
+    <div class="contact-info">
+        <h4 class="text-primary mb-3">Need Immediate Assistance?</h4>
+        <div class="row">
+            <div class="col-md-4">
+                <i class="fas fa-phone text-primary fa-2x mb-2"></i>
+                <h6>Call Us</h6>
+                <p>+852 2893 6788</p>
+            </div>
+            <div class="col-md-4">
+                <i class="fas fa-envelope text-primary fa-2x mb-2"></i>
+                <h6>Email Us</h6>
+                <p>info@penasia.edu.hk</p>
+            </div>
+            <div class="col-md-4">
+                <i class="fab fa-whatsapp text-primary fa-2x mb-2"></i>
+                <h6>WhatsApp</h6>
+                <p>+852 2893 6788</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Set minimum date to today
+    const dateInput = document.querySelector('input[type="date"]');
+    if (dateInput) {
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.setAttribute('min', today);
+    }
+    
+    // Form validation feedback
+    const form = document.querySelector('.consultation-form form');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            const requiredFields = form.querySelectorAll('[required]');
+            let isValid = true;
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    isValid = false;
+                    field.classList.add('is-invalid');
+                } else {
+                    field.classList.remove('is-invalid');
+                }
+            });
+            
+            if (!isValid) {
+                e.preventDefault();
+                alert('Please fill in all required fields.');
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

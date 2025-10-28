@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}Announcements - PenAsia LMS{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Institution-wide Announcements -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0"><i class="fas fa-bullhorn me-2"></i>Institution Announcements</h4>
+                    {% if current_user.role in ['admin', 'instructor'] %}
+                        <a href="{{ url_for('create_announcement') }}" class="btn btn-light btn-sm">
+                            <i class="fas fa-plus me-1"></i>New Announcement
+                        </a>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    {% if institution_announcements %}
+                        {% for announcement in institution_announcements %}
+                        <div class="announcement-item {% if not loop.last %}mb-4 pb-4 border-bottom{% endif %} {{ 'bg-warning bg-opacity-10 p-3 rounded' if announcement.is_pinned else '' }}">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <div class="flex-grow-1">
+                                    <h5 class="mb-1">
+                                        {% if announcement.is_pinned %}
+                                            <i class="fas fa-thumbtack text-danger me-2"></i>
+                                        {% endif %}
+                                        {{ announcement.title }}
+                                        {% if announcement.priority == 'urgent' %}
+                                            <span class="badge bg-danger ms-2">Urgent</span>
+                                        {% elif announcement.priority == 'high' %}
+                                            <span class="badge bg-warning ms-2">Important</span>
+                                        {% endif %}
+                                    </h5>
+                                    <p class="text-muted small mb-2">
+                                        <i class="fas fa-user me-1"></i>{{ announcement.author.full_name }}
+                                        <span class="mx-2">•</span>
+                                        <i class="fas fa-clock me-1"></i>{{ announcement.time_ago }}
+                                        {% if announcement.category %}
+                                            <span class="mx-2">•</span>
+                                            <span class="badge bg-secondary">{{ announcement.category }}</span>
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="announcement-content">
+                                {{ announcement.content|nl2br|safe }}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="fas fa-bullhorn fa-3x text-muted mb-3"></i>
+                            <p class="text-muted">No institution announcements at this time.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Course-specific Announcements -->
+            {% if course_announcements %}
+            <div class="card shadow-sm">
+                <div class="card-header bg-info text-white">
+                    <h4 class="mb-0"><i class="fas fa-book me-2"></i>Course Announcements</h4>
+                </div>
+                <div class="card-body">
+                    {% for announcement in course_announcements %}
+                    <div class="announcement-item {% if not loop.last %}mb-4 pb-4 border-bottom{% endif %}">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div class="flex-grow-1">
+                                <h5 class="mb-1">
+                                    {{ announcement.title }}
+                                    {% if announcement.priority == 'urgent' %}
+                                        <span class="badge bg-danger ms-2">Urgent</span>
+                                    {% elif announcement.priority == 'high' %}
+                                        <span class="badge bg-warning ms-2">Important</span>
+                                    {% endif %}
+                                </h5>
+                                <p class="text-muted small mb-2">
+                                    <i class="fas fa-book me-1"></i>{{ announcement.course.title }}
+                                    <span class="mx-2">•</span>
+                                    <i class="fas fa-user me-1"></i>{{ announcement.author.full_name }}
+                                    <span class="mx-2">•</span>
+                                    <i class="fas fa-clock me-1"></i>{{ announcement.time_ago }}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="announcement-content">
+                            {{ announcement.content|nl2br|safe }}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+            
+            {% if not institution_announcements and not course_announcements %}
+            <div class="card shadow-sm">
+                <div class="card-body text-center py-5">
+                    <i class="fas fa-inbox fa-4x text-muted mb-3"></i>
+                    <h5 class="text-muted">No Announcements</h5>
+                    <p class="text-muted">There are no announcements at this time. Check back later for updates!</p>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,217 @@
+{% extends "base.html" %}
+
+{% block title %}Reports & Analytics - Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-lg-10 mx-auto">
+            <!-- Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2><i class="fas fa-chart-bar me-2"></i>Reports & Analytics</h2>
+                    <p class="text-muted">View system statistics and generate reports</p>
+                </div>
+                <div>
+                    <button class="btn btn-primary me-2" onclick="exportReport()">
+                        <i class="fas fa-download me-2"></i>Export Report
+                    </button>
+                    <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                    </a>
+                </div>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="row mb-4">
+                <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
+                    <div class="card bg-primary text-white">
+                        <div class="card-body text-center">
+                            <i class="fas fa-users fa-2x mb-2"></i>
+                            <h3 class="mb-0">{{ stats.total_students }}</h3>
+                            <p class="mb-0">Total Students</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
+                    <div class="card bg-success text-white">
+                        <div class="card-body text-center">
+                            <i class="fas fa-graduation-cap fa-2x mb-2"></i>
+                            <h3 class="mb-0">{{ stats.total_courses }}</h3>
+                            <p class="mb-0">Total Courses</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
+                    <div class="card bg-info text-white">
+                        <div class="card-body text-center">
+                            <i class="fas fa-file-alt fa-2x mb-2"></i>
+                            <h3 class="mb-0">{{ stats.total_applications }}</h3>
+                            <p class="mb-0">Total Applications</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
+                    <div class="card bg-warning text-white">
+                        <div class="card-body text-center">
+                            <i class="fas fa-clock fa-2x mb-2"></i>
+                            <h3 class="mb-0">{{ stats.pending_applications }}</h3>
+                            <p class="mb-0">Pending</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
+                    <div class="card bg-success text-white">
+                        <div class="card-body text-center">
+                            <i class="fas fa-check fa-2x mb-2"></i>
+                            <h3 class="mb-0">{{ stats.approved_applications }}</h3>
+                            <p class="mb-0">Approved</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
+                    <div class="card bg-danger text-white">
+                        <div class="card-body text-center">
+                            <i class="fas fa-times fa-2x mb-2"></i>
+                            <h3 class="mb-0">{{ stats.rejected_applications }}</h3>
+                            <p class="mb-0">Rejected</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Report Sections -->
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-chart-pie me-2"></i>Application Status Distribution
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="text-center">
+                                <canvas id="applicationChart" width="300" height="200"></canvas>
+                            </div>
+                            <div class="mt-3">
+                                <div class="row text-center">
+                                    <div class="col-4">
+                                        <div class="border rounded p-2">
+                                            <small class="text-muted">Pending</small>
+                                            <div class="h6 mb-0">{{ ((stats.pending_applications / stats.total_applications) * 100) | round(1) if stats.total_applications > 0 else 0 }}%</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="border rounded p-2">
+                                            <small class="text-muted">Approved</small>
+                                            <div class="h6 mb-0">{{ ((stats.approved_applications / stats.total_applications) * 100) | round(1) if stats.total_applications > 0 else 0 }}%</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="border rounded p-2">
+                                            <small class="text-muted">Rejected</small>
+                                            <div class="h6 mb-0">{{ ((stats.rejected_applications / stats.total_applications) * 100) | round(1) if stats.total_applications > 0 else 0 }}%</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-calendar me-2"></i>Monthly Growth
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i>
+                                <strong>Phase 5 Enhancement:</strong> Advanced analytics with charts and monthly growth tracking will be available in the next phase.
+                            </div>
+                            <div class="text-center py-4">
+                                <i class="fas fa-chart-line fa-3x text-muted mb-3"></i>
+                                <h6 class="text-muted">Growth Chart Coming Soon</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Reports -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-file-download me-2"></i>Quick Reports
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3 mb-3">
+                                    <button class="btn btn-outline-primary w-100" onclick="generateReport('students')">
+                                        <i class="fas fa-users me-2"></i>Student Report
+                                    </button>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <button class="btn btn-outline-success w-100" onclick="generateReport('applications')">
+                                        <i class="fas fa-file-alt me-2"></i>Application Report
+                                    </button>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <button class="btn btn-outline-info w-100" onclick="generateReport('courses')">
+                                        <i class="fas fa-graduation-cap me-2"></i>Course Report
+                                    </button>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <button class="btn btn-outline-warning w-100" onclick="generateReport('financial')">
+                                        <i class="fas fa-dollar-sign me-2"></i>Financial Report
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// Simple pie chart for application status
+const ctx = document.getElementById('applicationChart').getContext('2d');
+const applicationChart = new Chart(ctx, {
+    type: 'pie',
+    data: {
+        labels: ['Pending', 'Approved', 'Rejected'],
+        datasets: [{
+            data: [{{ stats.pending_applications }}, {{ stats.approved_applications }}, {{ stats.rejected_applications }}],
+            backgroundColor: ['#ffc107', '#28a745', '#dc3545'],
+            borderWidth: 2,
+            borderColor: '#fff'
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'bottom'
+            }
+        }
+    }
+});
+
+function exportReport() {
+    alert('Report export functionality coming in Phase 5!');
+}
+
+function generateReport(type) {
+    alert(`${type.charAt(0).toUpperCase() + type.slice(1)} report generation coming in Phase 5!`);
+}
+</script>
+{% endblock %}

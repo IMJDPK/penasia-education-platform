@@ -1,0 +1,535 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - PenAsia Continuing Education Centre{% endblock %}
+
+{% block content %}
+<!-- Admin Header -->
+<section class="py-4 bg-dark text-white">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h1 class="h3 mb-2">
+                    <i class="fas fa-cogs me-2"></i>Admin Dashboard
+                </h1>
+                <p class="lead mb-0">Manage students, courses, and applications</p>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <button class="btn btn-outline-light btn-sm me-2 help-button" data-module="admin_dashboard" data-bs-toggle="tooltip" title="Click for detailed help guide">
+                    <i class="fas fa-question-circle me-1"></i>Help Guide
+                </button>
+                <span class="badge bg-primary fs-6">
+                    <i class="fas fa-user-shield me-1"></i>Administrator
+                </span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Dashboard Stats -->
+<section class="py-5">
+    <div class="container">
+        <!-- Statistics Cards -->
+        <div class="row mb-5">
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="card bg-gradient border-0 shadow" data-bs-toggle="tooltip" title="Total number of enrolled students across all courses">
+                    <div class="card-body text-center">
+                        <div class="d-flex justify-content-center align-items-center mb-3">
+                            <div class="bg-primary text-white rounded-circle p-3">
+                                <i class="fas fa-users fa-2x"></i>
+                            </div>
+                        </div>
+                        <h2 class="h4 font-weight-bold">{{ total_students }}</h2>
+                        <p class="text-muted mb-0">Total Students</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="card bg-gradient border-0 shadow" data-bs-toggle="tooltip" title="Number of active courses available for enrollment">
+                    <div class="card-body text-center">
+                        <div class="d-flex justify-content-center align-items-center mb-3">
+                            <div class="bg-success text-white rounded-circle p-3">
+                                <i class="fas fa-graduation-cap fa-2x"></i>
+                            </div>
+                        </div>
+                        <h2 class="h4 font-weight-bold">{{ total_courses }}</h2>
+                        <p class="text-muted mb-0">Active Courses</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="card bg-gradient border-0 shadow" data-bs-toggle="tooltip" title="Applications awaiting your review and approval">
+                    <div class="card-body text-center">
+                        <div class="d-flex justify-content-center align-items-center mb-3">
+                            <div class="bg-warning text-white rounded-circle p-3">
+                                <i class="fas fa-clock fa-2x"></i>
+                            </div>
+                        </div>
+                        <h2 class="h4 font-weight-bold">{{ pending_applications }}</h2>
+                        <p class="text-muted mb-0">Pending Applications</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="card bg-gradient border-0 shadow" data-bs-toggle="tooltip" title="Current student enrollment growth rate">
+                    <div class="card-body text-center">
+                        <div class="d-flex justify-content-center align-items-center mb-3">
+                            <div class="bg-info text-white rounded-circle p-3">
+                                <i class="fas fa-chart-line fa-2x"></i>
+                            </div>
+                        </div>
+                        <h2 class="h4 font-weight-bold">{{ "%.1f"|format((total_students / 10) * 100) }}%</h2>
+                        <p class="text-muted mb-0">Growth Rate</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Recent Applications -->
+            <div class="col-lg-8 mb-4">
+                <div class="card shadow">
+                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="fas fa-file-alt me-2 text-primary"></i>Recent Applications
+                        </h5>
+                        <a href="#" class="btn btn-sm btn-outline-primary">View All</a>
+                    </div>
+                    <div class="card-body p-0">
+                        {% if recent_applications %}
+                            <div class="table-responsive">
+                                <table class="table table-hover mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Student</th>
+                                            <th>Course</th>
+                                            <th>Status</th>
+                                            <th>Date</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for application in recent_applications %}
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="avatar-sm bg-primary text-white rounded-circle me-2 d-flex align-items-center justify-content-center">
+                                                        {{ application.applicant.first_name[0] }}{{ application.applicant.last_name[0] }}
+                                                    </div>
+                                                    <div>
+                                                        <strong>{{ application.applicant.full_name }}</strong><br>
+                                                        <small class="text-muted">{{ application.applicant.email }}</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <strong>{{ application.course.title }}</strong><br>
+                                                <small class="text-muted">{{ application.course.course_code }}</small>
+                                            </td>
+                                            <td>
+                                                {% if application.status == 'pending' %}
+                                                    <span class="badge bg-warning">Pending</span>
+                                                {% elif application.status == 'approved' %}
+                                                    <span class="badge bg-success">Approved</span>
+                                                {% elif application.status == 'rejected' %}
+                                                    <span class="badge bg-danger">Rejected</span>
+                                                {% elif application.status == 'waitlist' %}
+                                                    <span class="badge bg-info">Waitlist</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {{ application.submitted_at.strftime('%Y-%m-%d') }}<br>
+                                                <small class="text-muted">{{ application.submitted_at.strftime('%H:%M') }}</small>
+                                            </td>
+                                            <td>
+                                                <div class="btn-group" role="group">
+                                                    <a href="{{ url_for('admin_applications') }}" class="btn btn-sm btn-outline-primary" title="Review">
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                    {% if application.status == 'pending' %}
+                                                    <button class="btn btn-sm btn-outline-success" title="Approve" onclick="approveApplication({{ application.id }})">
+                                                        <i class="fas fa-check"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-danger" title="Reject" onclick="rejectApplication({{ application.id }})">
+                                                        <i class="fas fa-times"></i>
+                                                    </button>
+                                                    {% endif %}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <div class="text-center py-5">
+                                <i class="fas fa-file-alt fa-3x text-muted mb-3"></i>
+                                <h5 class="text-muted">No Recent Applications</h5>
+                                <p class="text-muted">Applications will appear here as students apply</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="col-lg-4 mb-4">
+                <div class="card shadow">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-bolt me-2 text-primary"></i>Quick Actions
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-grid gap-3">
+                            <a href="{{ url_for('admin_courses') }}" class="btn btn-primary">
+                                <i class="fas fa-plus me-2"></i>Add New Course
+                            </a>
+                            <a href="{{ url_for('admin_students') }}" class="btn btn-success">
+                                <i class="fas fa-user-plus me-2"></i>Manage Students
+                            </a>
+                            <a href="{{ url_for('admin_applications') }}" class="btn btn-info">
+                                <i class="fas fa-file-alt me-2"></i>Review Applications
+                            </a>
+                            <button class="btn btn-warning" onclick="sendBulkNotification()">
+                                <i class="fas fa-envelope me-2"></i>Send Notification
+                            </button>
+                            <button class="btn btn-secondary" onclick="exportData()">
+                                <i class="fas fa-download me-2"></i>Export Data
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- System Status -->
+                <div class="card shadow mt-4">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-server me-2 text-primary"></i>System Status
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span>Database</span>
+                            <span class="badge bg-success">Online</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span>Email Service</span>
+                            <span class="badge bg-success">Active</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span>Backup System</span>
+                            <span class="badge bg-warning">Pending</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span>Payment Gateway</span>
+                            <span class="badge bg-info">Testing</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Management Sections -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card shadow management-sections">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-cogs me-2 text-primary"></i>Management Sections
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-xl-3 col-lg-4 col-md-6 mb-3">
+                                <a href="{{ url_for('admin_courses') }}" class="text-decoration-none">
+                                    <div class="card border-primary h-100 admin-card">
+                                        <div class="card-body text-center">
+                                            <i class="fas fa-graduation-cap fa-3x text-primary mb-3"></i>
+                                            <h6 class="card-title">Course Management</h6>
+                                            <p class="card-text text-muted">Create, edit, and manage courses</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            
+                            <div class="col-xl-3 col-lg-4 col-md-6 mb-3">
+                                <a href="{{ url_for('admin_students') }}" class="text-decoration-none">
+                                    <div class="card border-success h-100 admin-card">
+                                        <div class="card-body text-center">
+                                            <i class="fas fa-users fa-3x text-success mb-3"></i>
+                                            <h6 class="card-title">Student Management</h6>
+                                            <p class="card-text text-muted">View and manage student records</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            
+                            <div class="col-xl-3 col-lg-4 col-md-6 mb-3">
+                                <a href="{{ url_for('admin_applications') }}" class="text-decoration-none">
+                                    <div class="card border-warning h-100 admin-card">
+                                        <div class="card-body text-center">
+                                            <i class="fas fa-file-alt fa-3x text-warning mb-3"></i>
+                                            <h6 class="card-title">Applications</h6>
+                                            <p class="card-text text-muted">Review course applications</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            
+                            <div class="col-xl-3 col-lg-4 col-md-6 mb-3">
+                                <a href="{{ url_for('admin_assignments') }}" class="text-decoration-none">
+                                    <div class="card border-info h-100 admin-card">
+                                        <div class="card-body text-center">
+                                            <i class="fas fa-tasks fa-3x text-info mb-3"></i>
+                                            <h6 class="card-title">Assignments</h6>
+                                            <p class="card-text text-muted">Create and manage assignments</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            
+                            <div class="col-xl-3 col-lg-4 col-md-6 mb-3">
+                                <a href="{{ url_for('admin_contact_inquiries') }}" class="text-decoration-none">
+                                    <div class="card border-primary h-100 admin-card">
+                                        <div class="card-body text-center">
+                                            <i class="fas fa-envelope fa-3x text-primary mb-3"></i>
+                                            <h6 class="card-title">
+                                                Contact Inquiries
+                                                {% if new_contact_inquiries > 0 %}
+                                                <span class="badge bg-danger ms-1">{{ new_contact_inquiries }}</span>
+                                                {% endif %}
+                                            </h6>
+                                            <p class="card-text text-muted">View and respond to inquiries</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-xl-3 col-lg-4 col-md-6 mb-3">
+                                <a href="{{ url_for('admin_consultations') }}" class="text-decoration-none">
+                                    <div class="card border-success h-100 admin-card">
+                                        <div class="card-body text-center">
+                                            <i class="fas fa-calendar-check fa-3x text-success mb-3"></i>
+                                            <h6 class="card-title">
+                                                Consultations
+                                                {% if pending_consultations > 0 %}
+                                                <span class="badge bg-warning ms-1">{{ pending_consultations }}</span>
+                                                {% endif %}
+                                            </h6>
+                                            <p class="card-text text-muted">Manage consultation bookings</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            
+                            <div class="col-xl-3 col-lg-4 col-md-6 mb-3">
+                                <a href="{{ url_for('admin_schedules') }}" class="text-decoration-none">
+                                    <div class="card border-secondary h-100 admin-card">
+                                        <div class="card-body text-center">
+                                            <i class="fas fa-calendar-alt fa-3x text-secondary mb-3"></i>
+                                            <h6 class="card-title">Class Schedules</h6>
+                                            <p class="card-text text-muted">Schedule and manage classes</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            
+                            <div class="col-xl-3 col-lg-4 col-md-6 mb-3">
+                                <a href="{{ url_for('admin_reports') }}" class="text-decoration-none">
+                                    <div class="card border-dark h-100 admin-card">
+                                        <div class="card-body text-center">
+                                            <i class="fas fa-chart-bar fa-3x text-dark mb-3"></i>
+                                            <h6 class="card-title">Reports</h6>
+                                            <p class="card-text text-muted">View system reports and analytics</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            
+                            <div class="col-xl-3 col-lg-4 col-md-6 mb-3">
+                                <a href="{{ url_for('admin_settings') }}" class="text-decoration-none">
+                                    <div class="card border-secondary h-100 admin-card">
+                                        <div class="card-body text-center">
+                                            <i class="fas fa-cog fa-3x text-secondary mb-3"></i>
+                                            <h6 class="card-title">Settings</h6>
+                                            <p class="card-text text-muted">System configuration and preferences</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            
+                            <div class="col-xl-3 col-lg-4 col-md-6 mb-3">
+                                <a href="{{ url_for('admin_backup') }}" class="text-decoration-none">
+                                    <div class="card border-dark h-100 admin-card">
+                                        <div class="card-body text-center">
+                                            <i class="fas fa-database fa-3x text-dark mb-3"></i>
+                                            <h6 class="card-title">Backup</h6>
+                                            <p class="card-text text-muted">Database management and backups</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.avatar-sm {
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.card.bg-gradient {
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+}
+
+.admin-card {
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    min-height: 160px;
+}
+
+.admin-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+.admin-card .card-body {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.admin-card .card-title {
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: #333;
+}
+
+.admin-card .card-text {
+    font-size: 0.85rem;
+    line-height: 1.4;
+    text-align: center;
+}
+
+.disabled-card {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.disabled-card:hover {
+    transform: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .admin-card {
+        min-height: 140px;
+    }
+    
+    .admin-card .card-body {
+        padding: 1rem;
+    }
+    
+    .admin-card i {
+        font-size: 2rem !important;
+        margin-bottom: 1rem !important;
+    }
+}
+
+/* Management sections container */
+.management-sections .card {
+    border: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.management-sections .card-header {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-bottom: 1px solid #dee2e6;
+}
+
+.management-sections .row {
+    margin-left: -0.5rem;
+    margin-right: -0.5rem;
+}
+
+.management-sections .row > div {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+.management-sections .admin-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+</style>
+
+<script>
+function sendBulkNotification() {
+    // Placeholder for bulk notification functionality
+    alert('Bulk notification feature coming in Phase 5!');
+}
+
+function exportData() {
+    // Placeholder for data export functionality
+    alert('Data export feature coming in Phase 5!');
+}
+
+// Application action handlers
+function approveApplication(applicationId) {
+    if (confirm('Are you sure you want to approve this application?')) {
+        fetch(`/admin/application/${applicationId}/update`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({status: 'approved'})
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                location.reload();
+            } else {
+                alert('Error updating application: ' + data.message);
+            }
+        });
+    }
+}
+
+function rejectApplication(applicationId) {
+    if (confirm('Are you sure you want to reject this application?')) {
+        fetch(`/admin/application/${applicationId}/update`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({status: 'rejected'})
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                location.reload();
+            } else {
+                alert('Error updating application: ' + data.message);
+            }
+        });
+    }
+}
+</script>
+{% endblock %}

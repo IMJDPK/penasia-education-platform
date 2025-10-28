@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block title %}Messages - Inbox - PenAsia LMS{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3">
+            <div class="list-group">
+                <a href="{{ url_for('messages_inbox') }}" class="list-group-item list-group-item-action active">
+                    <i class="fas fa-inbox me-2"></i>Inbox
+                    {% if unread_count > 0 %}
+                        <span class="badge bg-danger float-end">{{ unread_count }}</span>
+                    {% endif %}
+                </a>
+                <a href="{{ url_for('messages_sent') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-paper-plane me-2"></i>Sent
+                </a>
+                <a href="{{ url_for('messages_compose') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-edit me-2"></i>Compose
+                </a>
+            </div>
+        </div>
+        
+        <!-- Messages List -->
+        <div class="col-md-9">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0"><i class="fas fa-inbox me-2"></i>Inbox</h4>
+                    <a href="{{ url_for('messages_compose') }}" class="btn btn-light btn-sm">
+                        <i class="fas fa-plus me-1"></i>New Message
+                    </a>
+                </div>
+                <div class="card-body p-0">
+                    {% if messages.items %}
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <tbody>
+                                    {% for message in messages.items %}
+                                    <tr class="{{ 'table-info' if not message.is_read else '' }}" style="cursor: pointer;" onclick="window.location='{{ url_for('messages_view', message_id=message.id) }}';">
+                                        <td style="width: 40px;" class="text-center">
+                                            {% if not message.is_read %}
+                                                <i class="fas fa-circle text-primary" style="font-size: 8px;"></i>
+                                            {% endif %}
+                                        </td>
+                                        <td style="width: 200px;">
+                                            <strong>{{ message.sender.full_name }}</strong>
+                                            {% if message.sender.role == 'admin' %}
+                                                <span class="badge bg-danger ms-1">Admin</span>
+                                            {% elif message.sender.role == 'instructor' %}
+                                                <span class="badge bg-info ms-1">Instructor</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <strong>{{ message.subject }}</strong>
+                                                    {% if message.priority == 'high' %}
+                                                        <i class="fas fa-exclamation-triangle text-warning ms-1"></i>
+                                                    {% endif %}
+                                                    <p class="text-muted mb-0 text-truncate" style="max-width: 400px;">
+                                                        {{ message.body[:100] }}{% if message.body|length > 100 %}...{% endif %}
+                                                    </p>
+                                                </div>
+                                                <small class="text-muted">{{ message.time_ago }}</small>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Pagination -->
+                        {% if messages.pages > 1 %}
+                        <div class="card-footer">
+                            <nav>
+                                <ul class="pagination justify-content-center mb-0">
+                                    <li class="page-item {% if not messages.has_prev %}disabled{% endif %}">
+                                        <a class="page-link" href="{{ url_for('messages_inbox', page=messages.prev_num) if messages.has_prev else '#' }}">Previous</a>
+                                    </li>
+                                    {% for page_num in messages.iter_pages(left_edge=1, right_edge=1) %}
+                                        {% if page_num %}
+                                            <li class="page-item {% if page_num == messages.page %}active{% endif %}">
+                                                <a class="page-link" href="{{ url_for('messages_inbox', page=page_num) }}">{{ page_num }}</a>
+                                            </li>
+                                        {% else %}
+                                            <li class="page-item disabled"><span class="page-link">...</span></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <li class="page-item {% if not messages.has_next %}disabled{% endif %}">
+                                        <a class="page-link" href="{{ url_for('messages_inbox', page=messages.next_num) if messages.has_next else '#' }}">Next</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                        {% endif %}
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-inbox fa-4x text-muted mb-3"></i>
+                            <h5 class="text-muted">No messages</h5>
+                            <p class="text-muted">Your inbox is empty.</p>
+                            <a href="{{ url_for('messages_compose') }}" class="btn btn-primary">
+                                <i class="fas fa-edit me-1"></i>Compose New Message
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

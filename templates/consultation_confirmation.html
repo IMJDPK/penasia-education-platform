@@ -1,0 +1,278 @@
+{% extends "base.html" %}
+
+{% block title %}Consultation Booked - PenAsia Education Group{% endblock %}
+
+{% block extra_css %}
+<style>
+.confirmation-container {
+    max-width: 800px;
+    margin: 4rem auto;
+    padding: 3rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.success-icon {
+    color: #28a745;
+    font-size: 4rem;
+    margin-bottom: 2rem;
+}
+
+.confirmation-details {
+    background: #f8f9fa;
+    padding: 2rem;
+    border-radius: 8px;
+    margin: 2rem 0;
+    text-align: left;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.detail-row:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    font-weight: 600;
+    color: var(--primary-blue);
+}
+
+.detail-value {
+    color: #666;
+}
+
+.next-steps {
+    background: var(--light-blue);
+    padding: 2rem;
+    border-radius: 8px;
+    margin: 2rem 0;
+}
+
+.step-item {
+    display: flex;
+    align-items: flex-start;
+    margin: 1rem 0;
+    gap: 1rem;
+}
+
+.step-number {
+    background: var(--primary-blue);
+    color: white;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.quick-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.action-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.3s ease;
+}
+
+.action-card:hover {
+    transform: translateY(-3px);
+    text-decoration: none;
+    color: inherit;
+}
+
+.action-icon {
+    color: var(--accent-gold);
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+    .confirmation-container {
+        margin: 2rem 1rem;
+        padding: 2rem;
+    }
+    
+    .detail-row {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+    
+    .quick-actions {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="confirmation-container">
+        <div class="success-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        
+        <h1 class="text-primary mb-3">Consultation Booked Successfully!</h1>
+        <p class="lead text-muted mb-4">
+            Thank you for booking a consultation with PenAsia. We look forward to helping you achieve your educational goals.
+        </p>
+        
+        <div class="confirmation-details">
+            <h4 class="text-primary mb-3">Consultation Details</h4>
+            
+            <div class="detail-row">
+                <span class="detail-label">Reference Number:</span>
+                <span class="detail-value">#{{ consultation.id.toString().padStart(6, '0') }}</span>
+            </div>
+            
+            <div class="detail-row">
+                <span class="detail-label">Name:</span>
+                <span class="detail-value">{{ consultation.full_name }}</span>
+            </div>
+            
+            <div class="detail-row">
+                <span class="detail-label">Email:</span>
+                <span class="detail-value">{{ consultation.email }}</span>
+            </div>
+            
+            <div class="detail-row">
+                <span class="detail-label">Phone:</span>
+                <span class="detail-value">{{ consultation.phone }}</span>
+            </div>
+            
+            <div class="detail-row">
+                <span class="detail-label">Consultation Type:</span>
+                <span class="detail-value">
+                    {% if consultation.consultation_type == 'course_info' %}Course Information
+                    {% elif consultation.consultation_type == 'career_guidance' %}Career Guidance
+                    {% elif consultation.consultation_type == 'admission_help' %}Admission Assistance
+                    {% elif consultation.consultation_type == 'financial_aid' %}Financial Aid & CEF Information
+                    {% else %}General Inquiry
+                    {% endif %}
+                </span>
+            </div>
+            
+            <div class="detail-row">
+                <span class="detail-label">Preferred Date:</span>
+                <span class="detail-value">{{ consultation.formatted_date }}</span>
+            </div>
+            
+            <div class="detail-row">
+                <span class="detail-label">Preferred Time:</span>
+                <span class="detail-value">{{ consultation.formatted_time }}</span>
+            </div>
+            
+            <div class="detail-row">
+                <span class="detail-label">Meeting Type:</span>
+                <span class="detail-value">
+                    {% if consultation.meeting_type == 'online' %}Online (Zoom/Teams)
+                    {% elif consultation.meeting_type == 'in_person' %}In-Person (Kwai Chung Campus)
+                    {% else %}Phone Call
+                    {% endif %}
+                </span>
+            </div>
+            
+            {% if consultation.interested_course %}
+            <div class="detail-row">
+                <span class="detail-label">Course of Interest:</span>
+                <span class="detail-value">{{ consultation.interested_course.title }}</span>
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="next-steps">
+            <h4 class="text-primary mb-3">What Happens Next?</h4>
+            
+            <div class="step-item">
+                <div class="step-number">1</div>
+                <div>
+                    <strong>Confirmation Email</strong><br>
+                    You'll receive a confirmation email within the next few minutes with all the details.
+                </div>
+            </div>
+            
+            <div class="step-item">
+                <div class="step-number">2</div>
+                <div>
+                    <strong>Schedule Confirmation</strong><br>
+                    Our team will contact you within 24 hours to confirm your preferred time slot.
+                </div>
+            </div>
+            
+            <div class="step-item">
+                <div class="step-number">3</div>
+                <div>
+                    <strong>Meeting Details</strong><br>
+                    Once confirmed, you'll receive meeting details (link for online or address for in-person).
+                </div>
+            </div>
+            
+            <div class="step-item">
+                <div class="step-number">4</div>
+                <div>
+                    <strong>Your Consultation</strong><br>
+                    Join your 30-minute consultation session and get personalized guidance from our experts.
+                </div>
+            </div>
+        </div>
+        
+        <div class="quick-actions">
+            <a href="{{ url_for('courses') }}" class="action-card">
+                <div class="action-icon"><i class="fas fa-graduation-cap"></i></div>
+                <h6>Browse Courses</h6>
+                <p class="small text-muted mb-0">Explore our course offerings</p>
+            </a>
+            
+            <a href="{{ url_for('admissions') }}" class="action-card">
+                <div class="action-icon"><i class="fas fa-file-alt"></i></div>
+                <h6>Admission Info</h6>
+                <p class="small text-muted mb-0">Learn about requirements</p>
+            </a>
+            
+            <a href="{{ url_for('index') }}" class="action-card">
+                <div class="action-icon"><i class="fas fa-home"></i></div>
+                <h6>Back to Home</h6>
+                <p class="small text-muted mb-0">Return to homepage</p>
+            </a>
+        </div>
+        
+        <div class="alert alert-info mt-4">
+            <i class="fas fa-info-circle me-2"></i>
+            <strong>Need to make changes?</strong> Please contact us at 
+            <a href="tel:+85228936788">+852 2893 6788</a> or 
+            <a href="mailto:info@penasia.edu.hk">info@penasia.edu.hk</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Auto-scroll to confirmation details after page load
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+        document.querySelector('.confirmation-details').scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
+        });
+    }, 500);
+});
+</script>
+{% endblock %}

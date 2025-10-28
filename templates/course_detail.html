@@ -1,0 +1,674 @@
+{% extends "base.html" %}
+
+{% block title %}
+{% if course_id == '169' %}Hotel Culinary Management Diploma - PenAsia
+{% elif course_id == 'btec' %}BTEC Level 5 Business Management - PenAsia
+{% elif course_id == '171' %}Western Bakery & Pastry Certificate - PenAsia
+{% elif course_id == '179' %}Western Starter & Main Course Certificate - PenAsia
+{% endif %}
+{% endblock %}
+
+{% block meta_description %}
+{% if course_id == '169' %}Study Hotel Culinary Management Diploma (2-year full-time) at PenAsia Hong Kong. QF Level 3 recognized program with practical kitchen training. Start September 2025. IELTS 4.5 required.
+{% elif course_id == 'btec' %}Earn Pearson BTEC Level 5 Higher National Diploma in Business Management at PenAsia Hong Kong. 24-month program with 4 intakes yearly. Progress to UK degree programs.
+{% elif course_id == '171' %}Learn Western Bakery & Pastry Making at PenAsia Hong Kong. Professional certificate course with 11 weeks practical training. Evening classes in Cantonese.
+{% elif course_id == '179' %}Master Western Starter & Main Course cooking at PenAsia Hong Kong. Professional certificate program with hands-on training. Learn professional chef techniques in 11 weeks.
+{% endif %}
+{% endblock %}
+
+{% block content %}
+{% if course_id == '169' %}
+<!-- Hotel Culinary Management Course -->
+<section class="course-hero" style="background-image: url('{{ url_for('static', filename='images/courses/courses_01.jpg') }}');">
+    <div class="course-hero-overlay"></div>
+    <div class="course-content text-center text-white">
+        <div class="container">
+            <h1 class="display-4 mb-3">Hotel Culinary Management Diploma</h1>
+            <p class="lead mb-4">酒店廚務管理文憑 (2年全日制)</p>
+            <p class="h5 mb-4">Course Code: PSCE-DHM 5266</p>
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('apply_course', course_id=course.id) }}" class="btn btn-primary btn-lg">Apply Now</a>
+            {% else %}
+                <a href="{{ url_for('login', next=url_for('apply_course', course_id=course.id)) }}" class="btn btn-primary btn-lg">Apply Now</a>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <h2 class="mb-4">Program Overview</h2>
+                <p class="lead">Our 2-year full-time Diploma in Hotel Culinary Management combines theoretical knowledge with extensive practical training to prepare students for leadership roles in the hospitality industry.</p>
+                
+                <h3 class="mt-5 mb-3">Program Highlights</h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> 2-year comprehensive program</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Practical kitchen training</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Industry-relevant curriculum</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Small class sizes (max 30)</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> English instruction</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Cantonese support available</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Experienced faculty</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Modern facilities</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3 class="mt-5 mb-3">Course Structure (7 Subjects)</h3>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="list-group">
+                            <div class="list-group-item">
+                                <h5 class="mb-1">食物及職業安全與健康</h5>
+                                <p class="mb-1">Food and Occupational Safety & Health</p>
+                            </div>
+                            <div class="list-group-item">
+                                <h5 class="mb-1">廚務營運 (實習)</h5>
+                                <p class="mb-1">Kitchen Operations - Practical Training</p>
+                            </div>
+                            <div class="list-group-item">
+                                <h5 class="mb-1">焗焙及甜品1 (實習)</h5>
+                                <p class="mb-1">Baking and Desserts 1 - Practical Training</p>
+                            </div>
+                            <div class="list-group-item">
+                                <h5 class="mb-1">飲食服務與營運1 (實習)</h5>
+                                <p class="mb-1">Food & Beverage Service and Operations 1 - Practical</p>
+                            </div>
+                            <div class="list-group-item">
+                                <h5 class="mb-1">溝通及報告寫作技巧</h5>
+                                <p class="mb-1">Communication and Report Writing Skills</p>
+                            </div>
+                            <div class="list-group-item">
+                                <h5 class="mb-1">款待業概論</h5>
+                                <p class="mb-1">Introduction to Hospitality Industry</p>
+                            </div>
+                            <div class="list-group-item">
+                                <h5 class="mb-1">美食</h5>
+                                <p class="mb-1">Cuisine</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="mt-5 mb-3">Graduation Requirements</h3>
+                <div class="alert alert-info">
+                    <ul class="mb-0">
+                        <li>Attendance rate of 90% or above</li>
+                        <li>Average score of 50% or above for each unit</li>
+                        <li>English supplementary course if DSE English < Level 2</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card sticky-top" style="top: 100px;">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Program Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-borderless">
+                            <tr>
+                                <td><strong>Start Date:</strong></td>
+                                <td>September 8, 2025</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Duration:</strong></td>
+                                <td>2 years full-time</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Language:</strong></td>
+                                <td>English (Cantonese support)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Tuition Fee:</strong></td>
+                                <td>HK$8,300 per term<br>(17 terms = HK$141,100)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Class Size:</strong></td>
+                                <td>Maximum 30 students</td>
+                            </tr>
+                        </table>
+                        
+                        <h6 class="mt-4 mb-3">Entry Requirements:</h6>
+                        <ul class="small">
+                            <li>Form 6 completion with DSE English Level 2</li>
+                            <li>OR IELTS 4.5+</li>
+                            <li>OR pass interview</li>
+                        </ul>
+                        
+                        <a href="#apply-section" class="btn btn-primary w-100 mt-3">Apply Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% elif course_id == 'btec' %}
+<!-- BTEC Business Management Course -->
+<section class="course-hero" style="background-image: url('{{ url_for('static', filename='images/courses/courses_02.jpg') }}');">
+    <div class="course-hero-overlay"></div>
+    <div class="course-content text-center text-white">
+        <div class="container">
+            <h1 class="display-4 mb-3">BTEC Level 5 Business Management</h1>
+            <p class="lead mb-4">Pearson BTEC Higher National Diploma in Business (RQF)</p>
+            <p class="h5 mb-4">Course Code: PSCE-BTB-5001 | NCR Registration: #252947-PA</p>
+            <a href="#apply-section" class="btn btn-primary btn-lg">Apply Now</a>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <h2 class="mb-4">Program Overview</h2>
+                <p class="lead">The Pearson BTEC Higher National Diploma in Business provides a comprehensive foundation in business management with direct progression opportunities to UK degree programs.</p>
+                
+                <h3 class="mt-5 mb-3">Program Highlights</h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Internationally recognized qualification</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> 4 intakes per year</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Face-to-face tutorials</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Small class sizes (max 30)</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Direct progression to BA (Hons)</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> English with Cantonese support</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Industry-relevant curriculum</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Flexible study options</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3 class="mt-5 mb-3">Course Structure (16 Units)</h3>
+                
+                <h4 class="mt-4 mb-3">Year 1 - Core Units</h4>
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul class="list-group">
+                            <li class="list-group-item">Business Environment</li>
+                            <li class="list-group-item">Marketing Essentials</li>
+                            <li class="list-group-item">HR Management</li>
+                            <li class="list-group-item">Management & Operations</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="list-group">
+                            <li class="list-group-item">Management Accounting</li>
+                            <li class="list-group-item">Business Project</li>
+                            <li class="list-group-item">Business Law</li>
+                            <li class="list-group-item">Business Strategy</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h4 class="mt-4 mb-3">Year 2 - Specialist Units (Choose 8)</h4>
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul class="list-group">
+                            <li class="list-group-item">Entrepreneurship</li>
+                            <li class="list-group-item">International Business</li>
+                            <li class="list-group-item">Digital Business</li>
+                            <li class="list-group-item">Customer Relationship Management</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="list-group">
+                            <li class="list-group-item">Supply Chain Management</li>
+                            <li class="list-group-item">Financial Management</li>
+                            <li class="list-group-item">Organizational Behavior</li>
+                            <li class="list-group-item">Business Intelligence</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3 class="mt-5 mb-3">Assessment Methods</h3>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <div class="display-6 text-primary">60%</div>
+                            <p>Coursework</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <div class="display-6 text-primary">25%</div>
+                            <p>Examinations</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <div class="display-6 text-primary">15%</div>
+                            <p>Presentations</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card sticky-top" style="top: 100px;">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Program Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-borderless">
+                            <tr>
+                                <td><strong>Duration:</strong></td>
+                                <td>24 months</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Study Mode:</strong></td>
+                                <td>Face-to-face tutorials</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Intakes:</strong></td>
+                                <td>October, January, April, July</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Tuition Fee:</strong></td>
+                                <td>HK$78,000<br>(7 instalments of HK$11,143)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Registration:</strong></td>
+                                <td>HK$500</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Class Size:</strong></td>
+                                <td>Maximum 30 students</td>
+                            </tr>
+                        </table>
+                        
+                        <h6 class="mt-4 mb-3">Entry Requirements:</h6>
+                        <ul class="small">
+                            <li>HKDSE: 5 subjects at Level 2+ (including Chinese and English)</li>
+                            <li>English: IELTS 5.5 or equivalent</li>
+                            <li>Age 18+ (interview required)</li>
+                        </ul>
+                        
+                        <div class="alert alert-success small mt-3">
+                            <strong>Progression:</strong> Direct entry to BA (Hons) final year programs
+                        </div>
+                        
+                        <a href="#apply-section" class="btn btn-primary w-100 mt-3">Apply Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% elif course_id == '171' %}
+<!-- Western Bakery Course -->
+<section class="course-hero" style="background-image: url('{{ url_for('static', filename='images/courses/courses_03.jpg') }}');">
+    <div class="course-hero-overlay"></div>
+    <div class="course-content text-center text-white">
+        <div class="container">
+            <h1 class="display-4 mb-3">Western Bakery & Pastry Certificate</h1>
+            <p class="lead mb-4">西式烘焙及糕餅製作證書</p>
+            <p class="h5 mb-4">Course Code: CEF-43C130000 | QR Registration: 20/000467/L2</p>
+            <a href="#apply-section" class="btn btn-primary btn-lg">Apply Now</a>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <h2 class="mb-4">Program Overview</h2>
+                <p class="lead">Our Certificate in Western Bakery and Pastry (QF Level 2) provides comprehensive hands-on training in Western baking techniques and pastry making.</p>
+                
+                <div class="alert alert-warning">
+                    <i class="fas fa-star text-warning me-2"></i>
+                    <strong>CEF Reimbursable:</strong> This course is eligible for Continuing Education Fund reimbursement.
+                </div>
+
+                <h3 class="mt-5 mb-3">Course Structure (11 Classes)</h3>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="accordion" id="courseAccordion">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="class1">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1">
+                                        Class 1: Course Introduction (3 hours)
+                                    </button>
+                                </h2>
+                                <div id="collapse1" class="accordion-collapse collapse show" data-bs-parent="#courseAccordion">
+                                    <div class="accordion-body">
+                                        Kitchen safety procedures, basic tools and equipment introduction
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="class2">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2">
+                                        Class 2: Western Baking History & Culture (3 hours)
+                                    </button>
+                                </h2>
+                                <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#courseAccordion">
+                                    <div class="accordion-body">
+                                        Hygiene standards, ingredient knowledge, and baking fundamentals
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="class3">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3">
+                                        Class 3-5: Bread Making (9 hours)
+                                    </button>
+                                </h2>
+                                <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#courseAccordion">
+                                    <div class="accordion-body">
+                                        <ul>
+                                            <li>Ham & Cheese Bread</li>
+                                            <li>Ukrainian Garlic & Butter Rolls</li>
+                                            <li>Swiss Farmer's & Italian Herb Bread + Skills Test 1</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="class4">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4">
+                                        Class 6-7: Cake Making (6 hours)
+                                    </button>
+                                </h2>
+                                <div id="collapse4" class="accordion-collapse collapse" data-bs-parent="#courseAccordion">
+                                    <div class="accordion-body">
+                                        <ul>
+                                            <li>Basic Sponge & Butter Cake</li>
+                                            <li>Chocolate & Carrot Cake</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="class5">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5">
+                                        Class 8-11: Advanced Techniques (12 hours)
+                                    </button>
+                                </h2>
+                                <div id="collapse5" class="accordion-collapse collapse" data-bs-parent="#courseAccordion">
+                                    <div class="accordion-body">
+                                        <ul>
+                                            <li>Pastry Making: Fruit Tarts & Cream Puffs</li>
+                                            <li>Cookie & Biscuit Making</li>
+                                            <li>Advanced Pastry: Danish & Croissants + Skills Test 2</li>
+                                            <li>Final Project & Assessment</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card sticky-top" style="top: 100px;">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Program Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-borderless">
+                            <tr>
+                                <td><strong>Schedule:</strong></td>
+                                <td>September 8 - December 1, 2025</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Day & Time:</strong></td>
+                                <td>Mondays, 7:00 PM - 10:00 PM</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Duration:</strong></td>
+                                <td>11 classes (33 hours total)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Language:</strong></td>
+                                <td>Cantonese</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Tuition Fee:</strong></td>
+                                <td>HK$12,620 (3 instalments)</td>
+                            </tr>
+                        </table>
+                        
+                        <h6 class="mt-4 mb-3">Entry Requirements:</h6>
+                        <ul class="small">
+                            <li>Form 3 completion</li>
+                            <li>Minimum age 18</li>
+                        </ul>
+                        
+                        <div class="alert alert-success small mt-3">
+                            <strong>Government Funding:</strong> Eligible for CEF reimbursement
+                        </div>
+                        
+                        <a href="#apply-section" class="btn btn-primary w-100 mt-3">Apply Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% elif course_id == '179' %}
+<!-- Western Cuisine Course -->
+<section class="course-hero" style="background-image: url('{{ url_for('static', filename='images/courses/courses_01.jpg') }}');">
+    <div class="course-hero-overlay"></div>
+    <div class="course-content text-center text-white">
+        <div class="container">
+            <h1 class="display-4 mb-3">Western Starter & Main Course Certificate</h1>
+            <p class="lead mb-4">西式頭盤及主菜製作證書</p>
+            <p class="h5 mb-4">Course Code: CEF-43C15919A | QR Registration: 24/000255/L2</p>
+            <a href="#apply-section" class="btn btn-primary btn-lg">Apply Now</a>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <h2 class="mb-4">Program Overview</h2>
+                <p class="lead">Our Certificate in Western Starter and Main Course (QF Level 2) focuses on fundamental Western cuisine techniques and professional cooking methods.</p>
+                
+                <div class="alert alert-warning">
+                    <i class="fas fa-star text-warning me-2"></i>
+                    <strong>CEF Reimbursable:</strong> This course is eligible for Continuing Education Fund reimbursement.
+                </div>
+
+                <h3 class="mt-5 mb-3">Course Structure (11 Classes)</h3>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="list-group">
+                            <div class="list-group-item">
+                                <h5 class="mb-1">Class 1: Western Cuisine Fundamentals (3h)</h5>
+                                <p class="mb-1">Kitchen structure, hygiene, and safety procedures</p>
+                            </div>
+                            <div class="list-group-item">
+                                <h5 class="mb-1">Class 2: Kitchen Tools & Equipment (3h)</h5>
+                                <p class="mb-1">Cutting techniques, knife skills, and stock preparation</p>
+                            </div>
+                            <div class="list-group-item">
+                                <h5 class="mb-1">Class 3: Cream Carrot Soup & Sandwich (3h)</h5>
+                                <p class="mb-1">Soup preparation and carrot cheese sandwich techniques</p>
+                            </div>
+                            <div class="list-group-item">
+                                <h5 class="mb-1">Class 4: French Cuisine Basics (3h)</h5>
+                                <p class="mb-1">French Chicken Mushroom Soup and Chicken Caesar Salad</p>
+                            </div>
+                            <div class="list-group-item">
+                                <h5 class="mb-1">Class 5: Advanced Preparations (3h)</h5>
+                                <p class="mb-1">Asparagus with Hollandaise, French Red Wine Braised Chicken</p>
+                            </div>
+                            <div class="list-group-item">
+                                <h5 class="mb-1">Class 6: Fish Cookery (3h)</h5>
+                                <p class="mb-1">Poached Sole with Dill Sauce, Pan-fried Sole Fillet</p>
+                            </div>
+                            <div class="list-group-item">
+                                <h5 class="mb-1">Class 7: Additional Western Dishes (3h)</h5>
+                                <p class="mb-1">Western appetizers and main courses</p>
+                            </div>
+                            <div class="list-group-item">
+                                <h5 class="mb-1">Class 8: Advanced Cooking Techniques (3h)</h5>
+                                <p class="mb-1">Professional cooking methods and presentation</p>
+                            </div>
+                            <div class="list-group-item">
+                                <h5 class="mb-1">Class 9: Menu Planning & Presentation (3h)</h5>
+                                <p class="mb-1">Menu design and food presentation techniques</p>
+                            </div>
+                            <div class="list-group-item">
+                                <h5 class="mb-1">Class 10: Cost Control & Quality (3h)</h5>
+                                <p class="mb-1">Food cost control and quality management</p>
+                            </div>
+                            <div class="list-group-item">
+                                <h5 class="mb-1">Class 11: Final Assessment (3h)</h5>
+                                <p class="mb-1">Final assessment and project presentation</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card sticky-top" style="top: 100px;">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Program Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-borderless">
+                            <tr>
+                                <td><strong>Schedule:</strong></td>
+                                <td>September 10 - December 3, 2025</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Day & Time:</strong></td>
+                                <td>Wednesdays, 7:00 PM - 10:00 PM</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Duration:</strong></td>
+                                <td>11 classes (33 hours total)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Language:</strong></td>
+                                <td>English (Cantonese support)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Tuition Fee:</strong></td>
+                                <td>HK$12,620 (3 instalments)</td>
+                            </tr>
+                        </table>
+                        
+                        <h6 class="mt-4 mb-3">Entry Requirements:</h6>
+                        <ul class="small">
+                            <li>Form 3 completion</li>
+                            <li>Minimum age 18</li>
+                        </ul>
+                        
+                        <div class="alert alert-success small mt-3">
+                            <strong>Government Funding:</strong> Eligible for CEF reimbursement
+                        </div>
+                        
+                        <a href="#apply-section" class="btn btn-primary w-100 mt-3">Apply Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Application Section -->
+<section id="apply-section" class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-6">Ready to Apply?</h2>
+            <p class="lead">Start your application process today</p>
+        </div>
+        
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-body">
+                        <form class="needs-validation" novalidate>
+                            <input type="hidden" name="course" value="{{ course_id }}">
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="firstName" class="form-label">First Name *</label>
+                                    <input type="text" class="form-control" id="firstName" required>
+                                    <div class="invalid-feedback">Please provide your first name.</div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="lastName" class="form-label">Last Name *</label>
+                                    <input type="text" class="form-control" id="lastName" required>
+                                    <div class="invalid-feedback">Please provide your last name.</div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="email" class="form-label">Email Address *</label>
+                                    <input type="email" class="form-control" id="email" required>
+                                    <div class="invalid-feedback">Please provide a valid email address.</div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="phone" class="form-label">Phone Number *</label>
+                                    <input type="tel" class="form-control" id="phone" required>
+                                    <div class="invalid-feedback">Please provide a valid phone number.</div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="education" class="form-label">Highest Education Level *</label>
+                                <select class="form-select" id="education" required>
+                                    <option value="">Select your education level</option>
+                                    <option value="form3">Form 3 or equivalent</option>
+                                    <option value="form6">Form 6 or equivalent</option>
+                                    <option value="diploma">Diploma</option>
+                                    <option value="bachelor">Bachelor's Degree</option>
+                                    <option value="master">Master's Degree</option>
+                                    <option value="other">Other</option>
+                                </select>
+                                <div class="invalid-feedback">Please select your education level.</div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="message" class="form-label">Additional Information</label>
+                                <textarea class="form-control" id="message" rows="4" placeholder="Tell us about your background, goals, or any questions you have..."></textarea>
+                            </div>
+                            
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="terms" required>
+                                <label class="form-check-label" for="terms">
+                                    I agree to the Terms and Conditions and Privacy Policy *
+                                </label>
+                                <div class="invalid-feedback">You must agree to the terms and conditions.</div>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary btn-lg w-100">Submit Application</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

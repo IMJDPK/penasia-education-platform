@@ -1,0 +1,359 @@
+{% extends "base.html" %}
+
+{% block title %}Class Schedule Management - Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-lg-10 mx-auto">
+            <!-- Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2><i class="fas fa-calendar-alt me-2"></i>Class Schedule Management</h2>
+                    <p class="text-muted">Schedule and manage class sessions for all courses</p>
+                </div>
+                <div>
+                    <a href="{{ url_for('admin_create_schedule') }}" class="btn btn-primary">
+                        <i class="fas fa-plus me-2"></i>Schedule New Class
+                    </a>
+                </div>
+            </div>
+
+            <!-- Statistics -->
+            <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body text-center">
+                    <h4>{{ schedules|length }}</h4>
+                    <p class="mb-0">Total Classes</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body text-center">
+                    <h4>{{ schedules|selectattr('is_today')|list|length }}</h4>
+                    <p class="mb-0">Today's Classes</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-white">
+                <div class="card-body text-center">
+                    <h4>{{ schedules|selectattr('is_tomorrow')|list|length }}</h4>
+                    <p class="mb-0">Tomorrow's Classes</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body text-center">
+                    <h4>{{ schedules|selectattr('is_upcoming')|list|length }}</h4>
+                    <p class="mb-0">Upcoming Classes</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter and View Options -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <label class="form-label">Filter by Course</label>
+                    <select class="form-select" id="courseFilter">
+                        <option value="">All Courses</option>
+                        {% for schedule in schedules %}
+                        <option value="{{ schedule.course.id }}">{{ schedule.course.course_code }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Filter by Type</label>
+                    <select class="form-select" id="typeFilter">
+                        <option value="">All Types</option>
+                        <option value="lecture">Lecture</option>
+                        <option value="lab">Lab</option>
+                        <option value="seminar">Seminar</option>
+                        <option value="workshop">Workshop</option>
+                        <option value="exam">Exam</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">View Mode</label>
+                    <div class="btn-group w-100" role="group">
+                        <button type="button" class="btn btn-outline-primary active" id="listView">List</button>
+                        <button type="button" class="btn btn-outline-primary" id="calendarView">Calendar</button>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">&nbsp;</label>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-outline-success btn-sm" onclick="exportSchedule()">
+                            <i class="fas fa-download"></i>
+                        </button>
+                        <button class="btn btn-outline-info btn-sm" onclick="printSchedule()">
+                            <i class="fas fa-print"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Schedule List View -->
+    <div id="listViewContent" class="card">
+        <div class="card-header">
+            <h5 class="mb-0"><i class="fas fa-calendar-alt me-2"></i>All Scheduled Classes</h5>
+        </div>
+        <div class="card-body">
+            {% if schedules %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Class Details</th>
+                            <th>Course</th>
+                            <th>Date & Time</th>
+                            <th>Location</th>
+                            <th>Instructor</th>
+                            <th>Type</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for schedule in schedules %}
+                        <tr class="schedule-row" data-course="{{ schedule.course.id }}" data-type="{{ schedule.class_type }}">
+                            <td>
+                                <div>
+                                    <strong>{{ schedule.topic }}</strong>
+                                    {% if schedule.description %}
+                                    <br><small class="text-muted">{{ schedule.description[:50] }}{% if schedule.description|length > 50 %}...{% endif %}</small>
+                                    {% endif %}
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge bg-primary">{{ schedule.course.course_code }}</span>
+                                <br><small class="text-muted">{{ schedule.course.title[:25] }}{% if schedule.course.title|length > 25 %}...{% endif %}</small>
+                            </td>
+                            <td>
+                                <div class="{% if schedule.is_today %}text-success fw-bold{% elif schedule.is_tomorrow %}text-warning{% else %}text-muted{% endif %}">
+                                    {{ schedule.class_date.strftime('%b %d, %Y') }}<br>
+                                    <small>{{ schedule.start_time.strftime('%I:%M %p') }} - {{ schedule.end_time.strftime('%I:%M %p') }}</small>
+                                </div>
+                                <small class="badge bg-light text-dark">{{ schedule.duration_hours }}h</small>
+                            </td>
+                            <td>
+                                <i class="fas fa-map-marker-alt me-1"></i>{{ schedule.location }}
+                            </td>
+                            <td>
+                                {% if schedule.instructor %}
+                                <i class="fas fa-user me-1"></i>{{ schedule.instructor }}
+                                {% else %}
+                                <span class="text-muted">Not assigned</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <span class="badge bg-{% if schedule.class_type == 'lecture' %}info{% elif schedule.class_type == 'lab' %}warning{% elif schedule.class_type == 'seminar' %}success{% elif schedule.class_type == 'exam' %}danger{% else %}secondary{% endif %}">
+                                    {{ schedule.class_type.title() }}
+                                </span>
+                            </td>
+                            <td>
+                                {% if schedule.is_today %}
+                                <span class="badge bg-success">Today</span>
+                                {% elif schedule.is_tomorrow %}
+                                <span class="badge bg-warning">Tomorrow</span>
+                                {% elif schedule.days_until > 0 %}
+                                <span class="badge bg-info">{{ schedule.days_until }} days</span>
+                                {% else %}
+                                <span class="badge bg-secondary">Past</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a href="{{ url_for('admin_edit_schedule', schedule_id=schedule.id) }}" 
+                                       class="btn btn-sm btn-outline-secondary" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <button class="btn btn-sm btn-outline-info" title="Notify Students" 
+                                            onclick="notifyStudents({{ schedule.id }})">
+                                        <i class="fas fa-bell"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger" title="Cancel Class" 
+                                            onclick="cancelClass({{ schedule.id }}, '{{ schedule.topic }}')">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center py-5">
+                <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+                <h4>No Classes Scheduled</h4>
+                <p class="text-muted">Create your first class schedule to get started.</p>
+                <a href="{{ url_for('admin_create_schedule') }}" class="btn btn-primary">
+                    <i class="fas fa-plus me-2"></i>Schedule Class
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Calendar View (Placeholder) -->
+    <div id="calendarViewContent" style="display: none;" class="card">
+        <div class="card-header">
+            <h5 class="mb-0"><i class="fas fa-calendar me-2"></i>Calendar View</h5>
+        </div>
+        <div class="card-body">
+            <div class="text-center py-5">
+                <i class="fas fa-calendar fa-3x text-muted mb-3"></i>
+                <h4>Calendar View</h4>
+                <p class="text-muted">Calendar integration coming soon!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0"><i class="fas fa-bolt me-2"></i>Quick Actions</h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex gap-2 flex-wrap">
+                        <a href="{{ url_for('admin_create_schedule') }}" class="btn btn-primary btn-sm">
+                            <i class="fas fa-plus me-2"></i>New Class
+                        </a>
+                        <a href="{{ url_for('admin_assignments') }}" class="btn btn-outline-secondary btn-sm">
+                            <i class="fas fa-tasks me-2"></i>Assignments
+                        </a>
+                        <button class="btn btn-outline-success btn-sm" onclick="bulkNotify()">
+                            <i class="fas fa-bell me-2"></i>Notify All Students
+                        </button>
+                        <button class="btn btn-outline-info btn-sm" onclick="generateReport()">
+                            <i class="fas fa-chart-bar me-2"></i>Generate Report
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// View Toggle
+document.getElementById('listView').addEventListener('click', function() {
+    this.classList.add('active');
+    document.getElementById('calendarView').classList.remove('active');
+    document.getElementById('listViewContent').style.display = 'block';
+    document.getElementById('calendarViewContent').style.display = 'none';
+});
+
+document.getElementById('calendarView').addEventListener('click', function() {
+    this.classList.add('active');
+    document.getElementById('listView').classList.remove('active');
+    document.getElementById('listViewContent').style.display = 'none';
+    document.getElementById('calendarViewContent').style.display = 'block';
+});
+
+// Filtering
+document.getElementById('courseFilter').addEventListener('change', function() {
+    filterSchedules();
+});
+
+document.getElementById('typeFilter').addEventListener('change', function() {
+    filterSchedules();
+});
+
+function filterSchedules() {
+    const courseFilter = document.getElementById('courseFilter').value;
+    const typeFilter = document.getElementById('typeFilter').value;
+    const rows = document.querySelectorAll('.schedule-row');
+    
+    rows.forEach(row => {
+        const courseMatch = !courseFilter || row.dataset.course === courseFilter;
+        const typeMatch = !typeFilter || row.dataset.type === typeFilter;
+        
+        if (courseMatch && typeMatch) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
+
+// Action Functions
+function notifyStudents(scheduleId) {
+    if (confirm('Send notification to all enrolled students about this class?')) {
+        fetch(`/admin/schedules/${scheduleId}/notify`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Notifications sent successfully!');
+            } else {
+                alert('Error sending notifications: ' + data.message);
+            }
+        });
+    }
+}
+
+function cancelClass(scheduleId, className) {
+    if (confirm(`Are you sure you want to cancel "${className}"? Students will be notified.`)) {
+        fetch(`/admin/schedules/${scheduleId}/cancel`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Error cancelling class: ' + data.message);
+            }
+        });
+    }
+}
+
+function exportSchedule() {
+    alert('Export functionality coming soon!');
+}
+
+function printSchedule() {
+    window.print();
+}
+
+function bulkNotify() {
+    alert('Bulk notification functionality coming soon!');
+}
+
+function generateReport() {
+    alert('Report generation functionality coming soon!');
+}
+</script>
+
+<style>
+@media print {
+    .btn, .card-header, nav, .btn-group {
+        display: none !important;
+    }
+    
+    .card {
+        border: none !important;
+        box-shadow: none !important;
+    }
+}
+</style>
+{% endblock %}

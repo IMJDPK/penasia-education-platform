@@ -1,0 +1,720 @@
+{% extends "base.html" %}
+
+{% block title %}Faculty - PenAsia Continuing Education Centre{% endblock %}
+
+{% block extra_head %}
+<style>
+.faculty-hero {
+    background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+    color: white;
+    padding: 5rem 0;
+}
+
+.faculty-hero .stat-number {
+    color: var(--accent-gold) !important;
+}
+
+.faculty-hero .stat-label {
+    color: rgba(255,255,255,0.9) !important;
+}
+
+.faculty-card-premium {
+    background: white;
+    border-radius: var(--radius-medium);
+    box-shadow: var(--shadow-light);
+    overflow: hidden;
+    transition: var(--transition-medium);
+    height: 100%;
+}
+
+.faculty-card-premium:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-heavy);
+}
+
+.faculty-image {
+    height: 300px;
+    overflow: hidden;
+    position: relative;
+}
+
+.faculty-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition-slow);
+}
+
+.faculty-card-premium:hover .faculty-image img {
+    transform: scale(1.05);
+}
+
+.faculty-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.7));
+    color: white;
+    padding: 2rem 1.5rem 1rem;
+}
+
+.faculty-overlay .faculty-name {
+    color: white !important;
+}
+
+.faculty-overlay .faculty-title {
+    color: var(--accent-gold) !important;
+}
+
+.faculty-content {
+    padding: 2rem;
+}
+
+.faculty-name {
+    color: var(--primary-blue);
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.faculty-title {
+    color: var(--accent-gold);
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.faculty-experience {
+    background: var(--light-blue);
+    border-radius: var(--radius-small);
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.experience-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.experience-item:last-child {
+    margin-bottom: 0;
+}
+
+.faculty-achievements {
+    margin-bottom: 1.5rem;
+}
+
+.achievement-badge {
+    background: var(--primary-blue);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    display: inline-block;
+}
+
+.faculty-quote {
+    font-style: italic;
+    color: var(--text-medium);
+    border-left: 3px solid var(--accent-gold);
+    padding-left: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.faculty-stats {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    padding: 1.5rem 0;
+    border-top: 1px solid #e1e5e9;
+}
+
+.stat-item {
+    flex: 1;
+}
+
+.stat-number {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-blue);
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: var(--text-medium);
+}
+
+.department-header {
+    background: var(--light-blue);
+    border-radius: var(--radius-medium);
+    padding: 2rem;
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+.department-title {
+    color: var(--primary-blue);
+    font-family: 'Playfair Display', serif;
+    margin-bottom: 1rem;
+}
+
+.feature-icon {
+    font-size: 1.5rem;
+    margin-top: 0.25rem;
+}
+
+.department-icon {
+    width: 80px;
+    height: 80px;
+}
+
+@media (max-width: 768px) {
+    .faculty-hero {
+        padding: 3rem 0;
+    }
+    
+    .faculty-stats {
+        flex-direction: column;
+        gap: 1rem;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Faculty Hero Section -->
+<section class="faculty-hero">
+    <div class="container-premium text-center">
+        <h1 class="hero-title hero-title-white mb-4">World-Class Faculty</h1>
+        <p class="hero-subtitle">Learn from industry leaders with 15+ years of experience in Hong Kong's top establishments</p>
+        
+        <div class="row mt-5">
+            <div class="col-md-3">
+                <div class="stat-item">
+                    <span class="stat-number">25+</span>
+                    <p class="stat-label">Expert Instructors</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-item">
+                    <span class="stat-number">15+</span>
+                    <p class="stat-label">Years Average Experience</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-item">
+                    <span class="stat-number">50+</span>
+                    <p class="stat-label">Industry Partners</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-item">
+                    <span class="stat-number">98%</span>
+                    <p class="stat-label">Student Satisfaction</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Faculty Excellence Overview -->
+<section class="section-premium">
+    <div class="container-premium">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 class="section-title text-left">Excellence in Education</h2>
+                <p class="body-text-premium mb-4">Our faculty represents the pinnacle of Hong Kong's hospitality industry expertise. Each instructor brings decades of real-world experience from leading hotels, restaurants, and international establishments.</p>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-start gap-3 mb-4">
+                            <i class="fas fa-award text-accent feature-icon"></i>
+                            <div>
+                                <h6 class="mb-2">Industry Veterans</h6>
+                                <p class="mb-0 text-muted">Former executives from Peninsula, Shangri-La, and Mandarin Oriental</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-start gap-3 mb-4">
+                            <i class="fas fa-globe text-accent feature-icon"></i>
+                            <div>
+                                <h6 class="mb-2">International Experience</h6>
+                                <p class="mb-0 text-muted">Trained in Europe, Asia, and North America</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-start gap-3 mb-4">
+                            <i class="fas fa-certificate text-accent feature-icon"></i>
+                            <div>
+                                <h6 class="mb-2">Professional Credentials</h6>
+                                <p class="mb-0 text-muted">Master's degrees and industry certifications</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-start gap-3 mb-4">
+                            <i class="fas fa-users text-accent feature-icon"></i>
+                            <div>
+                                <h6 class="mb-2">Student-Focused</h6>
+                                <p class="mb-0 text-muted">Dedicated mentorship and career guidance</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <img src="{{ url_for('static', filename='images/faculty/faculty_01.jpg') }}" class="img-fluid rounded shadow-lg" alt="Faculty Excellence">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Culinary Arts Faculty -->
+<section class="section-premium">
+    <div class="container-premium">
+        <div class="department-header">
+            <h2 class="department-title">Culinary Arts Department</h2>
+            <p class="body-text-premium">Our culinary faculty combines Michelin-starred experience with proven teaching excellence</p>
+        </div>
+        
+        <div class="row">
+            <!-- Chef Alan Thompson -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="faculty-card-premium">
+                    <div class="faculty-image">
+                        <img src="{{ url_for('static', filename='images/faculty/faculty_02.jpg') }}" alt="Chef Alan Thompson">
+                        <div class="faculty-overlay">
+                            <h5 class="faculty-name mb-1">Chef Alan Thompson</h5>
+                            <p class="faculty-title mb-0">Head of Culinary Department</p>
+                        </div>
+                    </div>
+                    <div class="faculty-content">
+                        <div class="faculty-experience">
+                            <h6 class="mb-2">Professional Experience</h6>
+                            <div class="experience-item">
+                                <i class="fas fa-star text-warning"></i>
+                                <span>15 years at The Peninsula Hong Kong</span>
+                            </div>
+                            <div class="experience-item">
+                                <i class="fas fa-award text-primary"></i>
+                                <span>Former Executive Sous Chef, Mandarin Oriental</span>
+                            </div>
+                            <div class="experience-item">
+                                <i class="fas fa-graduation-cap text-success"></i>
+                                <span>Culinary Arts Degree, Johnson & Wales</span>
+                            </div>
+                        </div>
+                        
+                        <div class="faculty-achievements">
+                            <span class="achievement-badge">Michelin Experience</span>
+                            <span class="achievement-badge">Master Chef Certified</span>
+                            <span class="achievement-badge">18 Years Teaching</span>
+                        </div>
+                        
+                        <blockquote class="faculty-quote">
+                            "I believe in teaching both technique and passion. Every student has the potential to become an exceptional chef."
+                        </blockquote>
+                        
+                        <div class="faculty-stats">
+                            <div class="stat-item">
+                                <span class="stat-number">18</span>
+                                <span class="stat-label">Years Teaching</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">500+</span>
+                                <span class="stat-label">Graduates</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">4.9/5</span>
+                                <span class="stat-label">Rating</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Chef Maria Chen -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="faculty-card-premium">
+                    <div class="faculty-image">
+                        <img src="{{ url_for('static', filename='images/faculty/faculty_03.jpg') }}" alt="Chef Maria Chen">
+                        <div class="faculty-overlay">
+                            <h5 class="faculty-name mb-1">Chef Maria Chen</h5>
+                            <p class="faculty-title mb-0">Senior Culinary Instructor</p>
+                        </div>
+                    </div>
+                    <div class="faculty-content">
+                        <div class="faculty-experience">
+                            <h6 class="mb-2">Professional Experience</h6>
+                            <div class="experience-item">
+                                <i class="fas fa-star text-warning"></i>
+                                <span>12 years at Shangri-La Hotels</span>
+                            </div>
+                            <div class="experience-item">
+                                <i class="fas fa-trophy text-danger"></i>
+                                <span>Winner - Young Chef Award 2018</span>
+                            </div>
+                            <div class="experience-item">
+                                <i class="fas fa-book text-info"></i>
+                                <span>Author - "Asian Fusion Techniques"</span>
+                            </div>
+                        </div>
+                        
+                        <div class="faculty-achievements">
+                            <span class="achievement-badge">Asian Cuisine Expert</span>
+                            <span class="achievement-badge">Award Winner</span>
+                            <span class="achievement-badge">Published Author</span>
+                        </div>
+                        
+                        <blockquote class="faculty-quote">
+                            "Combining traditional Asian techniques with modern innovation creates extraordinary culinary experiences."
+                        </blockquote>
+                        
+                        <div class="faculty-stats">
+                            <div class="stat-item">
+                                <span class="stat-number">12</span>
+                                <span class="stat-label">Years Experience</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">350+</span>
+                                <span class="stat-label">Students</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">4.8/5</span>
+                                <span class="stat-label">Rating</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Chef Robert Wilson -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="faculty-card-premium">
+                    <div class="faculty-image">
+                        <img src="{{ url_for('static', filename='images/faculty/faculty_04.jpg') }}" alt="Chef Robert Wilson">
+                        <div class="faculty-overlay">
+                            <h5 class="faculty-name mb-1">Chef Robert Wilson</h5>
+                            <p class="faculty-title mb-0">Pastry & Baking Specialist</p>
+                        </div>
+                    </div>
+                    <div class="faculty-content">
+                        <div class="faculty-experience">
+                            <h6 class="mb-2">Professional Experience</h6>
+                            <div class="experience-item">
+                                <i class="fas fa-medal text-warning"></i>
+                                <span>Head Pastry Chef - Four Seasons HK</span>
+                            </div>
+                            <div class="experience-item">
+                                <i class="fas fa-graduation-cap text-primary"></i>
+                                <span>Le Cordon Bleu Paris Graduate</span>
+                            </div>
+                            <div class="experience-item">
+                                <i class="fas fa-certificate text-success"></i>
+                                <span>Master Pastry Artisan Certified</span>
+                            </div>
+                        </div>
+                        
+                        <div class="faculty-achievements">
+                            <span class="achievement-badge">Pastry Master</span>
+                            <span class="achievement-badge">French Trained</span>
+                            <span class="achievement-badge">Hotel Experience</span>
+                        </div>
+                        
+                        <blockquote class="faculty-quote">
+                            "Pastry is where art meets science. Every dessert tells a story of precision and creativity."
+                        </blockquote>
+                        
+                        <div class="faculty-stats">
+                            <div class="stat-item">
+                                <span class="stat-number">16</span>
+                                <span class="stat-label">Years Experience</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">280+</span>
+                                <span class="stat-label">Students</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">4.9/5</span>
+                                <span class="stat-label">Rating</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Hotel Management Faculty -->
+<section class="section-premium bg-light">
+    <div class="container-premium">
+        <div class="department-header">
+            <h2 class="department-title">Hotel Management Department</h2>
+            <p class="body-text-premium">Industry leaders who shaped Hong Kong's hospitality landscape</p>
+        </div>
+        
+        <div class="row">
+            <!-- Dr. Sarah Lam -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="faculty-card-premium">
+                    <div class="faculty-image">
+                        <img src="{{ url_for('static', filename='images/faculty/faculty_05.jpg') }}" alt="Dr. Sarah Lam">
+                        <div class="faculty-overlay">
+                            <h5 class="faculty-name mb-1">Dr. Sarah Lam</h5>
+                            <p class="faculty-title mb-0">Head of Hotel Management</p>
+                        </div>
+                    </div>
+                    <div class="faculty-content">
+                        <div class="faculty-experience">
+                            <h6 class="mb-2">Professional Experience</h6>
+                            <div class="experience-item">
+                                <i class="fas fa-building text-primary"></i>
+                                <span>20 years at Peninsula Hotels Group</span>
+                            </div>
+                            <div class="experience-item">
+                                <i class="fas fa-user-tie text-success"></i>
+                                <span>Former GM - Peninsula Beverly Hills</span>
+                            </div>
+                            <div class="experience-item">
+                                <i class="fas fa-graduation-cap text-info"></i>
+                                <span>PhD Hospitality Management - Cornell</span>
+                            </div>
+                        </div>
+                        
+                        <div class="faculty-achievements">
+                            <span class="achievement-badge">Cornell PhD</span>
+                            <span class="achievement-badge">General Manager</span>
+                            <span class="achievement-badge">20+ Years</span>
+                        </div>
+                        
+                        <blockquote class="faculty-quote">
+                            "Excellence in hospitality begins with understanding that every guest interaction is an opportunity to create lasting memories."
+                        </blockquote>
+                        
+                        <div class="faculty-stats">
+                            <div class="stat-item">
+                                <span class="stat-number">20</span>
+                                <span class="stat-label">Years Experience</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">600+</span>
+                                <span class="stat-label">Graduates</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">4.9/5</span>
+                                <span class="stat-label">Rating</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Mr. James Wong -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="faculty-card-premium">
+                    <div class="faculty-image">
+                        <img src="{{ url_for('static', filename='images/faculty/faculty_06.jpg') }}" alt="Mr. James Wong">
+                        <div class="faculty-overlay">
+                            <h5 class="faculty-name mb-1">Mr. James Wong</h5>
+                            <p class="faculty-title mb-0">Operations & Revenue Management</p>
+                        </div>
+                    </div>
+                    <div class="faculty-content">
+                        <div class="faculty-experience">
+                            <h6 class="mb-2">Professional Experience</h6>
+                            <div class="experience-item">
+                                <i class="fas fa-chart-line text-success"></i>
+                                <span>Revenue Manager - Hyatt International</span>
+                            </div>
+                            <div class="experience-item">
+                                <i class="fas fa-cogs text-primary"></i>
+                                <span>Operations Director - Marriott HK</span>
+                            </div>
+                            <div class="experience-item">
+                                <i class="fas fa-laptop text-info"></i>
+                                <span>Hotel Technology Systems Expert</span>
+                            </div>
+                        </div>
+                        
+                        <div class="faculty-achievements">
+                            <span class="achievement-badge">Revenue Expert</span>
+                            <span class="achievement-badge">Tech Specialist</span>
+                            <span class="achievement-badge">Operations Pro</span>
+                        </div>
+                        
+                        <blockquote class="faculty-quote">
+                            "Modern hotel success requires mastering both traditional hospitality and cutting-edge technology systems."
+                        </blockquote>
+                        
+                        <div class="faculty-stats">
+                            <div class="stat-item">
+                                <span class="stat-number">14</span>
+                                <span class="stat-label">Years Experience</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">420+</span>
+                                <span class="stat-label">Students</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">4.8/5</span>
+                                <span class="stat-label">Rating</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Ms. Lisa Chen -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="faculty-card-premium">
+                    <div class="faculty-image">
+                        <img src="{{ url_for('static', filename='images/faculty/faculty_07.jpg') }}" alt="Ms. Lisa Chen">
+                        <div class="faculty-overlay">
+                            <h5 class="faculty-name mb-1">Ms. Lisa Chen</h5>
+                            <p class="faculty-title mb-0">Guest Services & Event Management</p>
+                        </div>
+                    </div>
+                    <div class="faculty-content">
+                        <div class="faculty-experience">
+                            <h6 class="mb-2">Professional Experience</h6>
+                            <div class="experience-item">
+                                <i class="fas fa-calendar-alt text-warning"></i>
+                                <span>Event Director - Conrad Hong Kong</span>
+                            </div>
+                            <div class="experience-item">
+                                <i class="fas fa-heart text-danger"></i>
+                                <span>Guest Relations Manager - Ritz-Carlton</span>
+                            </div>
+                            <div class="experience-item">
+                                <i class="fas fa-trophy text-primary"></i>
+                                <span>HK Hospitality Excellence Award</span>
+                            </div>
+                        </div>
+                        
+                        <div class="faculty-achievements">
+                            <span class="achievement-badge">Event Expert</span>
+                            <span class="achievement-badge">Guest Relations</span>
+                            <span class="achievement-badge">Award Winner</span>
+                        </div>
+                        
+                        <blockquote class="faculty-quote">
+                            "Creating exceptional guest experiences and memorable events is the heart of our industry."
+                        </blockquote>
+                        
+                        <div class="faculty-stats">
+                            <div class="stat-item">
+                                <span class="stat-number">11</span>
+                                <span class="stat-label">Years Experience</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">380+</span>
+                                <span class="stat-label">Students</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">4.9/5</span>
+                                <span class="stat-label">Rating</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Faculty by Department Overview -->
+<section class="section-premium">
+    <div class="container-premium">
+        <h2 class="section-title text-center mb-5">Faculty by Department</h2>
+        
+        <div class="row text-center">
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="text-center">
+                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3 department-icon">
+                        <i class="fas fa-utensils fa-2x"></i>
+                    </div>
+                    <h5>Culinary Arts</h5>
+                    <p class="text-muted">8 Expert Chefs</p>
+                    <p class="small">Michelin-starred experience and international training</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="text-center">
+                    <div class="bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3 department-icon">
+                        <i class="fas fa-building fa-2x"></i>
+                    </div>
+                    <h5>Hotel Management</h5>
+                    <p class="text-muted">6 Industry Leaders</p>
+                    <p class="small">Former executives from leading hotel chains</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="text-center">
+                    <div class="bg-warning text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3 department-icon">
+                        <i class="fas fa-wine-glass-alt fa-2x"></i>
+                    </div>
+                    <h5>Food & Beverage</h5>
+                    <p class="text-muted">5 Service Experts</p>
+                    <p class="small">Restaurant and bar management specialists</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="text-center">
+                    <div class="bg-info text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3 department-icon">
+                        <i class="fas fa-handshake fa-2x"></i>
+                    </div>
+                    <h5>Business Skills</h5>
+                    <p class="text-muted">6 Business Experts</p>
+                    <p class="small">Finance, marketing, and entrepreneurship focus</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Industry Connections -->
+<section class="section-premium bg-light">
+    <div class="container-premium">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <img src="{{ url_for('static', filename='images/faculty/faculty_08.jpg') }}" class="img-fluid rounded shadow-lg" alt="Industry Connections">
+            </div>
+            <div class="col-lg-6">
+                <h2 class="section-title text-left">Industry Connections</h2>
+                <p class="body-text-premium mb-4">Our faculty maintains active relationships with Hong Kong's top hospitality establishments, ensuring our curriculum reflects current industry standards and trends.</p>
+                
+                <div class="mb-4">
+                    <h5 class="text-primary">Our Faculty Work With:</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>The Peninsula Hong Kong</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Shangri-La Hotels Group</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Mandarin Oriental</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Four Seasons Hotels</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Conrad Hong Kong</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>The Ritz-Carlton</li>
+                    </ul>
+                </div>
+                
+                <div class="cta-section">
+                    <a href="{{ url_for('contact') }}" class="btn btn-primary btn-premium">
+                        Meet Our Faculty
+                        <i class="fas fa-arrow-right ms-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,38 @@
+# Ignore virtual environments
+flask_env/
+venv/
+env/
+.env
+
+# Ignore Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Ignore database files
+*.db
+*.sqlite
+*.sqlite3
+instance/
+
+# Ignore IDE settings
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Ignore log files
+*.log
+
+# Ignore test files
+test_*.py
+*_test.py
+
+# Keep these documentation files
+!README.md
+!requirements.txt

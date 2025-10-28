@@ -1,0 +1,409 @@
+{% extends "base.html" %}
+
+{% block title %}Facilities - PenAsia Continuing Education Centre{% endblock %}
+
+{% block extra_head %}
+<style>
+.facilities-hero {
+    background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+    color: white;
+    padding: 5rem 0;
+}
+
+.facilities-hero .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: white;
+}
+
+.facilities-hero .hero-subtitle {
+    font-size: 1.2rem;
+    color: rgba(255,255,255,0.9);
+}
+
+.section-title-premium {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: var(--primary-blue);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.facility-card-premium {
+    border: none;
+    box-shadow: var(--shadow-light);
+    border-radius: var(--radius-medium);
+    transition: var(--transition-medium);
+}
+
+.facility-card-premium:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-heavy);
+}
+
+.facility-icon-premium {
+    color: var(--accent-gold) !important;
+}
+
+.check-icon-premium {
+    color: var(--accent-gold) !important;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="facilities-hero">
+    <div class="container text-center">
+        <h1 class="hero-title">Our Facilities</h1>
+        <p class="hero-subtitle">State-of-the-art learning environments designed for your success</p>
+    </div>
+</section>
+
+<!-- Facilities Overview -->
+<section class="py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 class="mb-4">World-Class Learning Environment</h2>
+                <p class="lead">Our modern facilities are designed to provide students with the best possible learning experience, mirroring real-world industry standards.</p>
+                <p>From professional-grade kitchens to modern classrooms equipped with the latest technology, every space at PenAsia is carefully designed to enhance learning and prepare students for successful careers.</p>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><i class="fas fa-check check-icon-premium"></i> Industry-standard equipment and tools</li>
+                    <li class="mb-2"><i class="fas fa-check check-icon-premium"></i> Modern technology integration</li>
+                    <li class="mb-2"><i class="fas fa-check check-icon-premium"></i> Safe and comfortable learning spaces</li>
+                    <li class="mb-2"><i class="fas fa-check check-icon-premium"></i> Accessible facilities for all students</li>
+                </ul>
+            </div>
+            <div class="col-lg-6">
+                <img src="{{ url_for('static', filename='images/facilities/facilities_01.jpg') }}" class="img-fluid rounded shadow" alt="Modern Kitchen Facility">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Kitchen Facilities -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="section-title-premium">Culinary Training Facilities</h2>
+        <div class="row">
+            <div class="col-lg-6 mb-4">
+                <div class="card facility-card-premium h-100">
+                    <img src="{{ url_for('static', filename='images/facilities/facilities_01.jpg') }}" class="card-img-top" alt="Professional Kitchen">
+                    <div class="card-body">
+                        <h4>Professional Training Kitchen</h4>
+                        <p class="card-text">Our main training kitchen features commercial-grade equipment including gas ranges, convection ovens, grills, and specialized stations for different cooking techniques.</p>
+                        <ul class="list-unstyled">
+                            <li class="mb-1"><i class="fas fa-fire facility-icon-premium"></i> 20 individual cooking stations</li>
+                            <li class="mb-1"><i class="fas fa-thermometer-half facility-icon-premium"></i> Temperature-controlled environment</li>
+                            <li class="mb-1"><i class="fas fa-tools facility-icon-premium"></i> Professional-grade equipment</li>
+                            <li class="mb-1"><i class="fas fa-eye facility-icon-premium"></i> Instructor demonstration area</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6 mb-4">
+                <div class="card facility-card-premium h-100">
+                    <img src="{{ url_for('static', filename='images/facilities/facilities_02.jpg') }}" class="card-img-top" alt="Pastry Kitchen">
+                    <div class="card-body">
+                        <h4>Specialized Pastry Kitchen</h4>
+                        <p class="card-text">Dedicated pastry and baking facility with specialized equipment for bread making, cake decoration, chocolate work, and advanced pastry techniques.</p>
+                        <ul class="list-unstyled">
+                            <li class="mb-1"><i class="fas fa-bread-slice facility-icon-premium"></i> Professional bread ovens</li>
+                            <li class="mb-1"><i class="fas fa-snowflake facility-icon-premium"></i> Temperature-controlled prep areas</li>
+                            <li class="mb-1"><i class="fas fa-cookie-bite facility-icon-premium"></i> Specialized baking equipment</li>
+                            <li class="mb-1"><i class="fas fa-palette facility-icon-premium"></i> Cake decorating stations</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Classroom Facilities -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="section-title-premium">Academic Classrooms</h2>
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <div class="card facility-card-premium h-100">
+                    <img src="{{ url_for('static', filename='images/facilities/facilities_01.jpg') }}" class="card-img-top" alt="Modern Classroom">
+                    <div class="card-body">
+                        <h4>Smart Classrooms</h4>
+                        <p class="card-text">Technology-enabled classrooms with interactive whiteboards, projectors, and multimedia capabilities for engaging theoretical instruction.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 mb-4">
+                <div class="card facility-card-premium h-100">
+                    <img src="{{ url_for('static', filename='images/facilities/facilities_02.jpg') }}" class="card-img-top" alt="Computer Lab">
+                    <div class="card-body">
+                        <h4>Computer Laboratory</h4>
+                        <p class="card-text">Modern computer lab with latest software for business applications, hospitality management systems, and digital learning resources.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 mb-4">
+                <div class="card facility-card-premium h-100">
+                    <img src="{{ url_for('static', filename='images/facilities/facilities_01.jpg') }}" class="card-img-top" alt="Library">
+                    <div class="card-body">
+                        <h4>Learning Resource Center</h4>
+                        <p class="card-text">Well-stocked library with textbooks, industry publications, and digital resources to support independent study and research.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Equipment & Technology -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">Equipment & Technology</h2>
+        <div class="row">
+            <div class="col-lg-6 mb-4">
+                <h3>Culinary Equipment</h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="fas fa-fire text-danger"></i> Commercial gas ranges</li>
+                            <li class="mb-2"><i class="fas fa-wind text-primary"></i> Convection ovens</li>
+                            <li class="mb-2"><i class="fas fa-thermometer-half text-info"></i> Blast chillers</li>
+                            <li class="mb-2"><i class="fas fa-cut text-warning"></i> Professional knives and tools</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="fas fa-blender text-success"></i> Food processors</li>
+                            <li class="mb-2"><i class="fas fa-mixer text-primary"></i> Stand mixers</li>
+                            <li class="mb-2"><i class="fas fa-scale-balanced text-warning"></i> Digital scales</li>
+                            <li class="mb-2"><i class="fas fa-refrigerator text-info"></i> Commercial refrigeration</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6 mb-4">
+                <h3>Learning Technology</h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="fas fa-projector text-primary"></i> Interactive projectors</li>
+                            <li class="mb-2"><i class="fas fa-wifi text-success"></i> High-speed WiFi</li>
+                            <li class="mb-2"><i class="fas fa-laptop text-info"></i> Modern computers</li>
+                            <li class="mb-2"><i class="fas fa-camera text-warning"></i> Recording equipment</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="fas fa-chalkboard text-primary"></i> Smart whiteboards</li>
+                            <li class="mb-2"><i class="fas fa-headphones text-success"></i> Audio systems</li>
+                            <li class="mb-2"><i class="fas fa-database text-info"></i> Learning management system</li>
+                            <li class="mb-2"><i class="fas fa-video text-warning"></i> Video conferencing</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Safety & Standards -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Safety & Standards</h2>
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="mb-4 text-center">Commitment to Safety Excellence</h4>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5><i class="fas fa-shield-alt text-primary"></i> Health & Safety</h5>
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">✓ HACCP-compliant kitchen facilities</li>
+                                    <li class="mb-2">✓ Regular safety inspections</li>
+                                    <li class="mb-2">✓ Emergency procedures training</li>
+                                    <li class="mb-2">✓ First aid stations</li>
+                                </ul>
+                                
+                                <h5 class="mt-4"><i class="fas fa-certificate text-primary"></i> Quality Standards</h5>
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">✓ ISO certified processes</li>
+                                    <li class="mb-2">✓ Regular equipment maintenance</li>
+                                    <li class="mb-2">✓ Quality assurance protocols</li>
+                                    <li class="mb-2">✓ Industry compliance</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h5><i class="fas fa-universal-access text-primary"></i> Accessibility</h5>
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">✓ Wheelchair accessible facilities</li>
+                                    <li class="mb-2">✓ Accessible restrooms</li>
+                                    <li class="mb-2">✓ Elevator access to all floors</li>
+                                    <li class="mb-2">✓ Special accommodations available</li>
+                                </ul>
+                                
+                                <h5 class="mt-4"><i class="fas fa-leaf text-primary"></i> Sustainability</h5>
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">✓ Energy-efficient equipment</li>
+                                    <li class="mb-2">✓ Waste reduction programs</li>
+                                    <li class="mb-2">✓ Recycling initiatives</li>
+                                    <li class="mb-2">✓ Sustainable practices</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Virtual Tour -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">Virtual Facility Tour</h2>
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="mb-4">Explore Our Campus</h4>
+                        <p class="lead">Take a virtual tour of our facilities from the comfort of your home. See our modern kitchens, classrooms, and learning spaces in detail.</p>
+                        <div class="row mt-4">
+                            <div class="col-md-4 mb-3">
+                                <button class="btn btn-primary btn-lg w-100" data-bs-toggle="modal" data-bs-target="#kitchenTour">
+                                    <i class="fas fa-utensils me-2"></i>Kitchen Tour
+                                </button>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <button class="btn btn-success btn-lg w-100" data-bs-toggle="modal" data-bs-target="#classroomTour">
+                                    <i class="fas fa-chalkboard me-2"></i>Classroom Tour
+                                </button>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <button class="btn btn-warning btn-lg w-100" data-bs-toggle="modal" data-bs-target="#facilityTour">
+                                    <i class="fas fa-building me-2"></i>Full Campus
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Facility Statistics -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Facility Statistics</h2>
+        <div class="row">
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="text-center">
+                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-fire fa-2x"></i>
+                    </div>
+                    <h4>Cooking Stations</h4>
+                    <h2 class="text-primary mb-0">40+</h2>
+                    <p class="text-muted">Individual workstations</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="text-center">
+                    <div class="bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-chalkboard fa-2x"></i>
+                    </div>
+                    <h4>Classrooms</h4>
+                    <h2 class="text-success mb-0">12</h2>
+                    <p class="text-muted">Modern learning spaces</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="text-center">
+                    <div class="bg-warning text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-tools fa-2x"></i>
+                    </div>
+                    <h4>Equipment Value</h4>
+                    <h2 class="text-warning mb-0">HK$5M+</h2>
+                    <p class="text-muted">Professional equipment</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="text-center">
+                    <div class="bg-info text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-building fa-2x"></i>
+                    </div>
+                    <h4>Campus Size</h4>
+                    <h2 class="text-info mb-0">15,000</h2>
+                    <p class="text-muted">Square feet</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Visit Our Campus -->
+<section class="py-5 bg-primary text-white">
+    <div class="container text-center">
+        <h2 class="mb-4">Ready to See Our Facilities?</h2>
+        <p class="lead mb-4">Schedule a campus visit to experience our world-class facilities firsthand and meet our faculty.</p>
+        <a href="{{ url_for('contact') }}" class="btn btn-light btn-lg me-3">Schedule Visit</a>
+        <a href="{{ url_for('apply') }}" class="btn btn-outline-light btn-lg">Apply Now</a>
+    </div>
+</section>
+
+<!-- Modal for Virtual Tours (placeholder) -->
+<div class="modal fade" id="kitchenTour" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Kitchen Facilities Tour</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Virtual tour feature coming soon! Contact us to schedule an in-person visit.</p>
+                <img src="{{ url_for('static', filename='images/facilities/facilities_01.jpg') }}" class="img-fluid" alt="Kitchen">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="classroomTour" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Classroom Facilities Tour</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Virtual tour feature coming soon! Contact us to schedule an in-person visit.</p>
+                <img src="{{ url_for('static', filename='images/facilities/facilities_02.jpg') }}" class="img-fluid" alt="Classroom">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="facilityTour" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Full Campus Tour</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Virtual tour feature coming soon! Contact us to schedule an in-person visit.</p>
+                <img src="{{ url_for('static', filename='images/facilities/facilities_01.jpg') }}" class="img-fluid" alt="Campus">
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

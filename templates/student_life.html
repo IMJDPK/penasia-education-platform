@@ -1,0 +1,379 @@
+{% extends "base.html" %}
+
+{% block title %}Student Life - PenAsia Continuing Education Centre{% endblock %}
+
+{% block extra_head %}
+<style>
+.student-life-hero {
+    background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+    color: white;
+    padding: 5rem 0;
+}
+
+.student-life-hero .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: white;
+}
+
+.student-life-hero .hero-subtitle {
+    font-size: 1.2rem;
+    color: rgba(255,255,255,0.9);
+}
+
+.section-title-premium {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: var(--primary-blue);
+    margin-bottom: 2rem;
+}
+
+.activity-card-premium {
+    border: none;
+    box-shadow: var(--shadow-light);
+    border-radius: var(--radius-medium);
+    transition: var(--transition-medium);
+}
+
+.activity-card-premium:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-heavy);
+}
+
+.activity-icon-premium {
+    background: var(--accent-gold) !important;
+    color: white !important;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow-medium);
+}
+
+.activity-icon-blue {
+    background: var(--primary-blue) !important;
+    color: white !important;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow-medium);
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="student-life-hero">
+    <div class="container text-center">
+        <h1 class="hero-title">Student Life</h1>
+        <p class="hero-subtitle">Experience learning beyond the classroom at PenAsia</p>
+    </div>
+</section>
+
+<!-- Overview -->
+<section class="py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 class="mb-4">More Than Just Education</h2>
+                <p class="lead">At PenAsia Continuing Education Centre, we believe that learning extends far beyond the classroom. Our vibrant student community offers numerous opportunities for personal growth, professional networking, and cultural exchange.</p>
+                <p>Whether you're pursuing our diploma programs or certificate courses, you'll find a supportive environment that encourages collaboration, creativity, and lifelong learning.</p>
+            </div>
+            <div class="col-lg-6">
+                <img src="{{ url_for('static', filename='images/about/about_02.jpg') }}" class="img-fluid rounded shadow" alt="Student Life">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Student Activities -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="section-title-premium text-center">Student Activities & Events</h2>
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <div class="card activity-card-premium h-100">
+                    <div class="card-body text-center">
+                        <div class="activity-icon-premium">
+                            <i class="fas fa-utensils fa-2x"></i>
+                        </div>
+                        <h4>Culinary Competitions</h4>
+                        <p class="card-text">Participate in local and international culinary competitions, showcasing your skills and representing PenAsia with pride.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 mb-4">
+                <div class="card activity-card-premium h-100">
+                    <div class="card-body text-center">
+                        <div class="activity-icon-premium">
+                            <i class="fas fa-briefcase fa-2x"></i>
+                        </div>
+                        <h4>Industry Visits</h4>
+                        <p class="card-text">Regular visits to top hotels, restaurants, and businesses provide real-world insights and networking opportunities.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 mb-4">
+                <div class="card activity-card-premium h-100">
+                    <div class="card-body text-center">
+                        <div class="activity-icon-premium">
+                            <i class="fas fa-users fa-2x"></i>
+                        </div>
+                        <h4>Student Clubs</h4>
+                        <p class="card-text">Join student-led clubs and societies to pursue your interests and build lasting friendships with fellow learners.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 mb-4">
+                <div class="card activity-card-premium h-100">
+                    <div class="card-body text-center">
+                        <div class="activity-icon-blue">
+                            <i class="fas fa-graduation-cap fa-2x"></i>
+                        </div>
+                        <h4>Workshops & Seminars</h4>
+                        <p class="card-text">Attend specialized workshops and guest lectures by industry experts to enhance your knowledge and skills.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 mb-4">
+                <div class="card activity-card-premium h-100">
+                    <div class="card-body text-center">
+                        <div class="activity-icon-blue">
+                            <i class="fas fa-calendar-alt fa-2x"></i>
+                        </div>
+                        <h4>Cultural Events</h4>
+                        <p class="card-text">Celebrate festivals and cultural events that bring our diverse student community together in learning and fun.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 mb-4">
+                <div class="card activity-card-premium h-100">
+                    <div class="card-body text-center">
+                        <div class="activity-icon-blue">
+                            <i class="fas fa-handshake fa-2x"></i>
+                        </div>
+                        <h4>Career Fairs</h4>
+                        <p class="card-text">Connect with potential employers at our regular career fairs and job placement events.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Student Support Services -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Student Support Services</h2>
+        <div class="row">
+            <div class="col-lg-6 mb-4">
+                <div class="d-flex">
+                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 60px; height: 60px; flex-shrink: 0;">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div>
+                        <h4>Academic Counseling</h4>
+                        <p>Our academic advisors provide guidance on course selection, study strategies, and career planning to help you achieve your goals.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6 mb-4">
+                <div class="d-flex">
+                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 60px; height: 60px; flex-shrink: 0;">
+                        <i class="fas fa-laptop"></i>
+                    </div>
+                    <div>
+                        <h4>Learning Resources</h4>
+                        <p>Access to modern learning facilities, including computer labs, library resources, and online learning platforms.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6 mb-4">
+                <div class="d-flex">
+                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 60px; height: 60px; flex-shrink: 0;">
+                        <i class="fas fa-language"></i>
+                    </div>
+                    <div>
+                        <h4>Language Support</h4>
+                        <p>Additional English language support for international students and those who need extra assistance with academic English.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6 mb-4">
+                <div class="d-flex">
+                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 60px; height: 60px; flex-shrink: 0;">
+                        <i class="fas fa-search-dollar"></i>
+                    </div>
+                    <div>
+                        <h4>Financial Aid</h4>
+                        <p>Guidance on scholarships, grants, and the Continuing Education Fund (CEF) to help make your education more affordable.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Student Testimonials -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">What Our Students Say</h2>
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="{{ url_for('static', filename='images/testimonials/testimonials_01.jpg') }}" class="rounded-circle me-3" width="60" height="60" alt="Student">
+                            <div>
+                                <h5 class="mb-0">Sarah Chen</h5>
+                                <small class="text-muted">Hotel Culinary Management Graduate</small>
+                            </div>
+                        </div>
+                        <p class="card-text">"The hands-on experience and industry connections I gained at PenAsia were invaluable. I'm now working at a 5-star hotel and loving every moment of my culinary career."</p>
+                        <div class="text-warning">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="{{ url_for('static', filename='images/testimonials/testimonials_02.jpg') }}" class="rounded-circle me-3" width="60" height="60" alt="Student">
+                            <div>
+                                <h5 class="mb-0">Michael Wong</h5>
+                                <small class="text-muted">BTEC Business Management Student</small>
+                            </div>
+                        </div>
+                        <p class="card-text">"The flexible schedule and practical approach to learning allowed me to continue working while upgrading my qualifications. The support from faculty is outstanding."</p>
+                        <div class="text-warning">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="{{ url_for('static', filename='images/testimonials/testimonials_03.jpg') }}" class="rounded-circle me-3" width="60" height="60" alt="Student">
+                            <div>
+                                <h5 class="mb-0">Lisa Zhang</h5>
+                                <small class="text-muted">Western Bakery Graduate</small>
+                            </div>
+                        </div>
+                        <p class="card-text">"The certificate program gave me the confidence and skills to start my own bakery. The CEF reimbursement made it very affordable too!"</p>
+                        <div class="text-warning">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Campus Life -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Campus Life</h2>
+        <div class="row">
+            <div class="col-lg-6 mb-4">
+                <div class="card">
+                    <img src="{{ url_for('static', filename='images/facilities/facilities_01.jpg') }}" class="card-img-top" alt="Modern Kitchen">
+                    <div class="card-body">
+                        <h4>State-of-the-Art Facilities</h4>
+                        <p class="card-text">Learn in modern, well-equipped classrooms and kitchens that mirror industry standards. Our facilities are designed to provide the best possible learning environment.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6 mb-4">
+                <div class="card">
+                    <img src="{{ url_for('static', filename='images/facilities/facilities_02.jpg') }}" class="card-img-top" alt="Student Common Area">
+                    <div class="card-body">
+                        <h4>Collaborative Spaces</h4>
+                        <p class="card-text">Our campus features comfortable common areas where students can study together, relax between classes, and build lasting friendships.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Study Tips -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">Study Tips for Success</h2>
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5><i class="fas fa-clock text-primary"></i> Time Management</h5>
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">✓ Create a study schedule and stick to it</li>
+                                    <li class="mb-2">✓ Use breaks effectively for rest and review</li>
+                                    <li class="mb-2">✓ Prioritize assignments and deadlines</li>
+                                    <li class="mb-2">✓ Balance study time with practical work</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h5><i class="fas fa-lightbulb text-primary"></i> Learning Strategies</h5>
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">✓ Ask questions during class</li>
+                                    <li class="mb-2">✓ Form study groups with classmates</li>
+                                    <li class="mb-2">✓ Practice skills regularly outside class</li>
+                                    <li class="mb-2">✓ Seek feedback from instructors</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Join Our Community -->
+<section class="py-5 bg-primary text-white">
+    <div class="container text-center">
+        <h2 class="mb-4">Ready to Join Our Community?</h2>
+        <p class="lead mb-4">Experience the vibrant student life at PenAsia Continuing Education Centre and build your future with us.</p>
+        <a href="{{ url_for('apply') }}" class="btn btn-light btn-lg me-3">Apply Now</a>
+        <a href="{{ url_for('contact') }}" class="btn btn-outline-light btn-lg">Visit Our Campus</a>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block title %}Login - PenAsia Continuing Education Centre{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="py-5 bg-primary text-white">
+    <div class="container text-center">
+        <h1 class="display-4 mb-4">Student Login</h1>
+        <p class="lead">Access your student portal</p>
+    </div>
+</section>
+
+<!-- Login Form -->
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                <div class="card shadow-lg">
+                    <div class="card-body p-5">
+                        <h3 class="text-center mb-4">Login to Your Account</h3>
+                        
+                        <form method="POST">
+                            {{ form.hidden_tag() }}
+                            
+                            <div class="mb-3">
+                                {{ form.email.label(class="form-label") }}
+                                {{ form.email(class="form-control" + (" is-invalid" if form.email.errors else "")) }}
+                                {% if form.email.errors %}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.email.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="mb-3">
+                                {{ form.password.label(class="form-label") }}
+                                {{ form.password(class="form-control" + (" is-invalid" if form.password.errors else "")) }}
+                                {% if form.password.errors %}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.password.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="mb-3 form-check">
+                                {{ form.remember_me(class="form-check-input") }}
+                                {{ form.remember_me.label(class="form-check-label") }}
+                            </div>
+                            
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-sign-in-alt me-2"></i>Login
+                                </button>
+                            </div>
+                        </form>
+                        
+                        <hr class="my-4">
+                        
+                        <div class="text-center">
+                            <p class="mb-2">Don't have an account?</p>
+                            <a href="{{ url_for('register') }}" class="btn btn-outline-primary">
+                                <i class="fas fa-user-plus me-2"></i>Create Account
+                            </a>
+                        </div>
+                        
+                        <div class="text-center mt-3">
+                            <small class="text-muted">
+                                <a href="#" class="text-decoration-none">Forgot your password?</a>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Admin Login Info -->
+                <div class="alert alert-info mt-4" role="alert">
+                    <h6><i class="fas fa-info-circle me-2"></i>Demo Admin Access</h6>
+                    <p class="mb-0">
+                        <strong>Admin Email:</strong> admin@penasia.edu.hk<br>
+                        <strong>Password:</strong> admin123
+                    </p>
+                </div>
+                
+                <!-- Student Login Info -->
+                <div class="alert alert-success mt-3" role="alert">
+                    <h6><i class="fas fa-user-graduate me-2"></i>Demo Student Access</h6>
+                    <p class="mb-0">
+                        <strong>Student Email:</strong> student@test.com<br>
+                        <strong>Password:</strong> password123
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h3 class="mb-4">Student Portal Features</h3>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100 border-0">
+                            <div class="card-body text-center">
+                                <i class="fas fa-graduation-cap fa-3x text-primary mb-3"></i>
+                                <h5>Course Management</h5>
+                                <p class="text-muted">View your enrolled courses, schedules, and progress</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100 border-0">
+                            <div class="card-body text-center">
+                                <i class="fas fa-file-alt fa-3x text-success mb-3"></i>
+                                <h5>Applications</h5>
+                                <p class="text-muted">Submit and track your course applications</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100 border-0">
+                            <div class="card-body text-center">
+                                <i class="fas fa-certificate fa-3x text-warning mb-3"></i>
+                                <h5>Certificates</h5>
+                                <p class="text-muted">Download your completed course certificates</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

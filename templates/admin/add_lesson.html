@@ -1,0 +1,234 @@
+{% extends "base.html" %}
+
+{% block title %}Add Lesson - {{ module.title }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <!-- Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h1 class="h3 mb-0">
+                        <i class="fas fa-plus me-2"></i>Add New Lesson
+                    </h1>
+                    <p class="text-muted mb-0">Module: {{ module.title }}</p>
+                </div>
+                <a href="{{ url_for('admin_course_content', course_id=module.course_id) }}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Content
+                </a>
+            </div>
+
+            <!-- Add Lesson Form -->
+            <form method="POST">
+                {{ csrf_token() }}
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-play-circle me-2"></i>Lesson Details
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="mb-3">
+                                    <label for="title" class="form-label">Lesson Title *</label>
+                                    <input type="text" class="form-control" id="title" name="title" required 
+                                           placeholder="e.g., Introduction to Strategic Planning">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="duration_minutes" class="form-label">Duration (minutes)</label>
+                                    <input type="number" class="form-control" id="duration_minutes" name="duration_minutes" 
+                                           min="1" max="300" value="30">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control" id="description" name="description" rows="3"
+                                      placeholder="Describe what students will learn in this lesson..."></textarea>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="content_type" class="form-label">Content Type *</label>
+                                    <select class="form-select" id="content_type" name="content_type" required onchange="showContentFields()">
+                                        <option value="">Select content type...</option>
+                                        <option value="text">Text Content</option>
+                                        <option value="video">Video Lesson</option>
+                                        <option value="document">Document/PDF</option>
+                                        <option value="external">External Link</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="is_mandatory" name="is_mandatory" checked>
+                                        <label class="form-check-label" for="is_mandatory">
+                                            Mandatory Lesson
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="is_published" name="is_published">
+                                        <label class="form-check-label" for="is_published">
+                                            Publish immediately
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content Input Fields (Dynamic based on content type) -->
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-file-alt me-2"></i>Lesson Content
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Text Content -->
+                        <div id="text-content" class="content-field" style="display: none;">
+                            <div class="mb-3">
+                                <label for="content_text" class="form-label">Text Content</label>
+                                <textarea class="form-control" id="content_text" name="content_text" rows="10"
+                                          placeholder="Enter your lesson content here. You can use HTML formatting if needed..."></textarea>
+                                <div class="form-text">
+                                    <strong>Tip:</strong> You can use basic HTML tags like &lt;p&gt;, &lt;strong&gt;, &lt;em&gt;, &lt;ul&gt;, &lt;ol&gt;, &lt;h3&gt;, etc.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Video Content -->
+                        <div id="video-content" class="content-field" style="display: none;">
+                            <div class="mb-3">
+                                <label for="video_url" class="form-label">Video URL</label>
+                                <input type="url" class="form-control" id="video_url" name="video_url" 
+                                       placeholder="https://www.youtube.com/watch?v=... or https://vimeo.com/...">
+                                <div class="form-text">
+                                    Supported: YouTube, Vimeo, or direct video file URLs (.mp4, .webm)
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Document Content -->
+                        <div id="document-content" class="content-field" style="display: none;">
+                            <div class="mb-3">
+                                <label for="document_path" class="form-label">Document Path</label>
+                                <input type="text" class="form-control" id="document_path" name="document_path" 
+                                       placeholder="/static/course_content/documents/filename.pdf">
+                                <div class="form-text">
+                                    Upload files to <code>/static/course_content/</code> directory and provide the relative path here.
+                                </div>
+                            </div>
+                            <div class="alert alert-info" role="alert">
+                                <i class="fas fa-info-circle me-2"></i>
+                                <strong>File Upload:</strong> In the next update, we'll add direct file upload functionality. 
+                                For now, manually upload files to the static directory.
+                            </div>
+                        </div>
+
+                        <!-- External Link Content -->
+                        <div id="external-content" class="content-field" style="display: none;">
+                            <div class="mb-3">
+                                <label for="external_url" class="form-label">External URL</label>
+                                <input type="url" class="form-control" id="external_url" name="external_url" 
+                                       placeholder="https://example.com/external-resource">
+                                <div class="form-text">
+                                    Link to external resources, websites, or online tools.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Default message -->
+                        <div id="no-content" class="text-center py-4 text-muted">
+                            <i class="fas fa-arrow-up fa-2x mb-2"></i>
+                            <p>Select a content type above to configure lesson content.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="d-flex justify-content-between mt-4">
+                    <a href="{{ url_for('admin_course_content', course_id=module.course_id) }}" class="btn btn-secondary">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-2"></i>Create Lesson
+                    </button>
+                </div>
+            </form>
+
+            <!-- Help Section -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="fas fa-lightbulb me-2"></i>Content Type Guide
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <h6><i class="fas fa-file-text text-primary me-2"></i>Text Content</h6>
+                                <p class="small text-muted">Written lessons, instructions, and explanations. Best for concepts and detailed information.</p>
+                            </div>
+                            <div class="mb-3">
+                                <h6><i class="fas fa-video text-danger me-2"></i>Video Lesson</h6>
+                                <p class="small text-muted">Video tutorials, lectures, or demonstrations. Great for visual and practical learning.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <h6><i class="fas fa-file-pdf text-warning me-2"></i>Document/PDF</h6>
+                                <p class="small text-muted">Downloadable resources, worksheets, or reference materials.</p>
+                            </div>
+                            <div class="mb-3">
+                                <h6><i class="fas fa-external-link-alt text-info me-2"></i>External Link</h6>
+                                <p class="small text-muted">Links to external websites, tools, or additional resources.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function showContentFields() {
+    const contentType = document.getElementById('content_type').value;
+    const contentFields = document.querySelectorAll('.content-field');
+    const noContent = document.getElementById('no-content');
+    
+    // Hide all content fields
+    contentFields.forEach(field => field.style.display = 'none');
+    noContent.style.display = 'none';
+    
+    if (contentType) {
+        const targetField = document.getElementById(contentType + '-content');
+        if (targetField) {
+            targetField.style.display = 'block';
+        }
+    } else {
+        noContent.style.display = 'block';
+    }
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    showContentFields();
+});
+</script>
+{% endblock %}

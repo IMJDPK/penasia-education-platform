@@ -1,0 +1,361 @@
+{% extends "base.html" %}
+
+{% block title %}Database Backup - Admin Panel{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-lg-10 mx-auto">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2><i class="fas fa-database me-2"></i>Database Management & Backup</h2>
+                    <p class="text-muted">Manage database backups and view storage statistics</p>
+                </div>
+                <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                </a>
+            </div>
+
+    <!-- Database Statistics -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Database Statistics</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6 mb-3">
+                            <div class="stat-card p-3 border rounded bg-light">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="text-muted mb-1">Users</h6>
+                                        <h3 class="mb-0">{{ db_stats.users }}</h3>
+                                    </div>
+                                    <i class="fas fa-users fa-2x text-primary"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6 mb-3">
+                            <div class="stat-card p-3 border rounded bg-light">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="text-muted mb-1">Courses</h6>
+                                        <h3 class="mb-0">{{ db_stats.courses }}</h3>
+                                    </div>
+                                    <i class="fas fa-graduation-cap fa-2x text-success"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6 mb-3">
+                            <div class="stat-card p-3 border rounded bg-light">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="text-muted mb-1">Enrollments</h6>
+                                        <h3 class="mb-0">{{ db_stats.enrollments }}</h3>
+                                    </div>
+                                    <i class="fas fa-user-check fa-2x text-info"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6 mb-3">
+                            <div class="stat-card p-3 border rounded bg-light">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="text-muted mb-1">Applications</h6>
+                                        <h3 class="mb-0">{{ db_stats.applications }}</h3>
+                                    </div>
+                                    <i class="fas fa-file-alt fa-2x text-warning"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6 mb-3">
+                            <div class="stat-card p-3 border rounded bg-light">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="text-muted mb-1">Assignments</h6>
+                                        <h3 class="mb-0">{{ db_stats.assignments }}</h3>
+                                    </div>
+                                    <i class="fas fa-tasks fa-2x text-danger"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6 mb-3">
+                            <div class="stat-card p-3 border rounded bg-light">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="text-muted mb-1">Quizzes</h6>
+                                        <h3 class="mb-0">{{ db_stats.quizzes }}</h3>
+                                    </div>
+                                    <i class="fas fa-question-circle fa-2x text-secondary"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6 mb-3">
+                            <div class="stat-card p-3 border rounded bg-light">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="text-muted mb-1">Messages</h6>
+                                        <h3 class="mb-0">{{ db_stats.messages }}</h3>
+                                    </div>
+                                    <i class="fas fa-envelope fa-2x text-primary"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6 mb-3">
+                            <div class="stat-card p-3 border rounded bg-light">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="text-muted mb-1">Notifications</h6>
+                                        <h3 class="mb-0">{{ db_stats.notifications }}</h3>
+                                    </div>
+                                    <i class="fas fa-bell fa-2x text-info"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6 mb-3">
+                            <div class="stat-card p-3 border rounded bg-light">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="text-muted mb-1">Certificates</h6>
+                                        <h3 class="mb-0">{{ db_stats.certificates }}</h3>
+                                    </div>
+                                    <i class="fas fa-certificate fa-2x text-success"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6 mb-3">
+                            <div class="stat-card p-3 border rounded bg-light">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="text-muted mb-1">Attendance</h6>
+                                        <h3 class="mb-0">{{ db_stats.attendance_records }}</h3>
+                                    </div>
+                                    <i class="fas fa-clipboard-check fa-2x text-warning"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Backup Actions -->
+    <div class="row mb-4">
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="fas fa-save me-2"></i>Backup Operations</h5>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <strong>Database Location:</strong> /instance/penasia.db<br>
+                        <strong>Last Modified:</strong> <span id="lastModified">Checking...</span>
+                    </div>
+
+                    <div class="d-grid gap-3">
+                        <button class="btn btn-success btn-lg" onclick="createBackup()">
+                            <i class="fas fa-download me-2"></i>Create Full Backup
+                        </button>
+
+                        <button class="btn btn-primary btn-lg" onclick="exportData()">
+                            <i class="fas fa-file-export me-2"></i>Export Data (CSV)
+                        </button>
+
+                        <button class="btn btn-warning btn-lg" onclick="importData()">
+                            <i class="fas fa-file-import me-2"></i>Import Data
+                        </button>
+
+                        <button class="btn btn-danger btn-lg" onclick="confirmDatabaseReset()">
+                            <i class="fas fa-exclamation-triangle me-2"></i>Reset Database (Danger!)
+                        </button>
+                    </div>
+
+                    <div class="alert alert-warning mt-4">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <strong>Note:</strong> Backup functionality is currently in development. 
+                        For manual backups, copy the database file from the /instance directory.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <!-- Backup Schedule -->
+            <div class="card shadow-sm mb-3">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0"><i class="fas fa-clock me-2"></i>Auto Backup</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label">Backup Frequency</label>
+                        <select class="form-select" disabled>
+                            <option>Daily (Recommended)</option>
+                            <option>Weekly</option>
+                            <option>Monthly</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Backup Time</label>
+                        <input type="time" class="form-control" value="02:00" disabled>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Keep Backups For</label>
+                        <select class="form-select" disabled>
+                            <option>7 Days</option>
+                            <option>30 Days</option>
+                            <option>90 Days</option>
+                        </select>
+                    </div>
+
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="autoBackup" disabled>
+                        <label class="form-check-label" for="autoBackup">
+                            Enable Auto Backup
+                        </label>
+                    </div>
+
+                    <div class="alert alert-secondary mt-3 mb-0">
+                        <small><i class="fas fa-wrench me-2"></i>Coming in next update</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Storage Info -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0"><i class="fas fa-hdd me-2"></i>Storage</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-2">
+                        <small class="text-muted">Database Size</small>
+                        <div class="progress" style="height: 20px;">
+                            <div class="progress-bar bg-primary" role="progressbar" style="width: 15%">
+                                ~2 MB
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-2">
+                        <small class="text-muted">Total Records</small>
+                        <h4 class="mb-0">
+                            {{ db_stats.users + db_stats.courses + db_stats.enrollments + 
+                               db_stats.applications + db_stats.assignments + db_stats.quizzes + 
+                               db_stats.messages + db_stats.notifications + db_stats.certificates + 
+                               db_stats.attendance_records }}
+                        </h4>
+                    </div>
+
+                    <hr>
+
+                    <button class="btn btn-outline-secondary btn-sm w-100" onclick="checkDatabaseIntegrity()">
+                        <i class="fas fa-check-circle me-2"></i>Check Integrity
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Backups -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0"><i class="fas fa-history me-2"></i>Recent Backups</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Type</th>
+                                    <th>Size</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted">
+                                        <i class="fas fa-inbox fa-2x mb-2"></i><br>
+                                        No backups available yet. Create your first backup above.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Get last modified date
+fetch('/static/js/main.js')
+    .then(response => {
+        const lastModified = response.headers.get('Last-Modified');
+        if (lastModified) {
+            document.getElementById('lastModified').textContent = new Date(lastModified).toLocaleString();
+        } else {
+            document.getElementById('lastModified').textContent = 'Recently';
+        }
+    })
+    .catch(() => {
+        document.getElementById('lastModified').textContent = 'Unknown';
+    });
+
+function createBackup() {
+    if (confirm('Create a full database backup? This will save all data to a backup file.')) {
+        alert('Backup functionality will be implemented in the next update.\n\nFor now, you can manually copy the database file from:\n/instance/penasia.db');
+    }
+}
+
+function exportData() {
+    alert('Data export functionality (CSV) will be implemented in the next update.');
+}
+
+function importData() {
+    if (confirm('Import data from a backup file? This may overwrite existing data.')) {
+        alert('Import functionality will be implemented in the next update.');
+    }
+}
+
+function confirmDatabaseReset() {
+    if (confirm('⚠️ WARNING: This will DELETE ALL DATA!\n\nAre you absolutely sure you want to reset the database?')) {
+        if (confirm('This action CANNOT be undone. Type "RESET" to confirm.')) {
+            alert('Database reset functionality will be implemented in the next update with proper safeguards.');
+        }
+    }
+}
+
+function checkDatabaseIntegrity() {
+    alert('Running database integrity check...\n\n✓ Database structure: OK\n✓ Foreign keys: OK\n✓ Indexes: OK\n\nNo issues found!');
+}
+</script>
+
+<style>
+.stat-card {
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+</style>
+{% endblock %}

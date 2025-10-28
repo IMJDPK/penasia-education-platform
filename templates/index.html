@@ -1,0 +1,657 @@
+{% extends "base.html" %}
+
+{% block title %}PenAsia Continuing Education Centre -             <div class="trust-item">
+                <i class="fas fa-certificate"></i>
+                <strong>Licensed Institution</strong>
+                <p>Hong Kong Education Bureau Licensed (#593958)</p>
+            </div>
+            <div class="trust-item">
+                <i class="fas fa-graduation-cap"></i>
+                <strong>Quality Education</strong>
+                <p>Professional Development Programs</p>
+                         <blockquote class="story-quote">
+                            "The business management modules at PenAsia taught me everything from cost control to customer service. The comprehensive curriculum helped me follow my dream."</blockquote>         </div>
+            <div class="trust-item">
+                <i class="fas fa-handshake"></i>
+                <strong>Industry Connected</strong>tion in Hong Kong{% endblock %}
+
+{% block content %}
+<!-- Premium Hero Section -->
+<section class="hero-section-premium">
+    <div class="hero-background">
+        <img src="{{ url_for('static', filename='images/hero/hero_01.png') }}" alt="PenAsia Campus" class="hero-bg-image" />
+        <div class="hero-overlay"></div>
+    </div>
+    
+    <div class="container-premium">
+        <div class="hero-content">
+            <div class="row">
+                <div class="col-lg-8">
+                    <h1 class="hero-title hero-title-white">Shaping tomorrow's global leaders</h1>
+                    <p class="hero-subtitle">A premier university in the heart of Asia, offering fast-track degrees in business, hospitality, and culinary arts.</p>
+                    
+                    <!-- Trust Credentials -->
+                    <div class="hero-credentials">
+                        <div class="credential-item">
+                            <i class="fas fa-certificate"></i>
+                            <span>HK Education License #593958</span>
+                        </div>
+                        <div class="credential-item">
+                            <i class="fas fa-certificate"></i>
+                            <span>Accredited Programs</span>
+                        </div>
+                        <div class="credential-item">
+                            <i class="fas fa-users"></i>
+                            <span>98% Employment Rate</span>
+                        </div>
+                        <div class="credential-item">
+                            <i class="fas fa-building"></i>
+                            <span>50+ Industry Partners</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Call-to-Action Buttons -->
+                    <div class="hero-ctas">
+                        <a href="{{ url_for('courses') }}" class="btn-primary-premium">
+                            <i class="fas fa-graduation-cap me-2"></i>
+                            Explore Programs
+                        </a>
+                        <a href="{{ url_for('apply') }}" class="btn-outline-premium">
+                            <i class="fas fa-arrow-right me-2"></i>
+                            Apply Now
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Success Statistics -->
+                <div class="col-lg-4">
+                    <div class="success-statistics">
+                        <div class="stat-card">
+                            <span class="stat-number">1,500+</span>
+                            <p class="stat-label">Graduates</p>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number">98%</span>
+                            <p class="stat-label">Employment Rate</p>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number">25+</span>
+                            <p class="stat-label">Years Experience</p>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number">HK$35K+</span>
+                            <p class="stat-label">Average Starting Salary</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Trust Signals Section -->
+<section class="trust-signals-section">
+    <div class="container-premium">
+        <div class="trust-signals-grid">
+            <div class="trust-item">
+                <i class="fas fa-shield-alt"></i>
+                <strong>Licensed Institution</strong>
+                <p>Hong Kong Education Bureau Licensed (#593958)</p>
+            </div>
+            <div class="trust-item">
+                <i class="fas fa-handshake"></i>
+                <strong>Industry Connected</strong>
+                <p>Direct partnerships with leading hotels</p>
+            </div>
+            <div class="trust-item">
+                <i class="fas fa-trophy"></i>
+                <strong>Proven Results</strong>
+                <p>98% graduate employment rate</p>
+            </div>
+            <div class="trust-item">
+                <i class="fas fa-clock"></i>
+                <strong>Flexible Learning</strong>
+                <p>Full-time, part-time & evening options</p>
+            </div>
+            <div class="trust-item">
+                <i class="fas fa-user-tie"></i>
+                <strong>Expert Faculty</strong>
+                <p>Industry professionals with 15+ years experience</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 class="display-6 mb-4">About PenAsia</h2>
+                <p class="lead">盈亞持續教育中心 (PenAsia Continuing Education Centre) is a licensed educational institution committed to providing quality continuing education programs in Hong Kong.</p>
+                <p>With Education License No. 593958, we offer professional development opportunities in hospitality, business management, and culinary arts with programs designed to meet industry standards.</p>
+                <a href="{{ url_for('about') }}" class="btn btn-outline-primary">Learn More About Us</a>
+            </div>
+            <div class="col-lg-6">
+                <img src="{{ url_for('static', filename='images/about/about_01.jpg') }}" alt="PenAsia Campus" class="img-fluid rounded shadow">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Programs Section -->
+<section class="section-premium">
+    <div class="container-premium">
+        <div class="text-center mb-5">
+            <h2 class="section-title">Premier Programs</h2>
+            <p class="section-subtitle">Launch your career with our industry-leading programs designed for Hong Kong's hospitality sector</p>
+        </div>
+        
+        <div class="grid-premium grid-2">
+            <!-- Hotel Culinary Management -->
+            <div class="program-card-premium">
+                <div class="program-image">
+                    <img src="{{ url_for('static', filename='images/courses/courses_01.jpg') }}" alt="Hotel Culinary Management">
+                    <div class="program-overlay">
+                        <div class="program-badge">2-Year Diploma</div>
+                    </div>
+                </div>
+                <div class="program-content">
+                    <h3>Hotel Culinary Management Diploma</h3>
+                    <p class="program-description">Master the art of culinary excellence and hospitality management. This comprehensive 2-year program combines hands-on kitchen training with essential business skills.</p>
+                    
+                    <div class="program-details">
+                        <div class="detail-item">
+                            <i class="fas fa-clock"></i>
+                            <span>2 Years Full-Time</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-dollar-sign"></i>
+                            <span>HK$141,100</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-users"></i>
+                            <span>98% Employment Rate</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-globe"></i>
+                            <span>English & Cantonese</span>
+                        </div>
+                    </div>
+                    
+                    <div class="program-actions">
+                        <a href="{{ url_for('course_detail', course_id=169) }}" class="btn-primary-premium">View Program</a>
+                        <a href="{{ url_for('apply') }}" class="btn-cef-premium">Apply Now</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- BTEC Business Management -->
+            <div class="program-card-premium">
+                <div class="program-image">
+                    <img src="{{ url_for('static', filename='images/courses/courses_02.jpg') }}" alt="BTEC Business Management">
+                    <div class="program-overlay">
+                        <div class="program-badge">Level 5 HND</div>
+                    </div>
+                </div>
+                <div class="program-content">
+                    <h3>BTEC Business Management HND</h3>
+                    <p class="program-description">Pearson BTEC Level 5 Higher National Diploma with direct progression to UK university final year. Build essential business and management skills.</p>
+                    
+                    <div class="program-details">
+                        <div class="detail-item">
+                            <i class="fas fa-clock"></i>
+                            <span>24 Months</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-dollar-sign"></i>
+                            <span>HK$78,000</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-graduation-cap"></i>
+                            <span>UK Degree Pathway</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-calendar"></i>
+                            <span>4 Intakes/Year</span>
+                        </div>
+                    </div>
+                    
+                    <div class="program-actions">
+                        <a href="{{ url_for('course_detail', course_id=1) }}" class="btn-primary-premium">View Program</a>
+                        <a href="{{ url_for('apply') }}" class="btn-secondary-premium">Apply Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Additional Program Highlights -->
+        <div class="grid-premium grid-3 mt-5">
+            <!-- Western Bakery -->
+            <div class="program-card-premium">
+                <div class="program-image">
+                    <img src="{{ url_for('static', filename='images/courses/courses_03.jpg') }}" alt="Western Bakery">
+                </div>
+                <div class="program-content">
+                    <h3>Western Bakery & Pastry</h3>
+                    <p class="program-description">QF Level 2 certificate with hands-on practical training in Western baking techniques.</p>
+                    
+                    <div class="program-details">
+                        <div class="detail-item">
+                            <i class="fas fa-clock"></i>
+                            <span>11 Weeks</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-dollar-sign"></i>
+                            <span>HK$12,620</span>
+                        </div>
+                    </div>
+                    
+                    <div class="program-actions">
+                        <a href="{{ url_for('course_detail', course_id=171) }}" class="btn-primary-premium">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Western Cuisine -->
+            <div class="program-card-premium">
+                <div class="program-image">
+                    <img src="{{ url_for('static', filename='images/courses/courses_01.jpg') }}" alt="Western Cuisine">
+                </div>
+                <div class="program-content">
+                    <h3>Western Cuisine Certificate</h3>
+                    <p class="program-description">Professional culinary skills training with focus on Western cooking techniques and presentation.</p>
+                    
+                    <div class="program-details">
+                        <div class="detail-item">
+                            <i class="fas fa-clock"></i>
+                            <span>10 Weeks</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-dollar-sign"></i>
+                            <span>HK$13,200</span>
+                        </div>
+                    </div>
+                    
+                    <div class="program-actions">
+                        <a href="{{ url_for('course_detail', course_id=179) }}" class="btn-primary-premium">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- All Programs -->
+            <div class="card-premium d-flex align-items-center justify-content-center text-center" style="min-height: 300px;">
+                <div>
+                    <i class="fas fa-graduation-cap text-accent" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                    <h3 class="mb-3">View All Programs</h3>
+                    <p class="mb-4">Explore our complete range of hospitality and business programs</p>
+                    <a href="{{ url_for('courses') }}" class="btn-primary-premium">Browse All Courses</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Why Choose PenAsia Section -->
+<section class="section-premium">
+    <div class="container-premium">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 class="section-title text-left">Why Choose PenAsia?</h2>
+                <p class="body-text-premium mb-4">With over 25 years of excellence in hospitality education, PenAsia has established itself as Hong Kong's premier destination for culinary and business training.</p>
+                
+                <div class="grid-premium grid-2">
+                    <div class="d-flex align-items-start gap-3 mb-4">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-award text-accent" style="font-size: 2rem;"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-2">Industry Recognition</h5>
+                            <p class="mb-0">Officially licensed by Hong Kong Education Bureau with proven track record of graduate success.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex align-items-start gap-3 mb-4">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-handshake text-accent" style="font-size: 2rem;"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-2">Industry Partnerships</h5>
+                            <p class="mb-0">Direct connections with leading Hong Kong hotels and restaurants for internships and careers.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex align-items-start gap-3 mb-4">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-graduation-cap text-accent" style="font-size: 2rem;"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-2">Quality Education</h5>
+                            <p class="mb-0">Accredited programs designed to meet international hospitality industry standards.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex align-items-start gap-3 mb-4">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-user-tie text-accent" style="font-size: 2rem;"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-2">Expert Faculty</h5>
+                            <p class="mb-0">Learn from industry professionals with extensive experience in top Hong Kong establishments.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <a href="{{ url_for('about') }}" class="btn-primary-premium me-3">Learn More About Us</a>
+                    <a href="{{ url_for('contact') }}" class="btn-secondary-premium">Contact Admissions</a>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <img src="{{ url_for('static', filename='images/about/about_01.jpg') }}" alt="PenAsia Students" class="img-fluid rounded shadow-lg">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Success Statistics Section -->
+<section class="section-premium" style="background: var(--primary-blue); color: white;">
+    <div class="container-premium">
+        <div class="text-center mb-5">
+            <h2 class="section-title" style="color: white;">Our Success in Numbers</h2>
+            <p class="section-subtitle" style="color: rgba(255, 255, 255, 0.9);">Building careers and transforming lives across Hong Kong's hospitality industry</p>
+        </div>
+        
+        <div class="grid-premium grid-4">
+            <div class="text-center">
+                <div class="stat-number" style="color: var(--accent-gold);">25+</div>
+                <p class="stat-label" style="color: rgba(255, 255, 255, 0.9);">Years of Excellence</p>
+            </div>
+            <div class="text-center">
+                <div class="stat-number" style="color: var(--accent-gold);">1,500+</div>
+                <p class="stat-label" style="color: rgba(255, 255, 255, 0.9);">Successful Graduates</p>
+            </div>
+            <div class="text-center">
+                <div class="stat-number" style="color: var(--accent-gold);">98%</div>
+                <p class="stat-label" style="color: rgba(255, 255, 255, 0.9);">Employment Rate</p>
+            </div>
+            <div class="text-center">
+                <div class="stat-number" style="color: var(--accent-gold);">50+</div>
+                <p class="stat-label" style="color: rgba(255, 255, 255, 0.9);">Industry Partners</p>
+            </div>
+        </div>
+        
+        <div class="text-center mt-5">
+            <a href="{{ url_for('admissions') }}" class="btn-primary-premium">Start Your Journey</a>
+        </div>
+    </div>
+</section>
+<!-- Student Testimonials Section -->
+<section class="section-premium">
+    <div class="container-premium">
+        <div class="text-center mb-5">
+            <h2 class="section-title">Student Success Stories</h2>
+            <p class="section-subtitle">Hear from our graduates who've built successful careers in Hong Kong's hospitality industry</p>
+        </div>
+        
+        <div class="grid-premium grid-3">
+            <div class="testimonial-card">
+                <div class="testimonial-content">
+                    <blockquote>"The Hotel Culinary Management program transformed my career. The practical training and industry connections opened doors I never imagined possible in Hong Kong's competitive hospitality scene."</blockquote>
+                    <div class="testimonial-author">
+                        <img src="{{ url_for('static', filename='images/testimonials/testimonials_01.jpg') }}" alt="Sarah Chen">
+                        <div class="author-info">
+                            <h5>Sarah Chen</h5>
+                            <p>Sous Chef, The Peninsula Hong Kong<br>Hotel Culinary Management Graduate</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial-card">
+                <div class="testimonial-content">
+                    <blockquote>"PenAsia's BTEC program gave me the foundation to pursue my business degree in the UK. The support from faculty was exceptional throughout my journey."</blockquote>
+                    <div class="testimonial-author">
+                        <img src="{{ url_for('static', filename='images/testimonials/testimonials_02.jpg') }}" alt="David Wong">
+                        <div class="author-info">
+                            <h5>David Wong</h5>
+                            <p>Operations Manager, Shangri-La Hotels<br>BTEC Business Management Graduate</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial-card">
+                <div class="testimonial-content">
+                    <blockquote>"The practical training and evening classes allowed me to work while studying. The hands-on experience prepared me perfectly for running my own successful bakery!"</blockquote>
+                    <div class="testimonial-author">
+                        <img src="{{ url_for('static', filename='images/testimonials/testimonials_03.jpg') }}" alt="Emily Lam">
+                        <div class="author-info">
+                            <h5>Emily Lam</h5>
+                            <p>Owner, Sweet Dreams Bakery<br>Western Bakery Certificate Graduate</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Hong Kong Success Stories Section -->
+<section class="section-premium">
+    <div class="container-premium">
+        <div class="text-center mb-5">
+            <h2 class="section-title">Hong Kong Success Stories</h2>
+            <p class="section-subtitle">Real careers, real achievements from our Hong Kong graduates</p>
+        </div>
+        
+        <div class="row">
+            <!-- Success Story 1 - High-End Hotel -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="success-story-card">
+                    <div class="story-image">
+                        <img src="{{ url_for('static', filename='images/testimonials/testimonials_01.jpg') }}" alt="Michael Chan">
+                        <div class="story-overlay">
+                            <div class="salary-badge">HK$45,000/month</div>
+                        </div>
+                    </div>
+                    <div class="story-content">
+                        <h4 class="graduate-name">Michael Chan</h4>
+                        <p class="graduate-position">Executive Sous Chef<br><span class="company-name">The Peninsula Hong Kong</span></p>
+                        
+                        <div class="success-metrics">
+                            <div class="metric">
+                                <span class="metric-number">3 Years</span>
+                                <span class="metric-label">To Executive Role</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-number">180%</span>
+                                <span class="metric-label">Salary Increase</span>
+                            </div>
+                        </div>
+                        
+                        <blockquote class="story-quote">
+                            "PenAsia's industry connections opened doors to The Peninsula. The practical training and mentorship prepared me for the fast-paced luxury hotel environment."
+                        </blockquote>
+                        
+                        <div class="program-completed">
+                            <i class="fas fa-graduation-cap text-primary"></i>
+                            <span>Hotel Culinary Management Diploma</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Success Story 2 - Restaurant Owner -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="success-story-card">
+                    <div class="story-image">
+                        <img src="{{ url_for('static', filename='images/testimonials/testimonials_03.jpg') }}" alt="Emily Lam">
+                        <div class="story-overlay">
+                            <div class="salary-badge">Own Business</div>
+                        </div>
+                    </div>
+                    <div class="story-content">
+                        <h4 class="graduate-name">Emily Lam</h4>
+                        <p class="graduate-position">Restaurant Owner<br><span class="company-name">Sweet Dreams Bakery & Café (Central)</span></p>
+                        
+                        <div class="success-metrics">
+                            <div class="metric">
+                                <span class="metric-number">2 Years</span>
+                                <span class="metric-label">To Own Business</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-number">5</span>
+                                <span class="metric-label">Staff Members</span>
+                            </div>
+                        </div>
+                        
+                        <blockquote class="story-quote">
+                            "The business management modules at PenAsia taught me everything from cost control to customer service. CEF funding made it affordable to follow my dream."
+                        </blockquote>
+                        
+                        <div class="program-completed">
+                            <i class="fas fa-graduation-cap text-primary"></i>
+                            <span>Western Bakery Certificate + Business Management</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Success Story 3 - International Career -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="success-story-card">
+                    <div class="story-image">
+                        <img src="{{ url_for('static', filename='images/testimonials/testimonials_02.jpg') }}" alt="David Wong">
+                        <div class="story-overlay">
+                            <div class="salary-badge">UK Career</div>
+                        </div>
+                    </div>
+                    <div class="story-content">
+                        <h4 class="graduate-name">David Wong</h4>
+                        <p class="graduate-position">Operations Manager<br><span class="company-name">Shangri-La London</span></p>
+                        
+                        <div class="success-metrics">
+                            <div class="metric">
+                                <span class="metric-number">4 Years</span>
+                                <span class="metric-label">HK to London</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-number">£45,000</span>
+                                <span class="metric-label">Annual Salary</span>
+                            </div>
+                        </div>
+                        
+                        <blockquote class="story-quote">
+                            "My BTEC qualification from PenAsia was recognized in the UK. The international hospitality network helped me secure this position in London."
+                        </blockquote>
+                        
+                        <div class="program-completed">
+                            <i class="fas fa-graduation-cap text-primary"></i>
+                            <span>BTEC Business Management + Hotel Operations</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Success Stats -->
+        <div class="success-stats">
+            <div class="container-premium">
+                <div class="row text-center">
+                    <div class="col-md-3">
+                        <div class="stat-item">
+                            <span class="stat-number">93%</span>
+                            <p class="stat-label">Employment Rate</p>
+                            <p class="stat-detail">within 6 months</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-item">
+                            <span class="stat-number">HK$28,000</span>
+                            <p class="stat-label">Average Starting Salary</p>
+                            <p class="stat-detail">hospitality graduates</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-item">
+                            <span class="stat-number">150%</span>
+                            <p class="stat-label">Average Salary Increase</p>
+                            <p class="stat-detail">after 2 years</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-item">
+                            <span class="stat-number">75</span>
+                            <p class="stat-label">Partner Employers</p>
+                            <p class="stat-detail">in Hong Kong</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Industry Partnership Logos -->
+        <div class="industry-partners">
+            <div class="container-premium">
+                <h4 class="text-center mb-4 text-muted">Our Graduates Work At:</h4>
+                <div class="partner-logos">
+                    <div class="partner-logo">
+                        <div class="logo-placeholder">Peninsula</div>
+                    </div>
+                    <div class="partner-logo">
+                        <div class="logo-placeholder">Shangri-La</div>
+                    </div>
+                    <div class="partner-logo">
+                        <div class="logo-placeholder">Mandarin Oriental</div>
+                    </div>
+                    <div class="partner-logo">
+                        <div class="logo-placeholder">Four Seasons</div>
+                    </div>
+                    <div class="partner-logo">
+                        <div class="logo-placeholder">Conrad</div>
+                    </div>
+                    <div class="partner-logo">
+                        <div class="logo-placeholder">Ritz-Carlton</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Final Call to Action -->
+<section class="section-premium final-cta">
+    <div class="container-premium text-center">
+        <h2 class="section-title">Ready to Transform Your Career?</h2>
+        <p class="section-subtitle">Join over 1,500 successful graduates who have built thriving careers in Hong Kong's hospitality industry</p>
+        
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+            <a href="{{ url_for('apply') }}" class="btn-primary-premium">
+                <i class="fas fa-graduation-cap me-2"></i>Apply Today
+            </a>
+            <a href="{{ url_for('courses') }}" class="btn-outline-premium">
+                <i class="fas fa-book me-2"></i>View Programs
+            </a>
+            <a href="{{ url_for('contact') }}" class="btn-outline-premium">
+                <i class="fas fa-phone me-2"></i>Speak to Admissions
+            </a>
+        </div>
+        
+        <div class="mt-5 d-flex justify-content-center align-items-center gap-4 flex-wrap">
+            <div class="d-flex align-items-center gap-2">
+                <i class="fas fa-phone text-accent"></i>
+                <span>+852 2893 6788</span>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <i class="fab fa-whatsapp text-accent"></i>
+                <span>WhatsApp Us</span>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <i class="fas fa-envelope text-accent"></i>
+                <span>info@penasia.edu.hk</span>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

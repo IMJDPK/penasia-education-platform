@@ -1,0 +1,396 @@
+{% extends "base.html" %}
+
+{% block title %}Student Dashboard - PenAsia Continuing Education Centre{% endblock %}
+
+{% block content %}
+<!-- Welcome Section -->
+<section class="py-4 bg-primary text-white">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h1 class="h3 mb-2">Welcome back, {{ current_user.first_name }}!</h1>
+                <p class="lead mb-0">Manage your courses and track your progress</p>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <button class="btn btn-outline-light btn-sm me-2 help-button" data-module="student_dashboard" data-bs-toggle="tooltip" title="Get help navigating your dashboard">
+                    <i class="fas fa-question-circle me-1"></i>Help Guide
+                </button>
+                <a href="{{ url_for('courses') }}" class="btn btn-light">
+                    <i class="fas fa-plus-circle me-2"></i>Browse Courses
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Dashboard Content -->
+<section class="py-5">
+    <div class="container">
+        <!-- Quick Stats -->
+        <div class="row mb-5">
+            <div class="col-md-3 mb-4">
+                <div class="card bg-primary text-white" data-bs-toggle="tooltip" title="Total number of courses you are currently enrolled in">
+                    <div class="card-body text-center">
+                        <i class="fas fa-graduation-cap fa-2x mb-2"></i>
+                        <h4>{{ enrollments|length }}</h4>
+                        <p class="mb-0">Active Enrollments</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card bg-success text-white" data-bs-toggle="tooltip" title="All applications you have submitted">
+                    <div class="card-body text-center">
+                        <i class="fas fa-file-alt fa-2x mb-2"></i>
+                        <h4>{{ applications|length }}</h4>
+                        <p class="mb-0">Total Applications</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card bg-warning text-white" data-bs-toggle="tooltip" title="Applications awaiting admin review">
+                    <div class="card-body text-center">
+                        <i class="fas fa-clock fa-2x mb-2"></i>
+                        <h4>{{ applications|selectattr("status", "equalto", "pending")|list|length }}</h4>
+                        <p class="mb-0">Pending Applications</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card bg-info text-white" data-bs-toggle="tooltip" title="Certificates you have earned for completed courses">
+                    <div class="card-body text-center">
+                        <i class="fas fa-certificate fa-2x mb-2"></i>
+                        <h4>{{ enrollments|selectattr("certificate_issued", "equalto", true)|list|length }}</h4>
+                        <p class="mb-0">Certificates Earned</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Current Enrollments -->
+            <div class="col-lg-8 mb-4">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="fas fa-graduation-cap me-2"></i>Current Enrollments
+                        </h5>
+                        {% if enrollments %}
+                            <span class="badge bg-primary">{{ enrollments|length }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="card-body">
+                        {% if enrollments %}
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Course</th>
+                                            <th>Status</th>
+                                            <th>Progress</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for enrollment in enrollments %}
+                                        <tr>
+                                            <td>
+                                                <strong>{{ enrollment.course.title }}</strong><br>
+                                                <small class="text-muted">{{ enrollment.course.course_code }}</small>
+                                            </td>
+                                            <td>
+                                                {% if enrollment.status == 'active' %}
+                                                    <span class="badge bg-success">Active</span>
+                                                {% elif enrollment.status == 'completed' %}
+                                                    <span class="badge bg-primary">Completed</span>
+                                                {% elif enrollment.status == 'withdrawn' %}
+                                                    <span class="badge bg-danger">Withdrawn</span>
+                                                {% else %}
+                                                    <span class="badge bg-secondary">{{ enrollment.status|title }}</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                <div class="progress" style="height: 20px;">
+                                                    <div class="progress-bar" role="progressbar" 
+                                                         style="width: {{ enrollment.attendance_percentage or 0 }}%"
+                                                         aria-valuenow="{{ enrollment.attendance_percentage or 0 }}" 
+                                                         aria-valuemin="0" aria-valuemax="100">
+                                                        {{ "%.0f"|format(enrollment.attendance_percentage or 0) }}%
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <a href="{{ url_for('course_detail', course_id=enrollment.course.id) }}" 
+                                                   class="btn btn-sm btn-outline-primary">
+                                                    <i class="fas fa-eye me-1"></i>View
+                                                </a>
+                                                {% if enrollment.certificate_issued %}
+                                                    <button class="btn btn-sm btn-success">
+                                                        <i class="fas fa-download me-1"></i>Certificate
+                                                    </button>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <div class="text-center py-4">
+                                <i class="fas fa-graduation-cap fa-3x text-muted mb-3"></i>
+                                <h5 class="text-muted">No Current Enrollments</h5>
+                                <p class="text-muted mb-3">You're not enrolled in any courses yet.</p>
+                                <a href="{{ url_for('courses') }}" class="btn btn-primary">
+                                    <i class="fas fa-search me-2"></i>Browse Available Courses
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Applications -->
+            <div class="col-lg-4 mb-4">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="fas fa-file-alt me-2"></i>Recent Applications
+                        </h5>
+                        {% if applications %}
+                            <span class="badge bg-secondary">{{ applications|length }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="card-body">
+                        {% if applications %}
+                            {% for application in applications[:5] %}
+                                <div class="d-flex justify-content-between align-items-center mb-3 p-3 bg-light rounded">
+                                    <div>
+                                        <h6 class="mb-1">{{ application.course.title }}</h6>
+                                        <small class="text-muted">
+                                            Applied: {{ application.submitted_at.strftime('%Y-%m-%d') }}
+                                        </small>
+                                    </div>
+                                    <div>
+                                        {% if application.status == 'pending' %}
+                                            <span class="badge bg-warning">Pending</span>
+                                        {% elif application.status == 'approved' %}
+                                            <span class="badge bg-success">Approved</span>
+                                        {% elif application.status == 'rejected' %}
+                                            <span class="badge bg-danger">Rejected</span>
+                                        {% elif application.status == 'waitlist' %}
+                                            <span class="badge bg-info">Waitlist</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            
+                            {% if applications|length > 5 %}
+                                <div class="text-center">
+                                    <a href="#" class="btn btn-sm btn-outline-primary">View All Applications</a>
+                                </div>
+                            {% endif %}
+                        {% else %}
+                            <div class="text-center py-4">
+                                <i class="fas fa-file-alt fa-2x text-muted mb-2"></i>
+                                <p class="text-muted mb-3">No applications yet</p>
+                                <a href="{{ url_for('courses') }}" class="btn btn-sm btn-primary">Apply for Courses</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Assignments and Schedule Section -->
+        <div class="row">
+            <!-- Upcoming Assignments -->
+            <div class="col-lg-6 mb-4">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="fas fa-tasks me-2"></i>Upcoming Assignments
+                        </h5>
+                        {% if upcoming_assignments %}
+                            <span class="badge bg-warning">{{ upcoming_assignments|length }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="card-body">
+                        {% if upcoming_assignments %}
+                            {% for assignment in upcoming_assignments %}
+                            <div class="d-flex justify-content-between align-items-start mb-3 pb-3 {% if not loop.last %}border-bottom{% endif %}">
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-1">{{ assignment.title }}</h6>
+                                    <small class="text-muted">{{ assignment.course.course_code }}</small>
+                                    <div class="mt-1">
+                                        <span class="badge bg-{% if assignment.assignment_type == 'project' %}primary{% elif assignment.assignment_type == 'essay' %}info{% else %}secondary{% endif %}">
+                                            {{ assignment.assignment_type.title() }}
+                                        </span>
+                                        <span class="badge bg-light text-dark">{{ assignment.max_points }} points</span>
+                                    </div>
+                                    {% if assignment.days_until_due <= 3 %}
+                                    <div class="mt-1">
+                                        <small class="text-danger">
+                                            <i class="fas fa-exclamation-triangle me-1"></i>
+                                            Due in {{ assignment.days_until_due }} day{{ 's' if assignment.days_until_due != 1 else '' }}
+                                        </small>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                <div class="text-end">
+                                    <small class="text-muted d-block">Due:</small>
+                                    <small class="fw-bold">{{ assignment.due_date.strftime('%m/%d') }}</small>
+                                    <div class="mt-2">
+                                        {% set my_submission = assignment.get_student_submission(current_user.id) %}
+                                        {% if my_submission %}
+                                            <span class="badge bg-success">Submitted</span>
+                                        {% else %}
+                                            <a href="#" class="btn btn-sm btn-outline-primary" 
+                                               onclick="submitAssignment({{ assignment.id }})">Submit</a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            
+                            <div class="text-center mt-3">
+                                <a href="#" class="btn btn-sm btn-outline-primary">View All Assignments</a>
+                            </div>
+                        {% else %}
+                            <div class="text-center py-4">
+                                <i class="fas fa-tasks fa-2x text-muted mb-2"></i>
+                                <p class="text-muted mb-0">No upcoming assignments</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Upcoming Classes -->
+            <div class="col-lg-6 mb-4">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="fas fa-calendar-alt me-2"></i>Upcoming Classes
+                        </h5>
+                        {% if upcoming_classes %}
+                            <span class="badge bg-info">{{ upcoming_classes|length }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="card-body">
+                        {% if upcoming_classes %}
+                            {% for class in upcoming_classes %}
+                            <div class="d-flex justify-content-between align-items-start mb-3 pb-3 {% if not loop.last %}border-bottom{% endif %}">
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-1">{{ class.topic }}</h6>
+                                    <small class="text-muted">{{ class.course.course_code }}</small>
+                                    <div class="mt-1">
+                                        <small class="text-muted">
+                                            <i class="fas fa-map-marker-alt me-1"></i>{{ class.location or 'TBA' }}
+                                        </small>
+                                    </div>
+                                    <div class="mt-1">
+                                        <small class="text-muted">
+                                            <i class="fas fa-user me-1"></i>{{ class.instructor_name or 'TBA' }}
+                                        </small>
+                                    </div>
+                                    {% if class.online_meeting_url %}
+                                    <div class="mt-1">
+                                        <a href="{{ class.online_meeting_url }}" target="_blank" class="btn btn-sm btn-success">
+                                            <i class="fas fa-video me-1"></i>Join Online
+                                        </a>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                <div class="text-end">
+                                    <div class="{% if class.is_today %}text-primary fw-bold{% else %}text-muted{% endif %}">
+                                        {{ class.class_date.strftime('%m/%d') }}
+                                        {% if class.is_today %}
+                                        <br><small class="badge bg-primary">Today</small>
+                                        {% endif %}
+                                    </div>
+                                    <small class="text-muted d-block mt-1">
+                                        {{ class.start_time.strftime('%I:%M %p') }} - {{ class.end_time.strftime('%I:%M %p') }}
+                                    </small>
+                                    <small class="text-muted">
+                                        ({{ class.duration_minutes }} min)
+                                    </small>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            
+                            <div class="text-center mt-3">
+                                <a href="#" class="btn btn-sm btn-outline-info">View Full Schedule</a>
+                            </div>
+                        {% else %}
+                            <div class="text-center py-4">
+                                <i class="fas fa-calendar-alt fa-2x text-muted mb-2"></i>
+                                <p class="text-muted mb-0">No upcoming classes</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-bolt me-2"></i>Quick Actions
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <a href="{{ url_for('courses') }}" class="btn btn-outline-primary w-100">
+                                    <i class="fas fa-search me-2"></i>Browse Courses
+                                </a>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <a href="{{ url_for('contact') }}" class="btn btn-outline-success w-100">
+                                    <i class="fas fa-envelope me-2"></i>Contact Support
+                                </a>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <a href="#" class="btn btn-outline-info w-100">
+                                    <i class="fas fa-user-edit me-2"></i>Update Profile
+                                </a>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <a href="#" class="btn btn-outline-warning w-100">
+                                    <i class="fas fa-download me-2"></i>Download Transcripts
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Upcoming Deadlines or Announcements -->
+<section class="py-4 bg-light">
+    <div class="container">
+        <div class="alert alert-info mb-0" role="alert">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-bullhorn me-3"></i>
+                <div>
+                    <h6 class="alert-heading mb-1">Announcement</h6>
+                    <p class="mb-0">New course registrations for September 2025 intake are now open! 
+                    <a href="{{ url_for('courses') }}" class="alert-link">View available courses</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+function submitAssignment(assignmentId) {
+    // For now, show an alert - in future this would open a submission modal
+    alert('Assignment submission feature will be implemented. Assignment ID: ' + assignmentId);
+    // TODO: Implement assignment submission modal or redirect to submission page
+}
+</script>
+{% endblock %}

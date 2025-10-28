@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+
+{% block title %}System Settings - Admin Panel{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-lg-10 mx-auto">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2><i class="fas fa-cog me-2"></i>System Settings</h2>
+                    <p class="text-muted">Configure system-wide settings and preferences</p>
+                </div>
+                <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                </a>
+            </div>
+
+    <!-- General Settings -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>General Settings</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="#">
+                        <div class="mb-3">
+                            <label for="siteName" class="form-label">Site Name</label>
+                            <input type="text" class="form-control" id="siteName" name="site_name" 
+                                   value="{{ settings.site_name }}" required>
+                            <small class="text-muted">The name displayed across the website</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="contactEmail" class="form-label">Contact Email</label>
+                            <input type="email" class="form-control" id="contactEmail" name="contact_email" 
+                                   value="{{ settings.contact_email }}" required>
+                            <small class="text-muted">Primary contact email for the institution</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Phone Number</label>
+                            <input type="text" class="form-control" id="phone" name="phone" 
+                                   value="{{ settings.phone }}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Address</label>
+                            <textarea class="form-control" id="address" name="address" rows="3" required>{{ settings.address }}</textarea>
+                        </div>
+
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Note:</strong> These settings are currently displayed in read-only mode. 
+                            Full settings management will be available in the next update.
+                        </div>
+
+                        <!-- <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i>Save Changes
+                        </button> -->
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <!-- System Status -->
+            <div class="card shadow-sm mb-3">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="fas fa-check-circle me-2"></i>System Status</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span><i class="fas fa-server me-2 text-success"></i>Database</span>
+                        <span class="badge bg-success">Online</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span><i class="fas fa-envelope me-2 text-success"></i>Email Service</span>
+                        <span class="badge bg-success">Active</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span><i class="fas fa-lock me-2 text-success"></i>Security</span>
+                        <span class="badge bg-success">Enabled</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0"><i class="fas fa-bolt me-2"></i>Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <a href="{{ url_for('admin_backup') }}" class="btn btn-outline-info btn-sm w-100 mb-2">
+                        <i class="fas fa-database me-2"></i>Database Backup
+                    </a>
+                    <button class="btn btn-outline-warning btn-sm w-100 mb-2" onclick="clearCache()">
+                        <i class="fas fa-trash-alt me-2"></i>Clear Cache
+                    </button>
+                    <button class="btn btn-outline-danger btn-sm w-100" onclick="maintenanceMode()">
+                        <i class="fas fa-tools me-2"></i>Maintenance Mode
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feature Toggles -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0"><i class="fas fa-toggle-on me-2"></i>Feature Toggles</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="maintenanceMode" 
+                                       {{ 'checked' if settings.maintenance_mode else '' }} disabled>
+                                <label class="form-check-label" for="maintenanceMode">
+                                    <strong>Maintenance Mode</strong><br>
+                                    <small class="text-muted">Temporarily disable site access for maintenance</small>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="allowRegistrations" 
+                                       {{ 'checked' if settings.allow_registrations else '' }} disabled>
+                                <label class="form-check-label" for="allowRegistrations">
+                                    <strong>Allow Registrations</strong><br>
+                                    <small class="text-muted">Enable new user registrations</small>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="emailNotifications" 
+                                       {{ 'checked' if settings.email_notifications else '' }} disabled>
+                                <label class="form-check-label" for="emailNotifications">
+                                    <strong>Email Notifications</strong><br>
+                                    <small class="text-muted">Send automated email notifications</small>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="publicCourses" checked disabled>
+                                <label class="form-check-label" for="publicCourses">
+                                    <strong>Public Course Catalog</strong><br>
+                                    <small class="text-muted">Show courses to non-logged-in users</small>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- System Information -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0"><i class="fas fa-info me-2"></i>System Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <strong>Version:</strong><br>
+                            <span class="badge bg-primary">v2.0 (Phase 2)</span>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <strong>Framework:</strong><br>
+                            <span class="text-muted">Flask 2.3.3</span>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <strong>Database:</strong><br>
+                            <span class="text-muted">SQLite</span>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <strong>Environment:</strong><br>
+                            <span class="badge bg-warning text-dark">Development</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function clearCache() {
+    if (confirm('Are you sure you want to clear the cache?')) {
+        alert('Cache clearing functionality will be implemented in the next update.');
+    }
+}
+
+function maintenanceMode() {
+    if (confirm('Enable maintenance mode? This will disable site access for all users except admins.')) {
+        alert('Maintenance mode toggle will be implemented in the next update.');
+    }
+}
+</script>
+{% endblock %}

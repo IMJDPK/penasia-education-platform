@@ -1,0 +1,343 @@
+{% extends "base.html" %}
+
+{% block title %}Admissions - PenAsia Continuing Education Centre{% endblock %}
+
+{% block extra_head %}
+<style>
+.admissions-hero {
+    background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+    color: white;
+    padding: 5rem 0;
+}
+
+.admissions-hero .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: white;
+}
+
+.admissions-hero .hero-subtitle {
+    font-size: 1.2rem;
+    color: rgba(255,255,255,0.9);
+}
+
+.process-icon-premium {
+    background: var(--accent-gold) !important;
+    color: white !important;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow-medium);
+}
+
+.section-title-premium {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: var(--primary-blue);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.card-premium {
+    border: none;
+    box-shadow: var(--shadow-light);
+    border-radius: var(--radius-medium);
+    transition: var(--transition-medium);
+}
+
+.card-premium:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-heavy);
+}
+
+.card-header-premium {
+    background: var(--primary-blue) !important;
+    color: white !important;
+    border: none;
+    border-radius: var(--radius-medium) var(--radius-medium) 0 0 !important;
+}
+
+.card-header-success-premium {
+    background: var(--accent-gold) !important;
+    color: white !important;
+    border: none;
+    border-radius: var(--radius-medium) var(--radius-medium) 0 0 !important;
+}
+
+.check-icon-premium {
+    color: var(--accent-gold) !important;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="admissions-hero">
+    <div class="container text-center">
+        <h1 class="hero-title">Admissions</h1>
+        <p class="hero-subtitle">Your pathway to professional excellence starts here</p>
+    </div>
+</section>
+
+<!-- Application Process -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="section-title-premium">Application Process</h2>
+                <div class="row">
+                    <div class="col-md-3 text-center mb-4">
+                        <div class="process-icon-premium">
+                            <i class="fas fa-edit fa-2x"></i>
+                        </div>
+                        <h4 class="mt-3">1. Apply</h4>
+                        <p class="text-muted">Submit your application online with required documents</p>
+                    </div>
+                    <div class="col-md-3 text-center mb-4">
+                        <div class="process-icon-premium">
+                            <i class="fas fa-search fa-2x"></i>
+                        </div>
+                        <h4 class="mt-3">2. Review</h4>
+                        <p class="text-muted">Our admissions team reviews your application thoroughly</p>
+                    </div>
+                    <div class="col-md-3 text-center mb-4">
+                        <div class="process-icon-premium">
+                            <i class="fas fa-comments fa-2x"></i>
+                        </div>
+                        <h4 class="mt-3">3. Interview</h4>
+                        <p class="text-muted">Attend an interview (if required) to discuss your goals</p>
+                    </div>
+                    <div class="col-md-3 text-center mb-4">
+                        <div class="process-icon-premium">
+                            <i class="fas fa-graduation-cap fa-2x"></i>
+                        </div>
+                        <h4 class="mt-3">4. Enroll</h4>
+                        <p class="text-muted">Receive your acceptance and begin your studies</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Entry Requirements -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="section-title-premium">Entry Requirements</h2>
+        <div class="row">
+            <div class="col-lg-6 mb-4">
+                <div class="card card-premium h-100">
+                    <div class="card-header card-header-premium">
+                        <h4 class="mb-0">Diploma Programs</h4>
+                    </div>
+                    <div class="card-body">
+                        <h5>Hotel Culinary Management Diploma</h5>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="fas fa-check check-icon-premium"></i> Form 6 graduation or equivalent</li>
+                            <li class="mb-2"><i class="fas fa-check check-icon-premium"></i> IELTS 4.5 or equivalent English proficiency</li>
+                            <li class="mb-2"><i class="fas fa-check check-icon-premium"></i> Age 18 or above</li>
+                            <li class="mb-2"><i class="fas fa-check check-icon-premium"></i> Passion for culinary arts</li>
+                        </ul>
+                        
+                        <h5 class="mt-4">BTEC Business Management</h5>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="fas fa-check check-icon-premium"></i> HKDSE with minimum grades</li>
+                            <li class="mb-2"><i class="fas fa-check check-icon-premium"></i> IELTS 5.5 or equivalent</li>
+                            <li class="mb-2"><i class="fas fa-check check-icon-premium"></i> Age 18 or above</li>
+                            <li class="mb-2"><i class="fas fa-check check-icon-premium"></i> Interest in business management</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6 mb-4">
+                <div class="card card-premium h-100">
+                    <div class="card-header card-header-success-premium">
+                        <h4 class="mb-0">Certificate Programs</h4>
+                    </div>
+                    <div class="card-body">
+                        <h5>Western Bakery & Pastry</h5>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="fas fa-check check-icon-premium"></i> Form 3 graduation or equivalent</li>
+                            <li class="mb-2"><i class="fas fa-check check-icon-premium"></i> Age 18 or above</li>
+                            <li class="mb-2"><i class="fas fa-check check-icon-premium"></i> Basic Cantonese understanding</li>
+                            <li class="mb-2"><i class="fas fa-check check-icon-premium"></i> Physical ability to stand for extended periods</li>
+                        </ul>
+                        
+                        <h5 class="mt-4">Western Cuisine</h5>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="fas fa-check text-success"></i> Form 3 graduation or equivalent</li>
+                            <li class="mb-2"><i class="fas fa-check text-success"></i> Age 18 or above</li>
+                            <li class="mb-2"><i class="fas fa-check text-success"></i> Basic English or Cantonese</li>
+                            <li class="mb-2"><i class="fas fa-check text-success"></i> Interest in professional cooking</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Required Documents -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Required Documents</h2>
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="mb-4">Please prepare the following documents for your application:</h4>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5><i class="fas fa-file-alt text-primary"></i> Academic Documents</h5>
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">✓ Completed application form</li>
+                                    <li class="mb-2">✓ Academic transcripts (certified copies)</li>
+                                    <li class="mb-2">✓ Graduation certificates</li>
+                                    <li class="mb-2">✓ English proficiency test results (if applicable)</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h5><i class="fas fa-id-card text-primary"></i> Personal Documents</h5>
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">✓ Identity card/passport copy</li>
+                                    <li class="mb-2">✓ Recent passport-sized photos (2)</li>
+                                    <li class="mb-2">✓ Personal statement (for diploma programs)</li>
+                                    <li class="mb-2">✓ Letters of recommendation (if required)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Tuition Fees -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">Tuition Fees & Payment</h2>
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>Program</th>
+                                <th>Total Fee (HK$)</th>
+                                <th>Payment Terms</th>
+                                <th>CEF Eligible</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Hotel Culinary Management</td>
+                                <td>141,100</td>
+                                <td>17 terms of HK$8,300 each</td>
+                                <td>No</td>
+                            </tr>
+                            <tr>
+                                <td>BTEC Business Management</td>
+                                <td>78,000</td>
+                                <td>Flexible payment plans available</td>
+                                <td>No</td>
+                            </tr>
+                            <tr>
+                                <td>Western Bakery & Pastry</td>
+                                <td>12,620</td>
+                                <td>Full payment before course start</td>
+                                <td>Yes (up to 80% reimbursement)</td>
+                            </tr>
+                            <tr>
+                                <td>Western Cuisine</td>
+                                <td>12,620</td>
+                                <td>Full payment before course start</td>
+                                <td>Yes (up to 80% reimbursement)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="alert alert-info mt-4">
+                    <h5><i class="fas fa-info-circle"></i> CEF Information</h5>
+                    <p class="mb-0">The Continuing Education Fund (CEF) provides financial assistance to eligible applicants. For CEF-eligible courses, you may receive up to 80% reimbursement (maximum HK$25,000) upon successful completion.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Important Dates -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Important Dates</h2>
+        <div class="row">
+            <div class="col-lg-6 mb-4">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">2025 Intake Dates</h4>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li class="mb-3">
+                                <strong>Hotel Culinary Management:</strong><br>
+                                <i class="fas fa-calendar text-primary"></i> September 8, 2025<br>
+                                <small class="text-muted">Application deadline: July 31, 2025</small>
+                            </li>
+                            <li class="mb-3">
+                                <strong>BTEC Business Management:</strong><br>
+                                <i class="fas fa-calendar text-primary"></i> October, January, April, July<br>
+                                <small class="text-muted">Applications accepted year-round</small>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6 mb-4">
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h4 class="mb-0">Certificate Programs</h4>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li class="mb-3">
+                                <strong>Western Bakery & Pastry:</strong><br>
+                                <i class="fas fa-calendar text-success"></i> Multiple intakes throughout the year<br>
+                                <small class="text-muted">Monday evenings, 11-week duration</small>
+                            </li>
+                            <li class="mb-3">
+                                <strong>Western Cuisine:</strong><br>
+                                <i class="fas fa-calendar text-success"></i> Multiple intakes throughout the year<br>
+                                <small class="text-muted">Wednesday evenings, 11-week duration</small>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact for Admissions -->
+<section class="py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h2 class="mb-3">Need Help with Your Application?</h2>
+                <p class="lead mb-0">Our admissions team is here to guide you through the application process and answer any questions you may have.</p>
+            </div>
+            <div class="col-lg-4 text-center">
+                <a href="{{ url_for('apply') }}" class="btn btn-light btn-lg mb-2 d-block">Start Application</a>
+                <a href="{{ url_for('contact') }}" class="btn btn-outline-light btn-lg d-block">Contact Admissions</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

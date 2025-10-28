@@ -1,0 +1,367 @@
+{% extends "base.html" %}
+
+{% block title %}Contact Us - PenAsia Continuing Education Centre{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="py-5 bg-primary text-white">
+    <div class="container text-center">
+        <h1 class="display-4 mb-4">Contact Us</h1>
+        <p class="lead">Get in touch with our team - we're here to help you succeed</p>
+    </div>
+</section>
+
+<!-- Contact Information -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <h2 class="mb-4">Get in Touch</h2>
+                <p class="lead">Have questions about our programs, admissions, or facilities? We'd love to hear from you. Our friendly team is ready to help you find the perfect program for your career goals.</p>
+                
+                <!-- Contact Form -->
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">Send Us a Message</h4>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" action="{{ url_for('contact') }}">
+                            {{ form.csrf_token }}
+                            
+                            {% if form.errors %}
+                            <div class="alert alert-danger">
+                                <strong>Please correct the following errors:</strong>
+                                <ul class="mb-0">
+                                {% for field, errors in form.errors.items() %}
+                                    {% if field != 'csrf_token' %}
+                                        {% for error in errors %}
+                                        <li>{{ error }}</li>
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endfor %}
+                                </ul>
+                            </div>
+                            {% endif %}
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    {{ form.first_name.label(class="form-label") }}
+                                    {{ form.first_name(class="form-control" + (" is-invalid" if form.first_name.errors else "")) }}
+                                    {% if form.first_name.errors %}
+                                    <div class="invalid-feedback">{{ form.first_name.errors[0] }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    {{ form.last_name.label(class="form-label") }}
+                                    {{ form.last_name(class="form-control" + (" is-invalid" if form.last_name.errors else "")) }}
+                                    {% if form.last_name.errors %}
+                                    <div class="invalid-feedback">{{ form.last_name.errors[0] }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    {{ form.email.label(class="form-label") }}
+                                    {{ form.email(class="form-control" + (" is-invalid" if form.email.errors else ""), type="email") }}
+                                    {% if form.email.errors %}
+                                    <div class="invalid-feedback">{{ form.email.errors[0] }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    {{ form.phone.label(class="form-label") }}
+                                    {{ form.phone(class="form-control" + (" is-invalid" if form.phone.errors else ""), type="tel") }}
+                                    {% if form.phone.errors %}
+                                    <div class="invalid-feedback">{{ form.phone.errors[0] }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                {{ form.subject.label(class="form-label") }}
+                                {{ form.subject(class="form-select" + (" is-invalid" if form.subject.errors else "")) }}
+                                {% if form.subject.errors %}
+                                <div class="invalid-feedback">{{ form.subject.errors[0] }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="mb-3">
+                                {{ form.program_interest.label(class="form-label") }}
+                                {{ form.program_interest(class="form-select" + (" is-invalid" if form.program_interest.errors else "")) }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form.message.label(class="form-label") }}
+                                {{ form.message(class="form-control" + (" is-invalid" if form.message.errors else ""), rows=5, placeholder="Please tell us how we can help you...") }}
+                                {% if form.message.errors %}
+                                <div class="invalid-feedback">{{ form.message.errors[0] }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="mb-3 form-check">
+                                {{ form.subscribe_newsletter(class="form-check-input", id="newsletter") }}
+                                {{ form.subscribe_newsletter.label(class="form-check-label", for="newsletter") }}
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-lg">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h4 class="mb-0">Contact Information</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <h5><i class="fas fa-map-marker-alt text-primary"></i> Address</h5>
+                            <p class="mb-0">PenAsia Continuing Education Centre<br>
+                            1/F, Block C, Cho Yiu Centre<br>
+                            Cho Yiu Chuen, No.6 King Cho Road<br>
+                            Kwai Chung, Hong Kong</p>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h5><i class="fas fa-phone text-primary"></i> Phone</h5>
+                            <p class="mb-0">
+                                <strong>Main Office:</strong> +852 2529 6138<br>
+                                <strong>Fax:</strong> +852 2529 6311<br>
+                                <strong>Emergency:</strong> +852 9123 4567
+                            </p>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h5><i class="fas fa-envelope text-primary"></i> Email</h5>
+                            <p class="mb-0">
+                                <strong>General:</strong> enquiry@penasia.edu.hk<br>
+                                <strong>Admissions:</strong> admissions@penasia.edu.hk<br>
+                                <strong>Student Support:</strong> support@penasia.edu.hk
+                            </p>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h5><i class="fas fa-clock text-primary"></i> Office Hours</h5>
+                            <p class="mb-0">
+                                <strong>Monday - Friday:</strong> 9:00 AM - 7:00 PM<br>
+                                <strong>Saturday:</strong> 9:00 AM - 4:00 PM<br>
+                                <strong>Sunday:</strong> Closed
+                            </p>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h5><i class="fas fa-share-alt text-primary"></i> Follow Us</h5>
+                            <div class="d-flex">
+                                <a href="#" class="btn btn-outline-primary btn-sm me-2">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                                <a href="#" class="btn btn-outline-info btn-sm me-2">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                                <a href="#" class="btn btn-outline-success btn-sm me-2">
+                                    <i class="fab fa-whatsapp"></i>
+                                </a>
+                                <a href="#" class="btn btn-outline-danger btn-sm">
+                                    <i class="fab fa-youtube"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Quick Links -->
+                <div class="card mt-4">
+                    <div class="card-header bg-warning text-dark">
+                        <h5 class="mb-0">Quick Links</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <a href="{{ url_for('apply') }}" class="text-decoration-none">
+                                    <i class="fas fa-edit text-primary me-2"></i>Apply Online
+                                </a>
+                            </li>
+                            <li class="mb-2">
+                                <a href="{{ url_for('courses') }}" class="text-decoration-none">
+                                    <i class="fas fa-book text-success me-2"></i>Browse Programs
+                                </a>
+                            </li>
+                            <li class="mb-2">
+                                <a href="{{ url_for('facilities') }}" class="text-decoration-none">
+                                    <i class="fas fa-building text-info me-2"></i>Campus Tour
+                                </a>
+                            </li>
+                            <li class="mb-2">
+                                <a href="{{ url_for('admissions') }}" class="text-decoration-none">
+                                    <i class="fas fa-info-circle text-warning me-2"></i>Admissions Info
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Location Map -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">Find Us</h2>
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="mb-4 text-center">Campus Location</h4>
+                        <!-- Placeholder for map - in a real implementation, you would integrate Google Maps or similar -->
+                        <div class="bg-light p-5 text-center rounded" style="min-height: 300px;">
+                            <i class="fas fa-map-marked-alt fa-4x text-primary mb-3"></i>
+                            <h5>Interactive Map</h5>
+                            <p class="text-muted">Map integration coming soon</p>
+                            <a href="https://maps.google.com" target="_blank" class="btn btn-primary">View on Google Maps</a>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <h5>Transportation</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6><i class="fas fa-subway text-primary"></i> MTR</h6>
+                                    <ul class="list-unstyled small">
+                                        <li>Central Station (2 minutes walk)</li>
+                                        <li>Admiralty Station (5 minutes walk)</li>
+                                        <li>Exit A2 from Central Station</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6><i class="fas fa-bus text-success"></i> Bus</h6>
+                                    <ul class="list-unstyled small">
+                                        <li>Routes: 2, 23, 40, 103</li>
+                                        <li>Stop: Education Street</li>
+                                        <li>City Bus and NWFB services</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Frequently Asked Questions</h2>
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="accordion" id="faqAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                How do I apply for a program?
+                            </button>
+                        </h2>
+                        <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                You can apply online through our application form, submit required documents, and attend an interview if required. Visit our <a href="{{ url_for('admissions') }}">admissions page</a> for detailed information.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                Are there payment plans available?
+                            </button>
+                        </h2>
+                        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Yes, we offer flexible payment plans for diploma programs. Certificate courses eligible for CEF can receive up to 80% reimbursement upon successful completion.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                Can I visit the campus before applying?
+                            </button>
+                        </h2>
+                        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Absolutely! We encourage prospective students to visit our campus. Contact us to schedule a tour of our facilities and meet with our admissions team.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                                What are the English language requirements?
+                            </button>
+                        </h2>
+                        <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                English requirements vary by program. Diploma programs require IELTS 4.5-5.5, while certificate programs may be conducted in Cantonese or have lower English requirements.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                                Do you provide job placement assistance?
+                            </button>
+                        </h2>
+                        <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Yes, we provide career guidance, job placement assistance, and maintain strong relationships with industry partners to help our graduates find employment opportunities.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Emergency Contact -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h3 class="mb-4">Need Immediate Assistance?</h3>
+                <p class="lead">For urgent matters outside office hours, please contact our emergency hotline.</p>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <i class="fas fa-phone-alt fa-2x text-danger mb-2"></i>
+                                <h5>Emergency Hotline</h5>
+                                <p class="h4 text-danger">+852 9123 4567</p>
+                                <small class="text-muted">Available 24/7</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <i class="fab fa-whatsapp fa-2x text-success mb-2"></i>
+                                <h5>WhatsApp Support</h5>
+                                <p class="h4 text-success">+852 9123 4568</p>
+                                <small class="text-muted">Mon-Fri 9AM-6PM</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact CTA -->
+<section class="py-5 bg-primary text-white">
+    <div class="container text-center">
+        <h2 class="mb-4">Ready to Start Your Journey?</h2>
+        <p class="lead mb-4">Contact us today to learn more about our programs and how we can help you achieve your career goals.</p>
+        <a href="{{ url_for('apply') }}" class="btn btn-light btn-lg me-3">Apply Now</a>
+        <a href="tel:+85225296138" class="btn btn-outline-light btn-lg">Call Us Today</a>
+    </div>
+</section>
+{% endblock %}

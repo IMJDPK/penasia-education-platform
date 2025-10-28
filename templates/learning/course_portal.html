@@ -1,0 +1,308 @@
+{% extends "base.html" %}
+
+{% block title %}{{ course.title }} - Learning Portal{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-lg-3 col-md-4 bg-light border-end">
+            <div class="p-3">
+                <h5 class="mb-3">
+                    <i class="fas fa-graduation-cap me-2"></i>{{ course.course_code }}
+                </h5>
+                <h6 class="text-muted mb-3">Course Progress</h6>
+                
+                <!-- Progress Bar -->
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <small class="text-muted">Overall Progress</small>
+                        <small class="text-muted">{{ "%.0f"|format(progress_percentage) }}%</small>
+                    </div>
+                    <div class="progress" style="height: 8px;">
+                        <div class="progress-bar bg-success" role="progressbar" 
+                             style="width: {{ progress_percentage }}%"></div>
+                    </div>
+                    <small class="text-muted">{{ completed_lessons }}/{{ total_lessons }} lessons completed</small>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="row text-center mb-3">
+                    <div class="col-6">
+                        <div class="border rounded p-2">
+                            <strong class="text-primary">{{ total_lessons }}</strong>
+                            <br><small class="text-muted">Lessons</small>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="border rounded p-2">
+                            <strong class="text-success">{{ course.estimated_duration_hours }}h</strong>
+                            <br><small class="text-muted">Duration</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Module Navigation -->
+                <h6 class="text-muted mb-2">Course Content</h6>
+                <div class="list-group list-group-flush">
+                    {% for module in modules %}
+                    <div class="list-group-item px-0">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <strong class="text-dark">{{ module.title }}</strong>
+                            <small class="text-muted">{{ module.lesson_count }} lessons</small>
+                        </div>
+                        
+                        <!-- Module Lessons -->
+                        <div class="mt-2">
+                            {% for lesson in module.lessons %}
+                            {% if lesson.is_published %}
+                            {% set lesson_progress = None %}
+                            {% for progress in recent_progress %}
+                                {% if progress.lesson_id == lesson.id %}
+                                    {% set lesson_progress = progress %}
+                                {% endif %}
+                            {% endfor %}
+                            
+                            <a href="{{ url_for('student_lesson_view', lesson_id=lesson.id) }}" 
+                               class="d-block text-decoration-none py-1 px-2 rounded small
+                                      {% if lesson_progress and lesson_progress.completed %}text-success{% else %}text-muted{% endif %}
+                                      hover-bg-light">
+                                <i class="fas fa-{% if lesson_progress and lesson_progress.completed %}check-circle text-success{% else %}circle text-muted{% endif %} me-2"></i>
+                                {{ lesson.title }}
+                                {% if lesson.content_type == 'video' %}
+                                <i class="fas fa-video ms-1"></i>
+                                {% elif lesson.content_type == 'document' %}
+                                <i class="fas fa-file-alt ms-1"></i>
+                                {% elif lesson.content_type == 'external' %}
+                                <i class="fas fa-external-link-alt ms-1"></i>
+                                {% endif %}
+                            </a>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-lg-9 col-md-8">
+            <div class="p-4">
+                <!-- Course Header -->
+                <div class="d-flex justify-content-between align-items-start mb-4">
+                    <div>
+                        <h1 class="h3 mb-2">{{ course.title }}</h1>
+                        <p class="text-muted mb-0">{{ course.description or 'Welcome to your learning journey!' }}</p>
+                    </div>
+                    <div class="text-end">
+                        <span class="badge bg-success fs-6">Enrolled</span>
+                        <br><small class="text-muted">Started: {{ enrollment.enrollment_date.strftime('%b %d, %Y') }}</small>
+                    </div>
+                </div>
+
+                <!-- Progress Overview -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h4 class="text-primary mb-1">{{ completed_lessons }}</h4>
+                                <small class="text-muted">Completed</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h4 class="text-warning mb-1">{{ total_lessons - completed_lessons }}</h4>
+                                <small class="text-muted">Remaining</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h4 class="text-info mb-1">{{ modules|length }}</h4>
+                                <small class="text-muted">Modules</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h4 class="text-success mb-1">{{ "%.0f"|format(progress_percentage) }}%</h4>
+                                <small class="text-muted">Complete</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                {% if total_lessons > 0 %}
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        {% if completed_lessons == 0 %}
+                        <!-- Start First Lesson -->
+                        {% set first_lesson = modules[0].lessons[0] if modules and modules[0].lessons else None %}
+                        {% if first_lesson and first_lesson.is_published %}
+                        <div class="card border-primary">
+                            <div class="card-body text-center">
+                                <h5 class="card-title text-primary">Ready to Start Learning?</h5>
+                                <p class="card-text">Begin with your first lesson and start your learning journey.</p>
+                                <a href="{{ url_for('student_lesson_view', lesson_id=first_lesson.id) }}" 
+                                   class="btn btn-primary">
+                                    <i class="fas fa-play me-2"></i>Start First Lesson
+                                </a>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% else %}
+                        <!-- Continue Learning -->
+                        <div class="card border-success">
+                            <div class="card-body text-center">
+                                <h5 class="card-title text-success">Keep Going!</h5>
+                                <p class="card-text">You're making great progress. Continue where you left off.</p>
+                                <a href="#" class="btn btn-success" onclick="continueFromLastLesson()">
+                                    <i class="fas fa-forward me-2"></i>Continue Learning
+                                </a>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        <!-- Course Information -->
+                        <div class="card">
+                            <div class="card-body">
+                                <h6 class="card-title">
+                                    <i class="fas fa-info-circle me-2"></i>Course Information
+                                </h6>
+                                <ul class="list-unstyled mb-0">
+                                    <li><strong>Duration:</strong> {{ course.duration_weeks }} weeks</li>
+                                    <li><strong>Level:</strong> {{ course.level }}</li>
+                                    <li><strong>Category:</strong> {{ course.category }}</li>
+                                    {% if course.instructor %}
+                                    <li><strong>Instructor:</strong> {{ course.instructor }}</li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Learning Modules -->
+                <h4 class="mb-3">
+                    <i class="fas fa-list-ol me-2"></i>Learning Modules
+                </h4>
+                
+                {% if modules %}
+                <div class="accordion" id="modulesAccordion">
+                    {% for module in modules %}
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading{{ module.id }}">
+                            <button class="accordion-button {% if not loop.first %}collapsed{% endif %}" 
+                                    type="button" data-bs-toggle="collapse" 
+                                    data-bs-target="#collapse{{ module.id }}">
+                                <div class="d-flex justify-content-between align-items-center w-100 me-3">
+                                    <div>
+                                        <strong>Module {{ module.order_index }}: {{ module.title }}</strong>
+                                        {% if module.description %}
+                                        <br><small class="text-muted">{{ module.description }}</small>
+                                        {% endif %}
+                                    </div>
+                                    <div class="text-end">
+                                        <span class="badge bg-secondary">{{ module.lesson_count }} lessons</span>
+                                        <br><small class="text-muted">{{ module.estimated_hours }}h estimated</small>
+                                    </div>
+                                </div>
+                            </button>
+                        </h2>
+                        <div id="collapse{{ module.id }}" 
+                             class="accordion-collapse collapse {% if loop.first %}show{% endif %}"
+                             data-bs-parent="#modulesAccordion">
+                            <div class="accordion-body">
+                                <div class="row">
+                                    {% for lesson in module.lessons %}
+                                    {% if lesson.is_published %}
+                                    {% set lesson_progress = None %}
+                                    {% for progress in recent_progress %}
+                                        {% if progress.lesson_id == lesson.id %}
+                                            {% set lesson_progress = progress %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    
+                                    <div class="col-md-6 mb-3">
+                                        <div class="card h-100 {% if lesson_progress and lesson_progress.completed %}border-success{% endif %}">
+                                            <div class="card-body">
+                                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                                    <h6 class="card-title mb-0">{{ lesson.title }}</h6>
+                                                    {% if lesson_progress and lesson_progress.completed %}
+                                                    <i class="fas fa-check-circle text-success"></i>
+                                                    {% endif %}
+                                                </div>
+                                                
+                                                {% if lesson.description %}
+                                                <p class="card-text small text-muted">{{ lesson.description[:100] }}{% if lesson.description|length > 100 %}...{% endif %}</p>
+                                                {% endif %}
+                                                
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <span class="badge bg-secondary">{{ lesson.content_type }}</span>
+                                                        <small class="text-muted ms-2">{{ lesson.duration_minutes }} min</small>
+                                                    </div>
+                                                    <a href="{{ url_for('student_lesson_view', lesson_id=lesson.id) }}" 
+                                                       class="btn btn-sm btn-outline-primary">
+                                                        {% if lesson_progress and lesson_progress.completed %}
+                                                        <i class="fas fa-redo me-1"></i>Review
+                                                        {% else %}
+                                                        <i class="fas fa-play me-1"></i>Start
+                                                        {% endif %}
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-5">
+                    <i class="fas fa-book-open fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">Course Content Coming Soon</h5>
+                    <p class="text-muted">The instructor is preparing the learning materials for this course.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function continueFromLastLesson() {
+    // This would ideally get the last accessed or next incomplete lesson
+    // For now, we'll redirect to the course portal and let them choose
+    const firstIncompleteLesson = document.querySelector('a[href*="/learn/lessons/"]:not(.text-success)');
+    if (firstIncompleteLesson) {
+        window.location.href = firstIncompleteLesson.href;
+    } else {
+        alert('All lessons completed! Great job!');
+    }
+}
+</script>
+
+<style>
+.hover-bg-light:hover {
+    background-color: #f8f9fa !important;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: #e7f3ff;
+    border-color: #b8daff;
+}
+</style>
+{% endblock %}

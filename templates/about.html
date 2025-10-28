@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+
+{% block title %}About Us - PenAsia Continuing Education Centre{% endblock %}
+
+{% block extra_head %}
+<style>
+.about-hero {
+    background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+    color: white;
+    padding: 5rem 0;
+}
+
+.about-hero .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: white;
+}
+
+.about-hero .hero-subtitle {
+    font-size: 1.2rem;
+    color: rgba(255,255,255,0.9);
+}
+
+.icon-circle-premium {
+    background: var(--accent-gold) !important;
+    color: white !important;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow-medium);
+}
+
+.section-title-premium {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: var(--primary-blue);
+    margin-bottom: 2rem;
+}
+
+.card-premium {
+    border: none;
+    box-shadow: var(--shadow-light);
+    border-radius: var(--radius-medium);
+}
+
+.card-header-premium {
+    background: var(--primary-blue) !important;
+    color: white !important;
+    border: none;
+    border-radius: var(--radius-medium) var(--radius-medium) 0 0 !important;
+}
+
+.check-icon-premium {
+    color: var(--accent-gold) !important;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="about-hero">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="hero-title">About PenAsia</h1>
+                <p class="hero-subtitle">盈亞持續教育中心 (PenAsia Continuing Education Centre) is a licensed educational institution committed to providing quality continuing education programs in Hong Kong.</p>
+                <p>With Education License No. 593958, we offer professional development opportunities in hospitality, business management, and culinary arts with programs designed to meet industry standards.</p>
+            </div>
+            <div class="col-lg-6">
+                <img src="{{ url_for('static', filename='images/about/about_01.jpg') }}" alt="PenAsia Campus" class="img-fluid rounded shadow">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Mission & Vision -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <div class="text-center">
+                    <div class="icon-circle-premium">
+                        <i class="fas fa-bullseye fa-2x"></i>
+                    </div>
+                    <h3>Our Mission</h3>
+                    <p>To provide high-quality continuing education that empowers individuals to achieve their career goals and contribute meaningfully to Hong Kong's dynamic economy.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="text-center">
+                    <div class="icon-circle-premium">
+                        <i class="fas fa-eye fa-2x"></i>
+                    </div>
+                    <h3>Our Vision</h3>
+                    <p>To be Hong Kong's leading provider of practical, industry-relevant continuing education programs that bridge the gap between learning and professional success.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="text-center">
+                    <div class="icon-circle-premium">
+                        <i class="fas fa-heart fa-2x"></i>
+                    </div>
+                    <h3>Our Values</h3>
+                    <p>Excellence in education, practical skills development, student-centered learning, and fostering lifelong learning opportunities for all our students.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Details -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <h2 class="section-title-premium">Our Institution</h2>
+                <p>PenAsia Continuing Education Centre has been serving the Hong Kong community for over 15 years, providing quality education programs that meet the evolving needs of today's workforce. Our institution is fully licensed and recognized by the Education Bureau of Hong Kong.</p>
+                
+                <h3 class="mt-5 mb-3">Why Choose PenAsia?</h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="fas fa-check check-icon-premium me-2"></i> Government licensed and approved</li>
+                            <li class="mb-2"><i class="fas fa-check check-icon-premium me-2"></i> Accredited courses with quality assurance</li>
+                            <li class="mb-2"><i class="fas fa-check check-icon-premium me-2"></i> Industry-experienced instructors</li>
+                            <li class="mb-2"><i class="fas fa-check check-icon-premium me-2"></i> Small class sizes for personalized attention</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="fas fa-check check-icon-premium me-2"></i> Modern facilities and equipment</li>
+                            <li class="mb-2"><i class="fas fa-check check-icon-premium me-2"></i> Flexible scheduling options</li>
+                            <li class="mb-2"><i class="fas fa-check check-icon-premium me-2"></i> Strong industry connections</li>
+                            <li class="mb-2"><i class="fas fa-check check-icon-premium me-2"></i> Comprehensive student support</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3 class="mt-5 mb-3">Our Commitment</h3>
+                <p>We are committed to maintaining the highest standards of education quality and ensuring that our graduates are well-prepared for their chosen career paths. Our programs are regularly updated to reflect current industry trends and employer requirements.</p>
+            </div>
+            <div class="col-lg-4">
+                <div class="card card-premium">
+                    <div class="card-header card-header-premium">
+                        <h5 class="mb-0">Quick Facts</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-borderless">
+                            <tr>
+                                <td><strong>Established:</strong></td>
+                                <td>2009</td>
+                            </tr>
+                            <tr>
+                                <td><strong>License No.:</strong></td>
+                                <td>593958</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Total Graduates:</strong></td>
+                                <td>1000+</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Core Programs:</strong></td>
+                                <td>4</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Class Size:</strong></td>
+                                <td>Max 30 students</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Languages:</strong></td>
+                                <td>English, Cantonese</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card mt-4">
+                    <div class="card-body text-center">
+                        <h5>Accreditation</h5>
+                        <img src="{{ url_for('static', filename='images/about/about_02.jpg') }}" alt="Licensed Education Provider" class="img-fluid mb-3">
+                        <p class="small">Licensed provider of quality education programs</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
