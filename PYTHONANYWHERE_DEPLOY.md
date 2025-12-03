@@ -1,5 +1,19 @@
 # PythonAnywhere Deployment - Step by Step Guide
 
+## 🚀 Quick Auto-Deploy (Recommended)
+
+After pushing to GitHub, simply run:
+```bash
+./deploy_to_pythonanywhere.sh
+```
+
+**First time?** Edit the script with your credentials:
+```bash
+PYTHONANYWHERE_USERNAME="your_username"
+PYTHONANYWHERE_DOMAIN="your_username.pythonanywhere.com"
+PYTHONANYWHERE_API_TOKEN="get_from_pythonanywhere.com/account"
+```
+
 ## 🎯 What You're Doing
 Deploying your PenAsia LMS to PythonAnywhere free hosting
 
