@@ -342,34 +342,7 @@ class Enrollment(db.Model):
         return f'<Enrollment {self.user_id} in {self.course_id}>'
 
 
-class ContactInquiry(db.Model):
-    """Contact form submissions"""
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    email = db.Column(db.String(120), nullable=False)
-    phone = db.Column(db.String(20))
-    subject = db.Column(db.String(200), nullable=False)
-    message = db.Column(db.Text, nullable=False)
-    
-    # Interest details
-    course_interest = db.Column(db.String(200))
-    preferred_contact_method = db.Column(db.String(50))
-    
-    # Status tracking
-    status = db.Column(db.String(20), default='new')  # new, in_progress, resolved, closed
-    assigned_to = db.Column(db.Integer, db.ForeignKey('user.id'))
-    admin_notes = db.Column(db.Text)
-    responded_at = db.Column(db.DateTime)
-    
-    # Timestamps
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-    
-    # Relationships
-    assigned_staff = db.relationship('User', backref='assigned_inquiries')
-    
-    def __repr__(self):
-        return f'<Inquiry from {self.name}: {self.subject}>'
+# Removed duplicate ContactInquiry model to avoid SQLAlchemy class name conflict.
 
 
 # ============================================================================
