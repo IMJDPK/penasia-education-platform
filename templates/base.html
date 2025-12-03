@@ -31,7 +31,11 @@
         {% if site_settings.banner_message %}
             <span class="ms-2">{{ site_settings.banner_message }}</span>
         {% else %}
-            <span class="ms-2">Apply for {{ site_settings.intake_semester }} intake. {% if site_settings.application_deadline %}Deadline: {{ site_settings.application_deadline.strftime('%Y-%m-%d') }}.{% endif %}</span>
+            <span class="ms-2">Apply for {{ site_settings.intake_semester }} intake.
+                {% if site_settings.application_deadline %}
+                    Deadline: {{ site_settings.application_deadline }}.
+                {% endif %}
+            </span>
         {% endif %}
         <a href="{{ url_for('apply') }}" class="btn btn-sm btn-primary ms-3">Apply Now</a>
     </div>
