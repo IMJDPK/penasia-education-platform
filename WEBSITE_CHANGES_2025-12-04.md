@@ -992,6 +992,15 @@ AND title NOT LIKE '%Hotel Culinary Management%';
 - [ ] Test responsive design on all devices
 - [ ] Verify image optimization
 
+---
+
+## ✅ Implemented Updates (Dec 4, 2025)
+
+- Navbar logo updated to `static/images/logos/university-of-penasia.png` in `templates/base.html`.
+- Footer credit added: "Site developed by IMJD — YOUR DIGITAL MEDIA PARTNER" linking to https://imjd.asia.
+- Facilities page updated to use multiple original images (`facilities_01` to `facilities_08` when present) and improved alt text, plus a new gallery section.
+
+
 ### Phase 4: Admin Features (Week 2-3)
 - [ ] Create admin settings page
 - [ ] Add admissions toggle functionality
