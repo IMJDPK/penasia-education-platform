@@ -121,9 +121,15 @@
                             </a>
                         {% endif %}
                         
+                        {% if admission_open %}
                         <a href="{{ url_for('apply') }}" class="btn-primary-premium">
                             <i class="fas fa-graduation-cap me-1"></i>Apply Now
                         </a>
+                        {% else %}
+                        <span class="btn-primary-premium disabled" title="Admissions are currently closed">
+                            <i class="fas fa-graduation-cap me-1"></i>Applications Closed
+                        </span>
+                        {% endif %}
                     </div>
                 </div>
             </div>
