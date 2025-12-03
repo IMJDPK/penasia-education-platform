@@ -23,6 +23,19 @@
             </div>
         </div>
     </div>
+
+    {% if site_settings and site_settings.banner_enabled and site_settings.admissions_open %}
+    <!-- Admissions Banner -->
+    <div class="alert alert-success text-center mb-0" role="alert">
+        <strong>{{ site_settings.banner_title or 'Admissions Open' }}</strong>
+        {% if site_settings.banner_message %}
+            <span class="ms-2">{{ site_settings.banner_message }}</span>
+        {% else %}
+            <span class="ms-2">Apply for {{ site_settings.intake_semester }} intake. {% if site_settings.application_deadline %}Deadline: {{ site_settings.application_deadline.strftime('%Y-%m-%d') }}.{% endif %}</span>
+        {% endif %}
+        <a href="{{ url_for('apply') }}" class="btn btn-sm btn-primary ms-3">Apply Now</a>
+    </div>
+    {% endif %}
     
     <!-- Premium Navigation -->
     <nav class="navbar-premium">

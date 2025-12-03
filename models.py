@@ -49,13 +49,27 @@ class User(UserMixin, db.Model):
     def is_admin(self):
         """Check if user is admin"""
         return self.role == 'admin'
-    
-    def is_staff(self):
-        """Check if user is staff or admin"""
-        return self.role in ['admin', 'staff']
-    
+
+class SiteSettings(db.Model):
+    """Global site settings controlled by admin (admissions banner, etc.)"""
+    id = db.Column(db.Integer, primary_key=True)
+
+    # Admissions control
+    admissions_open = db.Column(db.Boolean, default=False, nullable=False)
+    intake_semester = db.Column(db.String(50), default='Fall 2025')
+    application_deadline = db.Column(db.Date)
+
+    # Banner customization
+    banner_title = db.Column(db.String(200))
+    banner_message = db.Column(db.Text)
+    banner_enabled = db.Column(db.Boolean, default=True)
+
+    # Metadata
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    updated_by = db.Column(db.Integer, db.ForeignKey('user.id'))
+
     def __repr__(self):
-        return f'<User {self.email}>'
+        return f'<SiteSettings admissions_open={self.admissions_open}>'
 
 
 class Course(db.Model):

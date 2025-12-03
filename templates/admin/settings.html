@@ -1,4 +1,49 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+{% block title %}Admin Settings — University of PenAsia{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <h1 class="mb-4">Admin Settings</h1>
+    <form method="post">
+        <div class="card mb-4">
+            <div class="card-header">Admissions Banner</div>
+            <div class="card-body">
+                <div class="form-check form-switch mb-3">
+                    <input class="form-check-input" type="checkbox" id="banner_enabled" name="banner_enabled" {% if settings.banner_enabled %}checked{% endif %}>
+                    <label class="form-check-label" for="banner_enabled">Enable Banner</label>
+                </div>
+                <div class="form-check form-switch mb-3">
+                    <input class="form-check-input" type="checkbox" id="admissions_open" name="admissions_open" {% if settings.admissions_open %}checked{% endif %}>
+                    <label class="form-check-label" for="admissions_open">Admissions Open</label>
+                </div>
+                <div class="mb-3">
+                    <label for="banner_title" class="form-label">Banner Title</label>
+                    <input type="text" class="form-control" id="banner_title" name="banner_title" value="{{ settings.banner_title or '' }}" placeholder="Admissions Open">
+                </div>
+                <div class="mb-3">
+                    <label for="banner_message" class="form-label">Banner Message</label>
+                    <textarea class="form-control" id="banner_message" name="banner_message" rows="3" placeholder="Apply for Fall intake.">{{ settings.banner_message or '' }}</textarea>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="intake_semester" class="form-label">Intake Semester</label>
+                        <input type="text" class="form-control" id="intake_semester" name="intake_semester" value="{{ settings.intake_semester or '' }}" placeholder="Fall 2025">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="application_deadline" class="form-label">Application Deadline</label>
+                        <input type="date" class="form-control" id="application_deadline" name="application_deadline" value="{{ settings.application_deadline.strftime('%Y-%m-%d') if settings.application_deadline else '' }}">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between">
+            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-secondary">Back to Dashboard</a>
+            <button type="submit" class="btn btn-primary">Save Settings</button>
+        </div>
+    </form>
+</div>
+{% endblock %}{% extends "base.html" %}
 
 {% block title %}System Settings - Admin Panel{% endblock %}
 

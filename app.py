@@ -40,6 +40,16 @@ login_manager.init_app(app)
 login_manager.login_message = 'Please log in to access this page.'
 login_manager.login_message_category = 'info'
 
+# Inject SiteSettings into all templates
+@app.context_processor
+def inject_site_settings():
+    try:
+        from models import SiteSettings
+        settings = SiteSettings.query.first()
+        return dict(site_settings=settings)
+    except Exception:
+        return dict(site_settings=None)
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -47,6 +57,14 @@ def load_user(user_id):
 # Create database tables
 with app.app_context():
     db.create_all()
+    # Ensure a SiteSettings row exists for admissions/banner controls
+    try:
+        from models import SiteSettings
+        if not SiteSettings.query.first():
+            db.session.add(SiteSettings())
+            db.session.commit()
+    except Exception:
+        pass
     
     # Create admin user if it doesn't exist
     admin = User.query.filter_by(email='admin@penasia.edu.hk').first()
@@ -571,25 +589,40 @@ def admin_reports():
     return render_template('admin/reports.html', stats=stats)
 
 
-@app.route('/admin/settings')
+@app.route('/admin/settings', methods=['GET', 'POST'])
 @login_required
 def admin_settings():
-    """Admin settings page"""
+    """Admin settings page using SiteSettings for admissions/banner control"""
     if not current_user.is_admin():
         flash('Access denied. Admin privileges required.', 'error')
         return redirect(url_for('index'))
-    
-    # Get current system settings
-    settings = {
-        'site_name': 'PenAsia School of Continuing Education',
-        'contact_email': 'info@penasia.edu.hk',
-        'phone': '+852 1234 5678',
-        'address': 'Hong Kong',
-        'maintenance_mode': False,
-        'allow_registrations': True,
-        'email_notifications': True,
-    }
-    
+
+    from models import SiteSettings
+    settings = SiteSettings.query.first()
+    if not settings:
+        settings = SiteSettings()
+        db.session.add(settings)
+        db.session.commit()
+
+    if request.method == 'POST':
+        settings.admissions_open = request.form.get('admissions_open') == 'on'
+        settings.intake_semester = request.form.get('intake_semester') or settings.intake_semester
+        settings.banner_title = request.form.get('banner_title') or settings.banner_title
+        settings.banner_message = request.form.get('banner_message') or settings.banner_message
+        settings.banner_enabled = request.form.get('banner_enabled') == 'on'
+
+        deadline_str = request.form.get('application_deadline')
+        if deadline_str:
+            try:
+                settings.application_deadline = datetime.strptime(deadline_str, '%Y-%m-%d').date()
+            except Exception:
+                flash('Invalid deadline date. Use YYYY-MM-DD.', 'error')
+
+        settings.updated_by = current_user.id
+        db.session.commit()
+        flash('Settings updated successfully.', 'success')
+        return redirect(url_for('admin_settings'))
+
     return render_template('admin/settings.html', settings=settings)
 
 
@@ -1086,8 +1119,11 @@ def about():
 
 @app.route('/courses')
 def courses():
-    # Get all active courses from database
-    courses = Course.query.filter_by(is_active=True).all()
+    # Show only flagship programs: Pearson BTEC and Hotel Culinary Management
+    courses = Course.query.filter(
+        Course.is_active == True,
+        (Course.title.ilike('%BTEC%') | Course.title.ilike('%Hotel Culinary Management%'))
+    ).all()
     return render_template('courses.html', courses=courses)
 
 
@@ -1203,7 +1239,11 @@ def apply():
                 return redirect(url_for('apply'))
     
     # GET request - show application form
-    courses = Course.query.filter_by(is_active=True).all()
+    # Limit to flagship programs for applications as well
+    courses = Course.query.filter(
+        Course.is_active == True,
+        (Course.title.ilike('%BTEC%') | Course.title.ilike('%Hotel Culinary Management%'))
+    ).all()
     return render_template('apply.html', courses=courses)
 
 
