@@ -56,10 +56,17 @@
                             <i class="fas fa-graduation-cap me-2"></i>
                             Explore Programs
                         </a>
+                        {% if admission_open %}
                         <a href="{{ url_for('apply') }}" class="btn-outline-premium">
                             <i class="fas fa-arrow-right me-2"></i>
                             Apply Now
                         </a>
+                        {% else %}
+                        <span class="btn-outline-premium disabled" title="Admissions are currently closed">
+                            <i class="fas fa-times me-2"></i>
+                            Applications Closed
+                        </span>
+                        {% endif %}
                     </div>
                 </div>
                 
@@ -181,7 +188,9 @@
                     
                     <div class="program-actions">
                         <a href="{{ url_for('course_detail', course_id=169) }}" class="btn-primary-premium">View Program</a>
+                        {% if admission_open %}
                         <a href="{{ url_for('apply') }}" class="btn-cef-premium">Apply Now</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -219,7 +228,9 @@
                     
                     <div class="program-actions">
                         <a href="{{ url_for('course_detail', course_id=1) }}" class="btn-primary-premium">View Program</a>
+                        {% if admission_open %}
                         <a href="{{ url_for('apply') }}" class="btn-secondary-premium">Apply Now</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -627,9 +638,15 @@
         <p class="section-subtitle">Join over 1,500 successful graduates who have built thriving careers in Hong Kong's hospitality industry</p>
         
         <div class="d-flex justify-content-center gap-3 flex-wrap">
+            {% if admission_open %}
             <a href="{{ url_for('apply') }}" class="btn-primary-premium">
                 <i class="fas fa-graduation-cap me-2"></i>Apply Today
             </a>
+            {% else %}
+            <span class="btn-primary-premium disabled">
+                <i class="fas fa-times me-2"></i>Applications Closed
+            </span>
+            {% endif %}
             <a href="{{ url_for('courses') }}" class="btn-outline-premium">
                 <i class="fas fa-book me-2"></i>View Programs
             </a>

@@ -6,7 +6,7 @@ from datetime import datetime
 from markupsafe import Markup
 
 # Import models and forms
-from models import db, User, Course, CourseSchedule, Application, Enrollment, ContactInquiry, Consultation, Module, Lesson, StudentProgress, Quiz, Question, QuizAttempt, StudentAnswer, Assignment, AssignmentSubmission, ClassSchedule, Notification, Message, MessageAttachment, Attendance, Certificate, Announcement
+from models import db, User, Course, CourseSchedule, Application, Enrollment, ContactInquiry, Consultation, Module, Lesson, StudentProgress, Quiz, Question, QuizAttempt, StudentAnswer, Assignment, AssignmentSubmission, ClassSchedule, Notification, Message, MessageAttachment, Attendance, Certificate, Announcement, SiteSettings
 from forms import LoginForm, RegistrationForm, CourseApplicationForm, ConsultationBookingForm, AssignmentSubmissionForm, AssignmentSubmissionForm, ContactForm
 from email_service import email_service
 from payment_service import payment_processor
@@ -41,6 +41,14 @@ login_manager.login_message_category = 'info'
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
+# Context processor to make site settings available in all templates
+@app.context_processor
+def inject_site_settings():
+    """Inject site settings into all templates"""
+    return {
+        'admission_open': SiteSettings.get_setting('admission_open', default=True)
+    }
 
 # Create database tables
 with app.app_context():
@@ -569,7 +577,7 @@ def admin_reports():
     return render_template('admin/reports.html', stats=stats)
 
 
-@app.route('/admin/settings')
+@app.route('/admin/settings', methods=['GET', 'POST'])
 @login_required
 def admin_settings():
     """Admin settings page"""
@@ -577,15 +585,37 @@ def admin_settings():
         flash('Access denied. Admin privileges required.', 'error')
         return redirect(url_for('index'))
     
-    # Get current system settings
+    if request.method == 'POST':
+        # Handle form submission for settings update
+        admission_open = request.form.get('admission_open') == 'on'
+        SiteSettings.set_setting('admission_open', admission_open, value_type='boolean', 
+                                 description='Controls whether admissions are currently open')
+        
+        maintenance_mode = request.form.get('maintenance_mode') == 'on'
+        SiteSettings.set_setting('maintenance_mode', maintenance_mode, value_type='boolean',
+                                 description='Enable maintenance mode')
+        
+        allow_registrations = request.form.get('allow_registrations') == 'on'
+        SiteSettings.set_setting('allow_registrations', allow_registrations, value_type='boolean',
+                                 description='Allow new user registrations')
+        
+        email_notifications = request.form.get('email_notifications') == 'on'
+        SiteSettings.set_setting('email_notifications', email_notifications, value_type='boolean',
+                                 description='Enable email notifications')
+        
+        flash('Settings updated successfully!', 'success')
+        return redirect(url_for('admin_settings'))
+    
+    # Get current system settings from database or use defaults
     settings = {
         'site_name': 'PenAsia School of Continuing Education',
         'contact_email': 'info@penasia.edu.hk',
         'phone': '+852 1234 5678',
         'address': 'Hong Kong',
-        'maintenance_mode': False,
-        'allow_registrations': True,
-        'email_notifications': True,
+        'admission_open': SiteSettings.get_setting('admission_open', default=True),
+        'maintenance_mode': SiteSettings.get_setting('maintenance_mode', default=False),
+        'allow_registrations': SiteSettings.get_setting('allow_registrations', default=True),
+        'email_notifications': SiteSettings.get_setting('email_notifications', default=True),
     }
     
     return render_template('admin/settings.html', settings=settings)

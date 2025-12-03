@@ -1204,3 +1204,64 @@ class ContactInquiry(db.Model):
     
     def __repr__(self):
         return f'<ContactInquiry {self.id}: {self.first_name} {self.last_name} - {self.subject}>'
+
+
+class SiteSettings(db.Model):
+    """Site-wide settings for the PenAsia Education Platform"""
+    __tablename__ = 'site_settings'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    key = db.Column(db.String(100), unique=True, nullable=False)
+    value = db.Column(db.Text)
+    value_type = db.Column(db.String(20), default='string')  # string, boolean, integer, json
+    description = db.Column(db.Text)
+    
+    # Timestamps
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    @staticmethod
+    def get_setting(key, default=None):
+        """Get a setting value by key"""
+        setting = SiteSettings.query.filter_by(key=key).first()
+        if not setting or setting.value is None:
+            return default
+        
+        # Convert value based on type
+        if setting.value_type == 'boolean':
+            return setting.value.lower() in ('true', '1', 'yes')
+        elif setting.value_type == 'integer':
+            try:
+                return int(setting.value)
+            except (ValueError, TypeError):
+                return default
+        return setting.value
+    
+    @staticmethod
+    def set_setting(key, value, value_type='string', description=None):
+        """Set a setting value by key"""
+        setting = SiteSettings.query.filter_by(key=key).first()
+        if not setting:
+            setting = SiteSettings(key=key, value_type=value_type, description=description)
+            db.session.add(setting)
+        
+        # Convert value to string for storage
+        if value_type == 'boolean':
+            setting.value = 'true' if value else 'false'
+        else:
+            setting.value = str(value)
+        
+        setting.value_type = value_type
+        if description:
+            setting.description = description
+        
+        db.session.commit()
+        return setting
+    
+    @staticmethod
+    def is_admission_open():
+        """Check if admissions are currently open"""
+        return SiteSettings.get_setting('admission_open', default=True)
+    
+    def __repr__(self):
+        return f'<SiteSettings {self.key}: {self.value}>'

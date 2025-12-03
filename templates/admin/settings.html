@@ -114,50 +114,69 @@
                     <h5 class="mb-0"><i class="fas fa-toggle-on me-2"></i>Feature Toggles</h5>
                 </div>
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="maintenanceMode" 
-                                       {{ 'checked' if settings.maintenance_mode else '' }} disabled>
-                                <label class="form-check-label" for="maintenanceMode">
-                                    <strong>Maintenance Mode</strong><br>
-                                    <small class="text-muted">Temporarily disable site access for maintenance</small>
-                                </label>
+                    <form method="POST" action="{{ url_for('admin_settings') }}">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="admissionOpen" name="admission_open"
+                                           {{ 'checked' if settings.admission_open else '' }}>
+                                    <label class="form-check-label" for="admissionOpen">
+                                        <strong>Admission Open</strong><br>
+                                        <small class="text-muted">Enable or disable course admissions. When disabled, "Apply Now" buttons will be hidden.</small>
+                                    </label>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="col-md-6 mb-3">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="allowRegistrations" 
-                                       {{ 'checked' if settings.allow_registrations else '' }} disabled>
-                                <label class="form-check-label" for="allowRegistrations">
-                                    <strong>Allow Registrations</strong><br>
-                                    <small class="text-muted">Enable new user registrations</small>
-                                </label>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="maintenanceMode" name="maintenance_mode"
+                                           {{ 'checked' if settings.maintenance_mode else '' }}>
+                                    <label class="form-check-label" for="maintenanceMode">
+                                        <strong>Maintenance Mode</strong><br>
+                                        <small class="text-muted">Temporarily disable site access for maintenance</small>
+                                    </label>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="col-md-6 mb-3">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="emailNotifications" 
-                                       {{ 'checked' if settings.email_notifications else '' }} disabled>
-                                <label class="form-check-label" for="emailNotifications">
-                                    <strong>Email Notifications</strong><br>
-                                    <small class="text-muted">Send automated email notifications</small>
-                                </label>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="allowRegistrations" name="allow_registrations"
+                                           {{ 'checked' if settings.allow_registrations else '' }}>
+                                    <label class="form-check-label" for="allowRegistrations">
+                                        <strong>Allow Registrations</strong><br>
+                                        <small class="text-muted">Enable new user registrations</small>
+                                    </label>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="col-md-6 mb-3">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="publicCourses" checked disabled>
-                                <label class="form-check-label" for="publicCourses">
-                                    <strong>Public Course Catalog</strong><br>
-                                    <small class="text-muted">Show courses to non-logged-in users</small>
-                                </label>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="emailNotifications" name="email_notifications"
+                                           {{ 'checked' if settings.email_notifications else '' }}>
+                                    <label class="form-check-label" for="emailNotifications">
+                                        <strong>Email Notifications</strong><br>
+                                        <small class="text-muted">Send automated email notifications</small>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="publicCourses" checked disabled>
+                                    <label class="form-check-label" for="publicCourses">
+                                        <strong>Public Course Catalog</strong><br>
+                                        <small class="text-muted">Show courses to non-logged-in users</small>
+                                    </label>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                        
+                        <div class="mt-3">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Save Settings
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
