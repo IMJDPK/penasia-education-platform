@@ -3,9 +3,9 @@
 # Updates your live site after pushing to GitHub
 
 # Configuration - UPDATE THESE VALUES
-PYTHONANYWHERE_USERNAME="your_username"
-PYTHONANYWHERE_DOMAIN="your_username.pythonanywhere.com"
-PYTHONANYWHERE_API_TOKEN="your_api_token_here"
+PYTHONANYWHERE_USERNAME="imjdpk"
+PYTHONANYWHERE_DOMAIN="imjdpk.pythonanywhere.com"
+PYTHONANYWHERE_API_TOKEN="77050fab193b4b5672ea7bd549988bb104e42ae0"
 
 echo "🚀 Deploying to PythonAnywhere..."
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
