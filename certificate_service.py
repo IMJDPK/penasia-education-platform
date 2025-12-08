@@ -2,10 +2,11 @@
 Certificate PDF generation service for PenAsia
 Handles digital certificate creation and PDF generation
 """
+
 from datetime import datetime
 from io import BytesIO
+from reportlab.lib.pagesizes import A4, landscape
 try:
-    from reportlab.lib.pagesizes import A4, landscape
     from reportlab.lib.units import inch
     from reportlab.pdfgen import canvas
     from reportlab.lib.colors import HexColor

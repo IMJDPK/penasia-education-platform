@@ -102,7 +102,7 @@
             </div>
             <div class="trust-item">
                 <i class="fas fa-user-tie"></i>
-                <strong>Expert Faculty</strong>
+                <!-- <strong>Expert Faculty</strong> -->
                 <p>Industry professionals with 15+ years experience</p>
             </div>
         </div>
@@ -115,7 +115,7 @@
         <div class="row align-items-center">
             <div class="col-lg-6">
                 <h2 class="display-6 mb-4">About University of PenAsia</h2>
-                <p class="lead">盈亞大學 (University of PenAsia) is Hong Kong's pioneering business education institution offering the unique combination of rigorous business management training with specialized culinary and hospitality expertise.</p>
+                <p class="lead">盈亞大學（University of PenAsia）是香港首間結合嚴謹商業管理訓練與專業餐飲及酒店專才的高等院校。</p>
                 <p>As the only Hong Kong institution delivering Pearson BTEC Higher National Diplomas with integrated culinary management, we prepare graduates for leadership roles in global hospitality businesses, restaurant entrepreneurship, and hotel management.</p>
                 <p>With Education License No. 593958, we offer professional development opportunities in hospitality, business management, and culinary arts with programs designed to meet industry standards.</p>
                 <a href="{{ url_for('about') }}" class="btn btn-outline-primary">Learn More About Us</a>
@@ -323,7 +323,7 @@
                             <i class="fas fa-user-tie text-accent" style="font-size: 2rem;"></i>
                         </div>
                         <div>
-                            <h5 class="mb-2">Expert Faculty</h5>
+                            <!-- <h5 class="mb-2">Expert Faculty</h5> -->
                             <p class="mb-0">Learn from industry professionals with extensive experience in top Hong Kong establishments.</p>
                         </div>
                     </div>
@@ -398,7 +398,7 @@
             
             <div class="testimonial-card">
                 <div class="testimonial-content">
-                    <blockquote>"University of PenAsia's BTEC program gave me the foundation to pursue my business degree in the UK. The support from faculty was exceptional throughout my journey."</blockquote>
+                    <!-- <blockquote>"University of PenAsia's BTEC program gave me the foundation to pursue my business degree in the UK. The support from faculty was exceptional throughout my journey."</blockquote> -->
                     <div class="testimonial-author">
                         <img src="{{ url_for('static', filename='images/testimonials/testimonials_02.jpg') }}" alt="David Wong">
                         <div class="author-info">
@@ -425,234 +425,38 @@
     </div>
 </section>
 
-<!-- Hong Kong Success Stories Section -->
-<section class="section-premium">
-    <div class="container-premium">
-        <div class="text-center mb-5">
-            <h2 class="section-title">Hong Kong Success Stories</h2>
-            <p class="section-subtitle">Real careers, real achievements from our Hong Kong graduates</p>
-        </div>
-        
-        <div class="row">
-            <!-- Success Story 1 - High-End Hotel -->
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="success-story-card">
-                    <div class="story-image">
-                        <img src="{{ url_for('static', filename='images/testimonials/testimonials_01.jpg') }}" alt="Michael Chan">
-                        <div class="story-overlay">
-                            <div class="salary-badge">HK$45,000/month</div>
-                        </div>
-                    </div>
-                    <div class="story-content">
-                        <h4 class="graduate-name">Michael Chan</h4>
-                        <p class="graduate-position">Executive Sous Chef<br><span class="company-name">The Peninsula Hong Kong</span></p>
-                        
-                        <div class="success-metrics">
-                            <div class="metric">
-                                <span class="metric-number">3 Years</span>
-                                <span class="metric-label">To Executive Role</span>
-                            </div>
-                            <div class="metric">
-                                <span class="metric-number">180%</span>
-                                <span class="metric-label">Salary Increase</span>
-                            </div>
-                        </div>
-                        
-                        <blockquote class="story-quote">
-                            "University of PenAsia's industry connections opened doors to The Peninsula. The practical training and mentorship prepared me for the fast-paced luxury hotel environment."
-                        </blockquote>
-                        
-                        <div class="program-completed">
-                            <i class="fas fa-graduation-cap text-primary"></i>
-                            <span>Hotel Culinary Management Diploma</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Success Story 2 - Restaurant Owner -->
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="success-story-card">
-                    <div class="story-image">
-                        <img src="{{ url_for('static', filename='images/testimonials/testimonials_03.jpg') }}" alt="Emily Lam">
-                        <div class="story-overlay">
-                            <div class="salary-badge">Own Business</div>
-                        </div>
-                    </div>
-                    <div class="story-content">
-                        <h4 class="graduate-name">Emily Lam</h4>
-                        <p class="graduate-position">Restaurant Owner<br><span class="company-name">Sweet Dreams Bakery & Café (Central)</span></p>
-                        
-                        <div class="success-metrics">
-                            <div class="metric">
-                                <span class="metric-number">2 Years</span>
-                                <span class="metric-label">To Own Business</span>
-                            </div>
-                            <div class="metric">
-                                <span class="metric-number">5</span>
-                                <span class="metric-label">Staff Members</span>
-                            </div>
-                        </div>
-                        
-                        <blockquote class="story-quote">
-                            "The business management modules at University of PenAsia taught me everything from cost control to customer service. CEF funding made it affordable to follow my dream."
-                        </blockquote>
-                        
-                        <div class="program-completed">
-                            <i class="fas fa-graduation-cap text-primary"></i>
-                            <span>Western Bakery Certificate + Business Management</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Success Story 3 - International Career -->
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="success-story-card">
-                    <div class="story-image">
-                        <img src="{{ url_for('static', filename='images/testimonials/testimonials_02.jpg') }}" alt="David Wong">
-                        <div class="story-overlay">
-                            <div class="salary-badge">UK Career</div>
-                        </div>
-                    </div>
-                    <div class="story-content">
-                        <h4 class="graduate-name">David Wong</h4>
-                        <p class="graduate-position">Operations Manager<br><span class="company-name">Shangri-La London</span></p>
-                        
-                        <div class="success-metrics">
-                            <div class="metric">
-                                <span class="metric-number">4 Years</span>
-                                <span class="metric-label">HK to London</span>
-                            </div>
-                            <div class="metric">
-                                <span class="metric-number">£45,000</span>
-                                <span class="metric-label">Annual Salary</span>
-                            </div>
-                        </div>
-                        
-                        <blockquote class="story-quote">
-                            "My BTEC qualification from University of PenAsia was recognized in the UK. The international hospitality network helped me secure this position in London."
-                        </blockquote>
-                        
-                        <div class="program-completed">
-                            <i class="fas fa-graduation-cap text-primary"></i>
-                            <span>BTEC Business Management + Hotel Operations</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Success Stats -->
-        <div class="success-stats">
-            <div class="container-premium">
-                <div class="row text-center">
-                    <div class="col-md-3">
-                        <div class="stat-item">
-                            <span class="stat-number">93%</span>
-                            <p class="stat-label">Employment Rate</p>
-                            <p class="stat-detail">within 6 months</p>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="stat-item">
-                            <span class="stat-number">HK$28,000</span>
-                            <p class="stat-label">Average Starting Salary</p>
-                            <p class="stat-detail">hospitality graduates</p>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="stat-item">
-                            <span class="stat-number">150%</span>
-                            <p class="stat-label">Average Salary Increase</p>
-                            <p class="stat-detail">after 2 years</p>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="stat-item">
-                            <span class="stat-number">75</span>
-                            <p class="stat-label">Partner Employers</p>
-                            <p class="stat-detail">in Hong Kong</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Industry Partnership Logos -->
-        <div class="industry-partners">
-            <div class="container-premium">
-                <h4 class="text-center mb-4 text-muted">Our Graduates Work At:</h4>
-                <div class="partner-logos">
-                    <div class="partner-logo">
-                        <div class="logo-placeholder" title="The Peninsula Hong Kong">
-                            <i class="fas fa-building me-1"></i>Peninsula
-                        </div>
-                    </div>
-                    <div class="partner-logo">
-                        <div class="logo-placeholder" title="Shangri-La Hong Kong">
-                            <i class="fas fa-building me-1"></i>Shangri-La
-                        </div>
-                    </div>
-                    <div class="partner-logo">
-                        <div class="logo-placeholder" title="Mandarin Oriental Hong Kong">
-                            <i class="fas fa-building me-1"></i>Mandarin Oriental
-                        </div>
-                    </div>
-                    <div class="partner-logo">
-                        <div class="logo-placeholder" title="Four Seasons Hong Kong">
-                            <i class="fas fa-building me-1"></i>Four Seasons
-                        </div>
-                    </div>
-                    <div class="partner-logo">
-                        <div class="logo-placeholder" title="Conrad Hong Kong">
-                            <i class="fas fa-building me-1"></i>Conrad
-                        </div>
-                    </div>
-                    <div class="partner-logo">
-                        <div class="logo-placeholder" title="Ritz-Carlton Hong Kong">
-                            <i class="fas fa-building me-1"></i>Ritz-Carlton
-                        </div>
-                    </div>
-                </div>
-                <p class="text-center text-muted small mt-3">
-                    <em>Partner logos shown represent our industry connections. Actual logo images can be added once obtained from partner institutions.</em>
-                </p>
-            </div>
-        </div>
-    </div>
-</section>
+
 
 <!-- Final Call to Action -->
-<section class="section-premium final-cta">
+<section class="section-premium final-cta" style="background:#1B365D;color:#fff;">
     <div class="container-premium text-center">
         <h2 class="section-title">Ready to Transform Your Career?</h2>
         <p class="section-subtitle">Join over 1,500 successful graduates who have built thriving careers in Hong Kong's hospitality industry</p>
         
         <div class="d-flex justify-content-center gap-3 flex-wrap">
-            <a href="{{ url_for('apply') }}" class="btn-primary-premium">
+            <a href="{{ url_for('apply') }}" class="btn-primary-premium" style="color:#fff;">
                 <i class="fas fa-graduation-cap me-2"></i>Apply Today
             </a>
-            <a href="{{ url_for('courses') }}" class="btn-outline-premium">
+            <a href="{{ url_for('courses') }}" class="btn-outline-premium" style="border-color:#fff;color:#fff;">
                 <i class="fas fa-book me-2"></i>View Programs
             </a>
-            <a href="{{ url_for('contact') }}" class="btn-outline-premium">
+            <a href="{{ url_for('contact') }}" class="btn-outline-premium" style="border-color:#fff;color:#fff;">
                 <i class="fas fa-phone me-2"></i>Speak to Admissions
             </a>
         </div>
         
         <div class="mt-5 d-flex justify-content-center align-items-center gap-4 flex-wrap">
             <div class="d-flex align-items-center gap-2">
-                <i class="fas fa-phone text-accent"></i>
-                <span>+852 2893 6788</span>
+                <i class="fas fa-phone text-accent" style="color:#fff;"></i>
+                <span style="color:#fff;">+852 2893 6788</span>
             </div>
             <div class="d-flex align-items-center gap-2">
-                <i class="fab fa-whatsapp text-accent"></i>
-                <span>WhatsApp Us</span>
+                <i class="fab fa-whatsapp text-accent" style="color:#fff;"></i>
+                <span style="color:#fff;">WhatsApp Us</span>
             </div>
             <div class="d-flex align-items-center gap-2">
-                <i class="fas fa-envelope text-accent"></i>
-                <span>info@penasia.edu.hk</span>
+                <i class="fas fa-envelope text-accent" style="color:#fff;"></i>
+                <span style="color:#fff;">info@penasia.edu.hk</span>
             </div>
         </div>
     </div>

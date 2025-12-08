@@ -1502,9 +1502,10 @@ def student_life():
     return render_template('student_life.html')
 
 
-@app.route('/faculty')
-def faculty():
-    return render_template('faculty.html')
+# Faculty section temporarily disabled
+# @app.route('/faculty')
+# def faculty():
+#     return render_template('faculty.html')
 
 
 @app.route('/consultation', methods=['GET', 'POST'])
