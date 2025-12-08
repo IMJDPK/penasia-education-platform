@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Access Denied - PenAsia{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <div class="error-container" style="padding: 60px 20px;">
+                <h1 style="font-size: 120px; font-weight: bold; color: #ffc107; margin: 0;">403</h1>
+                <h2 class="mt-3 mb-3">Access Denied</h2>
+                <p class="text-muted mb-4">
+                    You don't have permission to access this resource. If you believe this is a mistake, please contact support.
+                </p>
+                
+                <div class="error-suggestions mb-5">
+                    <h5>What you can do:</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{{ url_for('index') }}" class="btn btn-outline-warning btn-sm">Go to Home</a></li>
+                        {% if current_user.is_authenticated %}
+                        <li class="mt-2"><a href="{{ url_for('dashboard') }}" class="btn btn-outline-warning btn-sm">Go to Dashboard</a></li>
+                        {% else %}
+                        <li class="mt-2"><a href="{{ url_for('login') }}" class="btn btn-outline-warning btn-sm">Login</a></li>
+                        {% endif %}
+                        <li class="mt-2"><a href="{{ url_for('contact') }}" class="btn btn-outline-warning btn-sm">Contact Support</a></li>
+                    </ul>
+                </div>
+                
+                <div class="error-details text-muted" style="font-size: 14px;">
+                    <p>Error Code: 403 - Forbidden</p>
+                    <p>Requested URL: {{ request.path }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .error-container {
+        background: linear-gradient(135deg, #fff8e1 0%, #ffe082 100%);
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    
+    .error-suggestions ul li {
+        margin: 8px 0;
+    }
+</style>
+{% endblock %}

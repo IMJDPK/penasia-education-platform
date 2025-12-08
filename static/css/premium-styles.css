@@ -984,60 +984,6 @@ body {
   height: auto;
 }
 
-/* === WHATSAPP INTEGRATION === */
-
-.whatsapp-float {
-  position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-  z-index: 1000;
-}
-
-.whatsapp-btn {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: #25D366;
-  color: white;
-  padding: 1rem 1.5rem;
-  border-radius: 25px;
-  text-decoration: none;
-  box-shadow: var(--shadow-medium);
-  transition: var(--transition-medium);
-  font-weight: 600;
-}
-
-.whatsapp-btn:hover {
-  background: #1ebe57;
-  color: white;
-  text-decoration: none;
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-heavy);
-}
-
-.whatsapp-btn i {
-  font-size: 1.5rem;
-}
-
-@media (max-width: 768px) {
-  .whatsapp-float {
-    bottom: 1rem;
-    right: 1rem;
-  }
-  
-  .whatsapp-btn span {
-    display: none;
-  }
-  
-  .whatsapp-btn {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    justify-content: center;
-    padding: 0;
-  }
-}
-
 /* Final CTA Section */
 .final-cta {
     background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
@@ -1856,28 +1802,6 @@ body {
     }
 }
 
-/* === WHATSAPP BUTTON MOBILE OPTIMIZATION === */
-@media (max-width: 768px) {
-    .whatsapp-float {
-        bottom: 20px;
-        right: 15px;
-    }
-    
-    .whatsapp-btn {
-        width: 50px;
-        height: 50px;
-        font-size: 1.5rem;
-    }
-    
-    .whatsapp-btn span {
-        display: none;
-    }
-    
-    .whatsapp-btn i {
-        margin: 0;
-    }
-}
-
 /* === ADMIN DASHBOARD MOBILE OPTIMIZATION === */
 @media (max-width: 992px) {
     .admin-sidebar {
@@ -2139,9 +2063,11 @@ body {
         padding: 0;
     }
     
-    /* Avoid page breaks inside cards */
-    .card,
-    .course-card {
-        page-break-inside: avoid;
+/* === PRINT OPTIMIZATION === */
+@media print {
+    /* Hide navigation and unnecessary elements */
+    .navbar-premium,
+    .btn-primary-premium,
+    .btn-secondary-premium {
+        display: none !important;
     }
-}

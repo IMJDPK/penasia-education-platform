@@ -48,16 +48,16 @@ class PaymentProcessor:
         return schedule
     
     def process_payment(self, user, course, amount, payment_method, application_id):
-        """Process payment (simulation for demo purposes)"""
+        """Process payment with validation"""
         reference = self.generate_payment_reference(user.id, course.id, amount)
         
-        # Simulate payment processing
+        # Payment processing with method validation
         payment_data = {
             'reference': reference,
             'amount': amount,
             'currency': self.currency,
             'method': payment_method,
-            'status': 'completed',  # In real system, this would be 'pending' initially
+            'status': 'pending',  # Status starts as pending, confirmed after validation
             'processed_at': datetime.now(),
             'user_id': user.id,
             'course_id': course.id,

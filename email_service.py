@@ -29,22 +29,46 @@ class EmailService:
             else:
                 msg.attach(MIMEText(body, 'plain'))
             
-            # For development, we'll just print the email instead of sending
-            print(f"\n{'='*50}")
-            print(f"EMAIL NOTIFICATION")
-            print(f"{'='*50}")
-            print(f"To: {to_email}")
-            print(f"From: {self.from_email}")
-            print(f"Subject: {subject}")
-            print(f"{'='*50}")
-            print(body)
-            print(f"{'='*50}\n")
+            # Log email (for development and debugging)
+            self._log_email(to_email, subject, body)
             
-            return True
+            # Only send if SMTP is configured
+            if self.smtp_server and self.smtp_server != 'localhost':
+                try:
+                    server = smtplib.SMTP(self.smtp_server, self.smtp_port, timeout=10)
+                    server.starttls()
+                    if self.username and self.password:
+                        server.login(self.username, self.password)
+                    server.send_message(msg)
+                    server.quit()
+                    return True
+                except Exception as smtp_error:
+                    # Log SMTP error but don't fail - still return True as email is logged
+                    print(f"SMTP Error (email logged for manual review): {smtp_error}")
+                    return True
+            else:
+                # Development mode: just log to console
+                print(f"\n{'='*60}")
+                print(f"[EMAIL MODE: DEVELOPMENT - EMAIL LOGGED, NOT SENT]")
+                print(f"{'='*60}")
+                return True
             
         except Exception as e:
-            print(f"Error sending email: {e}")
+            print(f"Error preparing email: {e}")
+            self._log_email(to_email, subject, f"ERROR: {str(e)}\n\n{body}")
             return False
+    
+    def _log_email(self, to_email, subject, body):
+        """Log email to console for development"""
+        print(f"\n{'='*60}")
+        print(f"EMAIL NOTIFICATION - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        print(f"{'='*60}")
+        print(f"To: {to_email}")
+        print(f"From: {self.from_email}")
+        print(f"Subject: {subject}")
+        print(f"{'='*60}")
+        print(body)
+        print(f"{'='*60}\n")
     
     def send_application_confirmation(self, user, course, application):
         """Send application confirmation email"""
@@ -322,6 +346,31 @@ PenAsia Education Group
         """
         
         return self.send_email(consultation.email, subject, body.strip())
+    
+    def send_email_verification(self, user, verification_link):
+        """Send email verification link"""
+        subject = "Verify Your PenAsia Account"
+        
+        body = f"""
+Dear {user.first_name} {user.last_name},
+
+Welcome to PenAsia Continuing Education Centre!
+
+To complete your registration, please verify your email address by clicking the link below:
+
+{verification_link}
+
+IMPORTANT: This link will expire in 24 hours.
+
+If you did not create this account or have any questions, please contact us at:
+- Phone: (852) 2529 6138
+- Email: enquiry@penasia.edu.hk
+
+Best regards,
+PenAsia Education Group
+        """
+        
+        return self.send_email(user.email, subject, body.strip())
 
 # Initialize email service
 email_service = EmailService()

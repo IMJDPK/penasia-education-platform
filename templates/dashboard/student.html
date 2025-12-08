@@ -388,9 +388,8 @@
 
 <script>
 function submitAssignment(assignmentId) {
-    // For now, show an alert - in future this would open a submission modal
-    alert('Assignment submission feature will be implemented. Assignment ID: ' + assignmentId);
-    // TODO: Implement assignment submission modal or redirect to submission page
+    // Redirect to assignment submission page
+    window.location.href = `/assignments/${assignmentId}/submit`;
 }
 </script>
 {% endblock %}

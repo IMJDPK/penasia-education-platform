@@ -278,9 +278,66 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Export to calendar (placeholder)
+    // Export to calendar
     document.getElementById('exportCalendar').addEventListener('click', function() {
-        alert('Calendar export feature coming soon!');
+        const events = [];
+        const scheduleBlocks = document.querySelectorAll('.schedule-block');
+        
+        scheduleBlocks.forEach(block => {
+            events.push({
+                title: block.textContent.trim(),
+                date: block.getAttribute('data-date')
+            });
+        });
+        
+        if (events.length === 0) {
+            alert('No scheduled events to export.');
+            return;
+        }
+        
+        // Generate ICS file content for calendar import
+        let icsContent = `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//PenAsia Education//Calendar Export//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VTIMEZONE
+TZID:Asia/Hong_Kong
+BEGIN:STANDARD
+DTSTART:19700101T000000
+TZOFFSETFROM:+0800
+TZOFFSETTO:+0800
+TZNAME:HKT
+END:STANDARD
+END:VTIMEZONE
+`;
+        
+        events.forEach(event => {
+            const date = new Date(event.date);
+            const dateStr = date.toISOString().replace(/[-:]/g, '').split('.')[0];
+            
+            icsContent += `BEGIN:VEVENT
+DTSTART:${dateStr}Z
+DTEND:${dateStr}Z
+SUMMARY:${event.title}
+DESCRIPTION:PenAsia Education Schedule
+STATUS:CONFIRMED
+END:VEVENT
+`;
+        });
+        
+        icsContent += 'END:VCALENDAR';
+        
+        // Create download link
+        const element = document.createElement('a');
+        element.setAttribute('href', 'data:text/calendar;charset=utf-8,' + encodeURIComponent(icsContent));
+        element.setAttribute('download', 'penasia_schedule.ics');
+        element.style.display = 'none';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+        
+        alert('Calendar exported successfully! You can now import this file into Google Calendar, Outlook, or Apple Calendar.');
     });
     
     // Week navigation (placeholder - would need backend support)

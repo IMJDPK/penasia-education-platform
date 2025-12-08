@@ -44,6 +44,59 @@ class ProfileForm(FlaskForm):
     emergency_contact_phone = StringField('Emergency Contact Phone', validators=[Optional(), Length(max=20)])
 
 
+class CourseForm(FlaskForm):
+    """Form for creating and editing courses"""
+    course_code = StringField('Course Code', validators=[DataRequired(), Length(min=2, max=20)])
+    title = StringField('Course Title', validators=[DataRequired(), Length(min=5, max=200)])
+    description = TextAreaField('Description', validators=[DataRequired(), Length(min=20, max=5000)])
+    
+    duration_weeks = IntegerField('Duration (Weeks)', validators=[DataRequired(), NumberRange(min=1, max=104)])
+    duration_hours = IntegerField('Duration (Hours)', validators=[DataRequired(), NumberRange(min=1, max=2000)])
+    
+    fee_hkd = DecimalField('Course Fee (HKD)', validators=[DataRequired(), NumberRange(min=0)])
+    cef_eligible = BooleanField('CEF Eligible')
+    cef_fee_hkd = DecimalField('CEF Fee (HKD)', validators=[Optional(), NumberRange(min=0)])
+    
+    max_students = IntegerField('Maximum Students', validators=[DataRequired(), NumberRange(min=1, max=100)])
+    min_students = IntegerField('Minimum Students', validators=[DataRequired(), NumberRange(min=1, max=100)])
+    
+    language = SelectField('Language', validators=[DataRequired()], choices=[
+        ('English', 'English'),
+        ('Cantonese', 'Cantonese'),
+        ('Mandarin', 'Mandarin'),
+        ('English & Cantonese', 'English & Cantonese'),
+        ('Other', 'Other')
+    ])
+    
+    level = SelectField('Level', validators=[DataRequired()], choices=[
+        ('Beginner', 'Beginner'),
+        ('Intermediate', 'Intermediate'),
+        ('Advanced', 'Advanced'),
+        ('Professional', 'Professional'),
+        ('All Levels', 'All Levels')
+    ])
+    
+    category = SelectField('Category', validators=[DataRequired()], choices=[
+        ('Business', 'Business'),
+        ('Culinary', 'Culinary'),
+        ('Professional', 'Professional Development'),
+        ('Language', 'Language'),
+        ('Technology', 'Technology'),
+        ('Healthcare', 'Healthcare'),
+        ('Hospitality', 'Hospitality'),
+        ('Other', 'Other')
+    ])
+    
+    prerequisites = TextAreaField('Prerequisites', validators=[Optional(), Length(max=1000)])
+    learning_outcomes = TextAreaField('Learning Outcomes', validators=[Optional(), Length(max=2000)])
+    course_content = TextAreaField('Course Content', validators=[Optional(), Length(max=5000)])
+    assessment_method = TextAreaField('Assessment Method', validators=[Optional(), Length(max=1000)])
+    certification = StringField('Certification', validators=[Optional(), Length(max=200)])
+    
+    is_active = BooleanField('Active')
+    is_featured = BooleanField('Featured')
+
+
 class CourseApplicationForm(FlaskForm):
     """Course application form"""
     course_id = SelectField('Course', validators=[DataRequired()], coerce=int)

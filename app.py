@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
+from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify, send_file
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from flask_migrate import Migrate
 import os
@@ -7,9 +7,10 @@ from markupsafe import Markup
 
 # Import models and forms
 from models import db, User, Course, CourseSchedule, Application, Enrollment, ContactInquiry, Consultation, Module, Lesson, StudentProgress, Quiz, Question, QuizAttempt, StudentAnswer, Assignment, AssignmentSubmission, ClassSchedule, Notification, Message, MessageAttachment, Attendance, Certificate, Announcement
-from forms import LoginForm, RegistrationForm, CourseApplicationForm, ConsultationBookingForm, AssignmentSubmissionForm, AssignmentSubmissionForm, ContactForm
+from forms import LoginForm, RegistrationForm, CourseApplicationForm, ConsultationBookingForm, AssignmentSubmissionForm, AssignmentSubmissionForm, ContactForm, CourseForm
 from email_service import email_service
 from payment_service import payment_processor
+from certificate_service import certificate_generator
 
 app = Flask(__name__)
 app.secret_key = 'penasia-secret-key-2025'
@@ -134,17 +135,48 @@ def register():
             first_name=form.first_name.data,
             last_name=form.last_name.data,
             phone=form.phone.data,
-            role='student'
+            role='student',
+            email_verified=False  # Require email verification
         )
         user.set_password(form.password.data)
         
         db.session.add(user)
         db.session.commit()
         
-        flash('Registration successful! You can now log in.', 'success')
+        # Send verification email
+        try:
+            verification_link = url_for('verify_email', user_id=user.id, _external=True)
+            email_service.send_email_verification(user, verification_link)
+            flash('Registration successful! Please check your email to verify your account.', 'info')
+        except Exception as e:
+            print(f"Email verification error: {e}")
+            # Allow login without email verification if service fails
+            user.email_verified = True
+            db.session.commit()
+            flash('Registration successful! You can now log in. (Email verification skipped)', 'warning')
+        
         return redirect(url_for('login'))
     
     return render_template('auth/register.html', form=form)
+
+@app.route('/verify_email/<int:user_id>')
+def verify_email(user_id):
+    """Verify user email"""
+    user = User.query.get_or_404(user_id)
+    
+    if user.email_verified:
+        flash('Your email is already verified!', 'info')
+        return redirect(url_for('login'))
+    
+    try:
+        user.email_verified = True
+        db.session.commit()
+        flash('Email verified successfully! You can now log in.', 'success')
+        return redirect(url_for('login'))
+    except Exception as e:
+        print(f"Email verification error: {e}")
+        flash('Error verifying email. Please try again or contact support.', 'error')
+        return redirect(url_for('login'))
 
 @app.route('/logout')
 @login_required
@@ -452,25 +484,95 @@ def payment_checkout(application_id):
 @app.route('/api/process-payment', methods=['POST'])
 @login_required
 def process_payment_api():
-    """API endpoint to process payment (demo)"""
+    """API endpoint to process payment with validation"""
     try:
-        # In a real system, this would integrate with payment gateway
         data = request.get_json()
         
-        # Simulate payment processing
-        payment_result = {
-            'status': 'success',
-            'reference': data.get('reference'),
-            'amount': data.get('amount'),
-            'processed_at': datetime.utcnow().isoformat()
-        }
+        # Validate required fields
+        if not all(k in data for k in ['reference', 'amount', 'method', 'application_id']):
+            return jsonify({'status': 'error', 'message': 'Missing required payment information'}), 400
         
-        # Update application payment status
-        # This would be more comprehensive in a real system
+        application_id = data.get('application_id')
+        application = Application.query.get_or_404(application_id)
+        
+        # Verify user owns this application
+        if application.user_id != current_user.id:
+            return jsonify({'status': 'error', 'message': 'Unauthorized payment attempt'}), 403
+        
+        # Process payment with validation
+        payment_method = data.get('method')
+        amount = float(data.get('amount'))
+        
+        # Validate payment method
+        if payment_method not in payment_processor.supported_methods:
+            return jsonify({'status': 'error', 'message': f'Invalid payment method: {payment_method}'}), 400
+        
+        # Process based on payment method
+        if payment_method == 'credit_card':
+            # For production: integrate with Stripe or similar gateway
+            payment_result = {
+                'status': 'pending_gateway',
+                'message': 'Redirecting to payment gateway...',
+                'reference': data.get('reference'),
+                'amount': amount,
+                'gateway': 'stripe',  # Configure with real Stripe key in production
+                'requires_redirect': True
+            }
+        elif payment_method == 'bank_transfer':
+            # Bank transfer: payment pending manual verification
+            payment_result = {
+                'status': 'pending_verification',
+                'message': 'Please complete bank transfer and provide proof',
+                'reference': data.get('reference'),
+                'amount': amount,
+                'bank_account': 'HSBC HK - Account: 123-456789-001',
+                'requires_manual_verification': True
+            }
+        elif payment_method == 'cef':
+            # CEF: payment pending verification
+            payment_result = {
+                'status': 'pending_cef_verification',
+                'message': 'CEF application in progress',
+                'reference': data.get('reference'),
+                'amount': amount,
+                'cef_eligible': application.cef_eligible
+            }
+        elif payment_method == 'installments':
+            # Installment: first payment pending
+            installment_schedule = payment_processor.calculate_installment_schedule(amount)
+            payment_result = {
+                'status': 'pending_installment',
+                'message': 'Installment plan created',
+                'reference': data.get('reference'),
+                'amount': amount,
+                'installment_schedule': [
+                    {
+                        'number': item['installment_number'],
+                        'amount': item['amount'],
+                        'due_date': item['due_date'].isoformat() if hasattr(item['due_date'], 'isoformat') else str(item['due_date'])
+                    }
+                    for item in installment_schedule
+                ]
+            }
+        else:
+            payment_result = {
+                'status': 'error',
+                'message': 'Payment method not configured'
+            }
+        
+        # Log payment attempt
+        print(f"\n[PAYMENT PROCESSING LOG]")
+        print(f"User: {current_user.email}")
+        print(f"Application: {application_id}")
+        print(f"Amount: HK${amount:,.2f}")
+        print(f"Method: {payment_method}")
+        print(f"Status: {payment_result['status']}")
+        print(f"Time: {datetime.utcnow().isoformat()}\n")
         
         return jsonify(payment_result)
     except Exception as e:
-        return jsonify({'status': 'error', 'message': str(e)}), 400
+        print(f"Payment processing error: {str(e)}")
+        return jsonify({'status': 'error', 'message': f'Payment processing error: {str(e)}'}), 400
 
 
 @app.route('/admin/applications')
@@ -554,8 +656,146 @@ def admin_courses():
         flash('Access denied. Admin privileges required.', 'error')
         return redirect(url_for('index'))
     
-    courses = Course.query.all()
+    courses = Course.query.order_by(Course.created_at.desc()).all()
     return render_template('admin/courses.html', courses=courses)
+
+@app.route('/admin/courses/add', methods=['GET', 'POST'])
+@login_required
+def admin_course_add():
+    """Add a new course"""
+    if not current_user.is_admin():
+        flash('Access denied. Admin privileges required.', 'error')
+        return redirect(url_for('index'))
+    
+    from forms import CourseForm
+    form = CourseForm()
+    
+    if form.validate_on_submit():
+        # Check if course code already exists
+        existing_course = Course.query.filter_by(course_code=form.course_code.data).first()
+        if existing_course:
+            flash(f'Course code {form.course_code.data} already exists. Please use a unique code.', 'error')
+            return render_template('admin/course_form.html', form=form, mode='add')
+        
+        course = Course(
+            course_code=form.course_code.data,
+            title=form.title.data,
+            description=form.description.data,
+            duration_weeks=form.duration_weeks.data,
+            duration_hours=form.duration_hours.data,
+            fee_hkd=form.fee_hkd.data,
+            cef_eligible=form.cef_eligible.data,
+            cef_fee_hkd=form.cef_fee_hkd.data if form.cef_eligible.data else None,
+            max_students=form.max_students.data,
+            min_students=form.min_students.data,
+            language=form.language.data,
+            level=form.level.data,
+            category=form.category.data,
+            prerequisites=form.prerequisites.data,
+            learning_outcomes=form.learning_outcomes.data,
+            course_content=form.course_content.data,
+            assessment_method=form.assessment_method.data,
+            certification=form.certification.data,
+            is_active=form.is_active.data,
+            is_featured=form.is_featured.data
+        )
+        
+        try:
+            db.session.add(course)
+            db.session.commit()
+            flash(f'Course "{course.title}" has been created successfully!', 'success')
+            return redirect(url_for('admin_courses'))
+        except Exception as e:
+            db.session.rollback()
+            flash(f'Error creating course: {str(e)}', 'error')
+            return render_template('admin/course_form.html', form=form, mode='add')
+    
+    return render_template('admin/course_form.html', form=form, mode='add')
+
+@app.route('/admin/courses/<int:course_id>/edit', methods=['GET', 'POST'])
+@login_required
+def admin_course_edit(course_id):
+    """Edit an existing course"""
+    if not current_user.is_admin():
+        flash('Access denied. Admin privileges required.', 'error')
+        return redirect(url_for('index'))
+    
+    course = Course.query.get_or_404(course_id)
+    from forms import CourseForm
+    form = CourseForm(obj=course)
+    
+    if form.validate_on_submit():
+        # Check if course code is being changed and if it conflicts
+        if form.course_code.data != course.course_code:
+            existing_course = Course.query.filter_by(course_code=form.course_code.data).first()
+            if existing_course:
+                flash(f'Course code {form.course_code.data} already exists. Please use a unique code.', 'error')
+                return render_template('admin/course_form.html', form=form, course=course, mode='edit')
+        
+        course.course_code = form.course_code.data
+        course.title = form.title.data
+        course.description = form.description.data
+        course.duration_weeks = form.duration_weeks.data
+        course.duration_hours = form.duration_hours.data
+        course.fee_hkd = form.fee_hkd.data
+        course.cef_eligible = form.cef_eligible.data
+        course.cef_fee_hkd = form.cef_fee_hkd.data if form.cef_eligible.data else None
+        course.max_students = form.max_students.data
+        course.min_students = form.min_students.data
+        course.language = form.language.data
+        course.level = form.level.data
+        course.category = form.category.data
+        course.prerequisites = form.prerequisites.data
+        course.learning_outcomes = form.learning_outcomes.data
+        course.course_content = form.course_content.data
+        course.assessment_method = form.assessment_method.data
+        course.certification = form.certification.data
+        course.is_active = form.is_active.data
+        course.is_featured = form.is_featured.data
+        course.updated_at = datetime.utcnow()
+        
+        try:
+            db.session.commit()
+            flash(f'Course "{course.title}" has been updated successfully!', 'success')
+            return redirect(url_for('admin_courses'))
+        except Exception as e:
+            db.session.rollback()
+            flash(f'Error updating course: {str(e)}', 'error')
+            return render_template('admin/course_form.html', form=form, course=course, mode='edit')
+    
+    return render_template('admin/course_form.html', form=form, course=course, mode='edit')
+
+@app.route('/admin/courses/<int:course_id>/delete', methods=['POST'])
+@login_required
+def admin_course_delete(course_id):
+    """Delete a course"""
+    if not current_user.is_admin():
+        flash('Access denied. Admin privileges required.', 'error')
+        return redirect(url_for('index'))
+    
+    course = Course.query.get_or_404(course_id)
+    
+    # Check if course has enrollments
+    if course.current_enrollments > 0:
+        flash(f'Cannot delete course "{course.title}" because it has active enrollments. Please deactivate it instead.', 'error')
+        return redirect(url_for('admin_courses'))
+    
+    # Check if course has applications
+    application_count = Application.query.filter_by(course_id=course_id).count()
+    if application_count > 0:
+        flash(f'Cannot delete course "{course.title}" because it has {application_count} applications. Please deactivate it instead.', 'error')
+        return redirect(url_for('admin_courses'))
+    
+    try:
+        course_title = course.title
+        db.session.delete(course)
+        db.session.commit()
+        flash(f'Course "{course_title}" has been deleted successfully.', 'success')
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Error deleting course: {str(e)}', 'error')
+    
+    return redirect(url_for('admin_courses'))
 
 @app.route('/admin/students')
 @login_required
@@ -2305,12 +2545,37 @@ def download_certificate(certificate_id):
     certificate = Certificate.query.get_or_404(certificate_id)
     
     # Verify access
-    if certificate.user_id != current_user.id and current_user.role != 'admin':
+    if certificate.user_id != current_user.id and not current_user.is_admin():
         flash('Unauthorized access.', 'error')
         return redirect(url_for('my_certificates'))
     
-    # For now, show certificate details (PDF generation will be added)
-    return render_template('certificates/view.html', certificate=certificate)
+    try:
+        user = certificate.user
+        course = certificate.course
+        
+        # Generate PDF
+        pdf_buffer = certificate_generator.generate_certificate_pdf(certificate, user, course)
+        
+        # Return PDF file
+        filename = f"Certificate_{certificate.certificate_number}.pdf"
+        
+        if isinstance(pdf_buffer, str):
+            # HTML fallback
+            return render_template('certificates/view.html', 
+                                 certificate=certificate,
+                                 html_content=pdf_buffer)
+        else:
+            # PDF file
+            return send_file(
+                pdf_buffer,
+                mimetype='application/pdf',
+                as_attachment=True,
+                download_name=filename
+            )
+    except Exception as e:
+        print(f"Certificate generation error: {str(e)}")
+        flash(f'Error generating certificate: {str(e)}', 'error')
+        return redirect(url_for('my_certificates'))
 
 
 @app.route('/verify-certificate/<code>')
@@ -2405,6 +2670,48 @@ def privacy():
 @app.route('/terms')
 def terms():
     return render_template('terms.html')
+
+
+# ============================================================================
+# ERROR HANDLERS
+# ============================================================================
+
+@app.errorhandler(404)
+def not_found_error(error):
+    """Handle 404 errors"""
+    return render_template('errors/404.html'), 404
+
+@app.errorhandler(500)
+def internal_error(error):
+    """Handle 500 errors"""
+    db.session.rollback()
+    return render_template('errors/500.html', now=datetime.utcnow()), 500
+
+@app.errorhandler(403)
+def forbidden_error(error):
+    """Handle 403 errors"""
+    return render_template('errors/403.html'), 403
+
+@app.errorhandler(400)
+def bad_request_error(error):
+    """Handle 400 errors"""
+    flash('Bad request. Please check your input.', 'error')
+    return redirect(url_for('index')), 400
+
+# Global exception handler
+@app.before_request
+def before_request():
+    """Log all requests"""
+    if request.method != 'GET':
+        print(f"[REQUEST] {request.method} {request.path}")
+
+@app.after_request
+def after_request(response):
+    """Log all responses"""
+    if response.status_code >= 400:
+        print(f"[RESPONSE] {response.status_code} {request.path}")
+    return response
+
 
 if __name__ == '__main__':
     with app.app_context():
