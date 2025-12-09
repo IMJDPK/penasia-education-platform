@@ -3,6 +3,10 @@
 {% block title %}Course Management - Admin Dashboard{% endblock %}
 
 {% block content %}
+<!-- Admin Sidebar -->
+{% include 'admin/sidebar.html' %}
+
+<div class="admin-main-content">
 <div class="container mt-4">
     <div class="row">
         <div class="col-lg-10 mx-auto">
@@ -138,4 +142,18 @@ function deleteCourse(courseId, courseTitle) {
     }
 }
 </script>
+
+</div><!-- End admin-main-content -->
+
+<style>
+.admin-main-content {
+    margin-left: 280px;
+}
+
+@media (max-width: 991px) {
+    .admin-main-content {
+        margin-left: 0;
+    }
+}
+</style>
 {% endblock %}

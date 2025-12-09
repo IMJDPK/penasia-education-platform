@@ -633,6 +633,7 @@ def admin_dashboard():
         return redirect(url_for('dashboard'))
     
     # Admin statistics
+    total_users = User.query.count()
     total_students = User.query.filter_by(role='student').count()
     total_courses = Course.query.filter_by(is_active=True).count()
     pending_applications = Application.query.filter_by(status='pending').count()
@@ -641,6 +642,7 @@ def admin_dashboard():
     pending_consultations = Consultation.query.filter_by(status='pending').count()
     
     return render_template('admin/dashboard.html', 
+                         total_users=total_users,
                          total_students=total_students,
                          total_courses=total_courses, 
                          pending_applications=pending_applications,
@@ -796,6 +798,145 @@ def admin_course_delete(course_id):
         flash(f'Error deleting course: {str(e)}', 'error')
     
     return redirect(url_for('admin_courses'))
+
+@app.route('/admin/users')
+@login_required
+def admin_users():
+    """Admin user management page (admins, staff, students)"""
+    if not current_user.is_admin():
+        flash('Access denied. Admin privileges required.', 'error')
+        return redirect(url_for('index'))
+    
+    # Get all users organized by role
+    admins = User.query.filter_by(role='admin').all()
+    staff = User.query.filter_by(role='staff').all()
+    students = User.query.filter_by(role='student').all()
+    
+    return render_template('admin/users.html', 
+                         admins=admins, 
+                         staff=staff, 
+                         students=students,
+                         total_admins=len(admins),
+                         total_staff=len(staff),
+                         total_students=len(students))
+
+@app.route('/admin/users/create', methods=['GET', 'POST'])
+@login_required
+def admin_create_user():
+    """Create new admin or staff user"""
+    if not current_user.is_admin():
+        flash('Access denied. Admin privileges required.', 'error')
+        return redirect(url_for('index'))
+    
+    if request.method == 'POST':
+        email = request.form.get('email').lower()
+        first_name = request.form.get('first_name')
+        last_name = request.form.get('last_name')
+        password = request.form.get('password')
+        role = request.form.get('role')
+        
+        # Validate input
+        if not email or not first_name or not last_name or not password:
+            flash('All fields are required.', 'error')
+            return render_template('admin/user_form.html', mode='create')
+        
+        if role not in ['admin', 'staff']:
+            flash('Invalid role selected.', 'error')
+            return render_template('admin/user_form.html', mode='create')
+        
+        # Check if user exists
+        existing_user = User.query.filter_by(email=email).first()
+        if existing_user:
+            flash(f'User with email {email} already exists.', 'error')
+            return render_template('admin/user_form.html', mode='create')
+        
+        # Create new user
+        new_user = User(
+            email=email,
+            first_name=first_name,
+            last_name=last_name,
+            role=role,
+            is_active=True,
+            email_verified=True
+        )
+        new_user.set_password(password)
+        
+        try:
+            db.session.add(new_user)
+            db.session.commit()
+            flash(f'{role.capitalize()} user "{new_user.full_name}" created successfully!', 'success')
+            return redirect(url_for('admin_users'))
+        except Exception as e:
+            db.session.rollback()
+            flash(f'Error creating user: {str(e)}', 'error')
+            return render_template('admin/user_form.html', mode='create')
+    
+    return render_template('admin/user_form.html', mode='create')
+
+@app.route('/admin/users/<int:user_id>/edit', methods=['GET', 'POST'])
+@login_required
+def admin_edit_user(user_id):
+    """Edit existing user"""
+    if not current_user.is_admin():
+        flash('Access denied. Admin privileges required.', 'error')
+        return redirect(url_for('index'))
+    
+    user = User.query.get_or_404(user_id)
+    
+    # Prevent editing yourself or another admin
+    if user.role == 'admin' and user.id != current_user.id:
+        flash('Cannot edit other admin accounts.', 'error')
+        return redirect(url_for('admin_users'))
+    
+    if request.method == 'POST':
+        user.first_name = request.form.get('first_name') or user.first_name
+        user.last_name = request.form.get('last_name') or user.last_name
+        user.is_active = request.form.get('is_active') == 'on'
+        
+        new_password = request.form.get('password')
+        if new_password:
+            user.set_password(new_password)
+        
+        try:
+            db.session.commit()
+            flash(f'User "{user.full_name}" updated successfully!', 'success')
+            return redirect(url_for('admin_users'))
+        except Exception as e:
+            db.session.rollback()
+            flash(f'Error updating user: {str(e)}', 'error')
+    
+    return render_template('admin/user_form.html', mode='edit', user=user)
+
+@app.route('/admin/users/<int:user_id>/delete', methods=['POST'])
+@login_required
+def admin_delete_user(user_id):
+    """Delete user"""
+    if not current_user.is_admin():
+        flash('Access denied. Admin privileges required.', 'error')
+        return redirect(url_for('index'))
+    
+    user = User.query.get_or_404(user_id)
+    
+    # Prevent deleting yourself
+    if user.id == current_user.id:
+        flash('Cannot delete your own account.', 'error')
+        return redirect(url_for('admin_users'))
+    
+    # Prevent deleting other admins
+    if user.role == 'admin':
+        flash('Cannot delete admin accounts.', 'error')
+        return redirect(url_for('admin_users'))
+    
+    user_name = user.full_name
+    try:
+        db.session.delete(user)
+        db.session.commit()
+        flash(f'User "{user_name}" deleted successfully!', 'success')
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Error deleting user: {str(e)}', 'error')
+    
+    return redirect(url_for('admin_users'))
 
 @app.route('/admin/students')
 @login_required

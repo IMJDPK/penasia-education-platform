@@ -3,6 +3,10 @@
 {% block title %}Admin Dashboard - PenAsia Continuing Education Centre{% endblock %}
 
 {% block content %}
+<!-- Admin Sidebar -->
+{% include 'admin/sidebar.html' %}
+
+<div class="admin-main-content">
 <!-- Admin Header -->
 <section class="py-4 bg-dark text-white">
     <div class="container">
@@ -382,7 +386,14 @@
     </div>
 </section>
 
+</div><!-- End admin-main-content -->
+
 <style>
+.admin-main-content {
+    margin-left: 280px;
+    min-height: 100vh;
+}
+
 .avatar-sm {
     width: 32px;
     height: 32px;
@@ -437,6 +448,12 @@
 }
 
 /* Responsive adjustments */
+@media (max-width: 991px) {
+    .admin-main-content {
+        margin-left: 0;
+    }
+}
+
 @media (max-width: 768px) {
     .admin-card {
         min-height: 140px;
@@ -532,4 +549,6 @@ function rejectApplication(applicationId) {
     }
 }
 </script>
+
+</div><!-- End admin-main-content -->
 {% endblock %}

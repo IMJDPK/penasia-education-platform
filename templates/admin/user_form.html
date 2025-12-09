@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+
+{% block title %}{% if mode == 'create' %}Create User{% else %}Edit User{% endif %} - Admin Dashboard{% endblock %}
+
+{% block content %}
+<!-- Admin Sidebar -->
+{% include 'admin/sidebar.html' %}
+
+<div class="admin-main-content">
+    <!-- Admin Header -->
+    <section class="py-4 bg-light border-bottom">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <h1 class="h3 mb-2">
+                        <i class="fas fa-{% if mode == 'create' %}user-plus{% else %}user-edit{% endif %} me-2"></i>
+                        {% if mode == 'create' %}Create New User{% else %}Edit User{% endif %}
+                    </h1>
+                    <p class="text-muted mb-0">
+                        {% if mode == 'create' %}Add a new administrator or staff member{% else %}Update user information{% endif %}
+                    </p>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <a href="{{ url_for('admin_users') }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Users
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Form Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="card shadow-sm">
+                        <div class="card-body p-4">
+                            <form method="POST">
+                                <!-- Email -->
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email Address <span class="text-danger">*</span></label>
+                                    <input 
+                                        type="email" 
+                                        class="form-control" 
+                                        id="email" 
+                                        name="email" 
+                                        value="{{ user.email if user else '' }}"
+                                        {% if mode == 'edit' %}disabled{% else %}required{% endif %}
+                                        placeholder="user@example.com"
+                                    >
+                                    <small class="text-muted">
+                                        {% if mode == 'create' %}Email cannot be changed after creation{% else %}Email cannot be changed{% endif %}
+                                    </small>
+                                </div>
+
+                                <!-- Name Row -->
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="first_name" class="form-label">First Name <span class="text-danger">*</span></label>
+                                        <input 
+                                            type="text" 
+                                            class="form-control" 
+                                            id="first_name" 
+                                            name="first_name" 
+                                            value="{{ user.first_name if user else '' }}"
+                                            required
+                                            placeholder="John"
+                                        >
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="last_name" class="form-label">Last Name <span class="text-danger">*</span></label>
+                                        <input 
+                                            type="text" 
+                                            class="form-control" 
+                                            id="last_name" 
+                                            name="last_name" 
+                                            value="{{ user.last_name if user else '' }}"
+                                            required
+                                            placeholder="Doe"
+                                        >
+                                    </div>
+                                </div>
+
+                                <!-- Role Selection -->
+                                {% if mode == 'create' %}
+                                <div class="mb-3">
+                                    <label for="role" class="form-label">User Role <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="role" name="role" required>
+                                        <option value="">Select a role...</option>
+                                        <option value="admin">Administrator (Full System Access)</option>
+                                        <option value="staff">Staff Member (Limited Access)</option>
+                                    </select>
+                                    <small class="text-muted">
+                                        <strong>Administrator:</strong> Full access to all system features.<br>
+                                        <strong>Staff:</strong> Limited access for support and operations.
+                                    </small>
+                                </div>
+                                {% else %}
+                                <div class="mb-3">
+                                    <label for="role" class="form-label">User Role</label>
+                                    <input 
+                                        type="text" 
+                                        class="form-control" 
+                                        id="role" 
+                                        value="{{ user.role.capitalize() }}" 
+                                        disabled
+                                    >
+                                    <small class="text-muted">Role cannot be changed after creation</small>
+                                </div>
+                                {% endif %}
+
+                                <!-- Password -->
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">
+                                        Password 
+                                        {% if mode == 'create' %}<span class="text-danger">*</span>{% else %}<span class="text-muted">(leave blank to keep current)</span>{% endif %}
+                                    </label>
+                                    <input 
+                                        type="password" 
+                                        class="form-control" 
+                                        id="password" 
+                                        name="password" 
+                                        placeholder="{% if mode == 'create' %}Enter password{% else %}Enter new password{% endif %}"
+                                        {% if mode == 'create' %}required{% endif %}
+                                    >
+                                    <small class="text-muted">
+                                        Minimum 8 characters. Use a mix of uppercase, lowercase, numbers, and symbols.
+                                    </small>
+                                </div>
+
+                                <!-- Status Toggle (Edit only) -->
+                                {% if mode == 'edit' %}
+                                <div class="mb-3">
+                                    <label for="is_active" class="form-label">Account Status</label>
+                                    <div class="form-check form-switch">
+                                        <input 
+                                            class="form-check-input" 
+                                            type="checkbox" 
+                                            id="is_active" 
+                                            name="is_active"
+                                            {% if user.is_active %}checked{% endif %}
+                                        >
+                                        <label class="form-check-label" for="is_active">
+                                            Active (User can log in)
+                                        </label>
+                                    </div>
+                                </div>
+                                {% endif %}
+
+                                <!-- Info Box -->
+                                <div class="alert alert-info mb-4">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    {% if mode == 'create' %}
+                                    <strong>New User:</strong> The new user will be able to log in immediately with their email and password.
+                                    {% else %}
+                                    <strong>Update User:</strong> Changes will take effect immediately. Toggle the status to temporarily disable the account.
+                                    {% endif %}
+                                </div>
+
+                                <!-- Form Actions -->
+                                <div class="d-flex gap-2">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save me-2"></i>
+                                        {% if mode == 'create' %}Create User{% else %}Save Changes{% endif %}
+                                    </button>
+                                    <a href="{{ url_for('admin_users') }}" class="btn btn-outline-secondary">
+                                        <i class="fas fa-times me-2"></i>Cancel
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Password Requirements -->
+                    <div class="card shadow-sm mt-4">
+                        <div class="card-header bg-light">
+                            <h6 class="mb-0"><i class="fas fa-lock me-2"></i>Password Requirements</h6>
+                        </div>
+                        <div class="card-body text-sm">
+                            <ul class="mb-0">
+                                <li>At least 8 characters long</li>
+                                <li>Include uppercase letters (A-Z)</li>
+                                <li>Include lowercase letters (a-z)</li>
+                                <li>Include numbers (0-9)</li>
+                                <li>Include special characters (!@#$%^&*)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<style>
+.admin-main-content {
+    margin-left: 280px;
+}
+
+.text-sm {
+    font-size: 0.875rem;
+}
+
+@media (max-width: 991px) {
+    .admin-main-content {
+        margin-left: 0;
+    }
+}
+</style>
+{% endblock %}

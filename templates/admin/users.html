@@ -1,0 +1,282 @@
+{% extends "base.html" %}
+
+{% block title %}User Management - Admin Dashboard{% endblock %}
+
+{% block content %}
+<!-- Admin Sidebar -->
+{% include 'admin/sidebar.html' %}
+
+<div class="admin-main-content">
+    <!-- Admin Header -->
+    <section class="py-4 bg-light border-bottom">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="h3 mb-2">
+                        <i class="fas fa-users me-2"></i>User Management
+                    </h1>
+                    <p class="text-muted mb-0">Manage administrators, staff, and users</p>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <a href="{{ url_for('admin_create_user') }}" class="btn btn-primary">
+                        <i class="fas fa-user-plus me-2"></i>Create New User
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- User Statistics -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <i class="fas fa-user-shield fa-2x text-primary mb-3"></i>
+                            <h5 class="card-title">{{ total_admins }}</h5>
+                            <p class="text-muted mb-0">Administrators</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <i class="fas fa-user-tie fa-2x text-success mb-3"></i>
+                            <h5 class="card-title">{{ total_staff }}</h5>
+                            <p class="text-muted mb-0">Staff Members</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <i class="fas fa-graduation-cap fa-2x text-info mb-3"></i>
+                            <h5 class="card-title">{{ total_students }}</h5>
+                            <p class="text-muted mb-0">Students</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <i class="fas fa-users fa-2x text-warning mb-3"></i>
+                            <h5 class="card-title">{{ total_admins + total_staff + total_students }}</h5>
+                            <p class="text-muted mb-0">Total Users</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Administrators Section -->
+    <section class="py-4 border-top">
+        <div class="container">
+            <h5 class="mb-3"><i class="fas fa-user-shield me-2 text-primary"></i>Administrators</h5>
+            <div class="card shadow-sm">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                                <th>Created</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if admins %}
+                                {% for admin in admins %}
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar-sm bg-primary text-white rounded-circle me-2 d-flex align-items-center justify-content-center">
+                                                {{ admin.first_name[0] }}{{ admin.last_name[0] }}
+                                            </div>
+                                            <div>
+                                                <strong>{{ admin.full_name }}</strong><br>
+                                                <small class="text-muted">ID: {{ admin.id }}</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>{{ admin.email }}</td>
+                                    <td>
+                                        {% if admin.is_active %}
+                                            <span class="badge bg-success">Active</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">Inactive</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <small>{{ admin.created_at.strftime('%Y-%m-%d') }}</small>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="{{ url_for('admin_edit_user', user_id=admin.id) }}" class="btn btn-outline-primary" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            {% if admin.id != current_user.id %}
+                                            <button class="btn btn-outline-danger" onclick="deleteUser({{ admin.id }}, '{{ admin.full_name }}')" title="Delete">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                            <tr>
+                                <td colspan="5" class="text-center text-muted py-4">
+                                    <i class="fas fa-inbox fa-2x mb-2"></i><br>
+                                    No administrators found
+                                </td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Staff Section -->
+    <section class="py-4 border-top">
+        <div class="container">
+            <h5 class="mb-3"><i class="fas fa-user-tie me-2 text-success"></i>Staff Members</h5>
+            <div class="card shadow-sm">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                                <th>Created</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if staff %}
+                                {% for staff_member in staff %}
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar-sm bg-success text-white rounded-circle me-2 d-flex align-items-center justify-content-center">
+                                                {{ staff_member.first_name[0] }}{{ staff_member.last_name[0] }}
+                                            </div>
+                                            <div>
+                                                <strong>{{ staff_member.full_name }}</strong><br>
+                                                <small class="text-muted">ID: {{ staff_member.id }}</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>{{ staff_member.email }}</td>
+                                    <td>
+                                        {% if staff_member.is_active %}
+                                            <span class="badge bg-success">Active</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">Inactive</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <small>{{ staff_member.created_at.strftime('%Y-%m-%d') }}</small>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="{{ url_for('admin_edit_user', user_id=staff_member.id) }}" class="btn btn-outline-primary" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <button class="btn btn-outline-danger" onclick="deleteUser({{ staff_member.id }}, '{{ staff_member.full_name }}')" title="Delete">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                            <tr>
+                                <td colspan="5" class="text-center text-muted py-4">
+                                    <i class="fas fa-inbox fa-2x mb-2"></i><br>
+                                    No staff members found
+                                </td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Students Section (Summary) -->
+    <section class="py-4 border-top">
+        <div class="container">
+            <h5 class="mb-3"><i class="fas fa-graduation-cap me-2 text-info"></i>Students</h5>
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <p class="text-muted mb-3">{{ total_students }} students are enrolled in the system.</p>
+                    <a href="{{ url_for('admin_students') }}" class="btn btn-outline-info btn-sm">
+                        <i class="fas fa-arrow-right me-2"></i>Manage Students
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete <strong id="deleteUserName"></strong>?</p>
+                <p class="text-muted text-sm">This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form method="POST" style="display: inline;">
+                    <button type="submit" class="btn btn-danger">Delete User</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.admin-main-content {
+    margin-left: 280px;
+}
+
+.avatar-sm {
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+@media (max-width: 991px) {
+    .admin-main-content {
+        margin-left: 0;
+    }
+}
+</style>
+
+<script>
+function deleteUser(userId, userName) {
+    document.getElementById('deleteUserName').textContent = userName;
+    const modal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+    
+    const form = document.querySelector('#deleteConfirmModal form');
+    form.action = `/admin/users/${userId}/delete`;
+    form.method = 'POST';
+    
+    modal.show();
+}
+</script>
+{% endblock %}
