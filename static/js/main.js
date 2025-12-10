@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeLanguageSwitcher();
     initializeMultiStepApplication();
     initializeMobileMenu();
+    initializeNavbarScroll();
     
     // Add fade-in animation to elements
     addFadeInAnimation();
@@ -28,6 +29,11 @@ function initializeMultiStepApplication() {
     
     programOptions.forEach(option => {
         option.addEventListener('click', function() {
+            // Prevent selection of disabled courses
+            if (this.classList.contains('disabled') || this.dataset.active === 'false') {
+                return;
+            }
+            
             // Remove previous selection
             programOptions.forEach(opt => opt.classList.remove('selected'));
             
@@ -653,6 +659,24 @@ function initializeMobileMenu() {
             mobileToggle.classList.remove('active');
             navbarMenu.classList.remove('active');
             document.body.style.overflow = '';
+        }
+    });
+}
+
+// Navbar Scroll Effect
+function initializeNavbarScroll() {
+    const navbar = document.querySelector('.navbar-premium');
+    const logo = document.querySelector('.navbar-brand-premium img');
+    
+    if (!navbar || !logo) return;
+    
+    window.addEventListener('scroll', function() {
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+            logo.style.height = '70px';
+        } else {
+            navbar.classList.remove('scrolled');
+            logo.style.height = '150px';
         }
     });
 }

@@ -1889,48 +1889,50 @@ def create_courses():
     # Course 169: Hotel Culinary Management
     course169 = Course(
         course_code='PSCE-DHM-5266',
-        title='酒店廚務管理文憑 (Diploma in Hotel Culinary Management)',
-        description='2年全日制酒店廚務管理文憑課程，提供專業廚藝訓練和酒店管理知識。2-year full-time diploma program providing professional culinary training and hotel management knowledge.',
+        title='Hotel Culinary Management Diploma',
+        description='2-year full-time diploma program providing professional culinary training and hotel management knowledge.',
         duration_weeks=104,  # 2 years
         duration_hours=2080,  # Approximate full-time hours
-        fee_hkd=141100,
+        fee_hkd=125000,
         cef_eligible=False,
         max_students=30,
-        language='English (supplemented with Cantonese)',
+        language='English',
         level='QF Level 3',
         prerequisites='Form 6 completion with DSE English Level 2, or IELTS 4.5+ or pass interview',
         category='Culinary',
         is_featured=True,
+        is_active=True,
         learning_outcomes='Professional culinary skills, hotel management knowledge, food safety certification',
-        course_content='食物及職業安全與健康, 廚務營運, 焗焙及甜品, 飲食服務與營運, 溝通及報告寫作技巧, 款待業概論, 美食',
+        course_content='Food Safety & Occupational Health, Kitchen Operations, Baking & Pastry, Food Service & Operations, Communication & Report Writing, Hospitality Industry Overview, Culinary Arts',
         certification='Diploma in Hotel Culinary Management'
     )
     
     # Course 1: BTEC Business Management
     course1 = Course(
         course_code='PSCE-BTB-5001',
-        title='Pearson BTEC Level 5 高級國家文憑商業管理 (Higher National Diploma in Business)',
-        description='24個月商業管理高級國家文憑，提供升讀英國學士學位課程機會。24-month Higher National Diploma in Business with progression to UK degree programs.',
-        duration_weeks=104,  # 24 months
+        title='BTEC Business Management HND',
+        description='Pearson BTEC Level 5 Higher National Diploma with direct progression to UK university final year. Build essential business and management skills.',
+        duration_weeks=104,  # 2 years
         duration_hours=1200,
-        fee_hkd=78000,
+        fee_hkd=118000,
         cef_eligible=False,
         max_students=30,
-        language='English (supplemented with Cantonese)',
+        language='English',
         level='RQF Level 5',
         prerequisites='HKDSE: 5 subjects at Level 2+ (including Chinese and English), IELTS 5.5 or equivalent, Age 18+',
         category='Business',
         is_featured=True,
+        is_active=True,
         learning_outcomes='Business management skills, strategic thinking, leadership development',
         course_content='Business Environment, Marketing Essentials, HR Management, Management & Operations, Management Accounting, Business Project, Business Law, Business Strategy',
         certification='Pearson BTEC Higher National Diploma in Business'
     )
     
-    # Course 171: Western Bakery & Pastry
+    # Course 171: Western Bakery & Pastry - ADMISSIONS CLOSED
     course171 = Course(
         course_code='CEF-43C130000',
-        title='西式烘焙及糕餅製作證書 (Certificate in Western Bakery and Pastry)',
-        description='11週西式烘焙及糕餅製作證書課程，提供實用烘焙技能訓練。11-week certificate program providing practical Western baking and pastry skills training.',
+        title='Western Bakery & Pastry',
+        description='QF Level 2 certificate with hands-on practical training in Western baking techniques.',
         duration_weeks=11,
         duration_hours=33,
         fee_hkd=12620,
@@ -1942,27 +1944,29 @@ def create_courses():
         prerequisites='Form 3 completion, minimum age 18',
         category='Culinary',
         is_featured=True,
+        is_active=False,  # Admissions closed
         learning_outcomes='Western baking techniques, pastry skills, professional presentation',
         course_content='Course Introduction, Western Baking History, Bread Making, Cake Making, Pastry Making, Cookie & Biscuit Making, Advanced Pastry, Final Project',
         certification='Certificate in Western Bakery and Pastry (QF Level 2)'
     )
     
-    # Course 179: Western Starter & Main Course
+    # Course 179: Western Cuisine Certificate - ADMISSIONS CLOSED
     course179 = Course(
         course_code='CEF-43C15919A',
-        title='西式頭盤及主菜製作證書 (Certificate in Western Starter and Main Course)',
-        description='11週西式頭盤及主菜製作證書課程，掌握專業西式烹飪技巧。11-week certificate program focusing on Western cuisine fundamentals and professional cooking techniques.',
-        duration_weeks=11,
+        title='Western Cuisine Certificate',
+        description='Professional culinary skills training with focus on Western cooking techniques and presentation.',
+        duration_weeks=10,
         duration_hours=33,
-        fee_hkd=12620,
+        fee_hkd=13200,
         cef_eligible=True,
-        cef_fee_hkd=12620,
+        cef_fee_hkd=13200,
         max_students=20,
         language='English supplemented with Cantonese',
         level='QF Level 2',
         prerequisites='Form 3 completion, minimum age 18',
         category='Culinary',
         is_featured=True,
+        is_active=False,  # Admissions closed
         learning_outcomes='Western cuisine fundamentals, professional cooking techniques, menu planning',
         course_content='Western Cuisine Fundamentals, Kitchen Tools & Equipment, Soups and Salads, Advanced Cooking Techniques, Menu Planning, Food Cost Control',
         certification='Certificate in Western Starter and Main Course (QF Level 2)'

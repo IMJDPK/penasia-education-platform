@@ -177,6 +177,28 @@
     box-shadow: var(--shadow-light);
 }
 
+.program-option.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: #f5f5f5;
+}
+
+.program-option.disabled:hover {
+    border-color: #e1e5e9;
+    box-shadow: none;
+}
+
+.admissions-closed-badge {
+    background: #dc3545;
+    color: white;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-top: 0.5rem;
+    display: inline-block;
+}
+
 .program-title {
     font-weight: 600;
     color: var(--primary-blue);
@@ -370,31 +392,31 @@
                         <p class="form-section-subtitle">Select the program that best matches your career goals</p>
                         
                         <div class="program-selection">
-                            <div class="program-option" data-program="169" data-fee="141100" data-duration="2 years">
+                            <div class="program-option" data-program="169" data-fee="125000" data-duration="2 years">
                                 <div class="program-title">Hotel Culinary Management Diploma</div>
                                 <div class="program-details">2-year full-time program combining practical kitchen training with hospitality management theory</div>
-                                <div class="program-fee">HK$141,100</div>
+                                <div class="program-fee">HK$125,000</div>
                                 <div class="cef-badge-small">CEF Approved</div>
                             </div>
                             
-                            <div class="program-option" data-program="1" data-fee="78000" data-duration="24 months">
+                            <div class="program-option" data-program="1" data-fee="118000" data-duration="2 Years Full-Time">
                                 <div class="program-title">BTEC Business Management HND</div>
                                 <div class="program-details">Pearson Level 5 Higher National Diploma with UK university progression</div>
-                                <div class="program-fee">HK$78,000</div>
+                                <div class="program-fee">HK$118,000</div>
                             </div>
                             
-                            <div class="program-option" data-program="171" data-fee="12620" data-duration="11 weeks">
+                            <div class="program-option disabled" data-program="171" data-fee="12620" data-duration="11 weeks" data-active="false">
                                 <div class="program-title">Western Bakery & Pastry Certificate</div>
                                 <div class="program-details">QF Level 2 certificate with hands-on practical training</div>
                                 <div class="program-fee">HK$12,620</div>
-                                <div class="cef-badge-small">CEF Approved</div>
+                                <div class="admissions-closed-badge">Admissions Closed</div>
                             </div>
                             
-                            <div class="program-option" data-program="179" data-fee="13200" data-duration="10 weeks">
+                            <div class="program-option disabled" data-program="179" data-fee="13200" data-duration="10 weeks" data-active="false">
                                 <div class="program-title">Western Cuisine Certificate</div>
                                 <div class="program-details">Professional culinary skills training with Western cooking techniques</div>
                                 <div class="program-fee">HK$13,200</div>
-                                <div class="cef-badge-small">CEF Approved</div>
+                                <div class="admissions-closed-badge">Admissions Closed</div>
                             </div>
                         </div>
                         
@@ -632,6 +654,11 @@ document.addEventListener('DOMContentLoaded', function() {
     
     programOptions.forEach(option => {
         option.addEventListener('click', function() {
+            // Prevent selection of disabled courses
+            if (this.classList.contains('disabled') || this.dataset.active === 'false') {
+                return;
+            }
+            
             programOptions.forEach(opt => opt.classList.remove('selected'));
             this.classList.add('selected');
             selectedProgramInput.value = this.dataset.program;

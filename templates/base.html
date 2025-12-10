@@ -47,7 +47,7 @@
         <div class="container-premium">
             <div class="navbar-content">
                 <a class="navbar-brand-premium" href="{{ url_for('index') }}">
-                    <img src="{{ url_for('static', filename='images/penasia-logo.png') }}" alt="University of PenAsia" height="60" class="d-inline-block align-text-top">
+                    <img src="{{ url_for('static', filename='images/Penasia-Logo.PNG') }}" alt="University of PenAsia" height="150" class="d-inline-block align-text-top">
                 </a>
                 
                 <!-- Mobile Toggle Button -->
@@ -72,29 +72,7 @@
                     
                     <!-- Right side action buttons -->
                     <div class="navbar-actions">
-                        <a class="nav-link consultation-link" href="{{ url_for('consultation') }}">Book Consultation</a>
-                        
                         {% if current_user.is_authenticated %}
-                            <!-- Notifications Icon with Badge -->
-                            <div class="position-relative me-3">
-                                <a href="{{ url_for('notifications') }}" class="btn btn-link text-white position-relative" id="notificationBell">
-                                    <i class="fas fa-bell fa-lg"></i>
-                                    <span class="badge bg-danger position-absolute top-0 start-100 translate-middle rounded-pill" id="notificationBadge" style="display: none;">
-                                        0
-                                    </span>
-                                </a>
-                            </div>
-                            
-                            <!-- Messages Icon with Badge -->
-                            <div class="position-relative me-3">
-                                <a href="{{ url_for('messages_inbox') }}" class="btn btn-link text-white position-relative" id="messageIcon">
-                                    <i class="fas fa-envelope fa-lg"></i>
-                                    <span class="badge bg-danger position-absolute top-0 start-100 translate-middle rounded-pill" id="messageBadge" style="display: none;">
-                                        0
-                                    </span>
-                                </a>
-                            </div>
-                            
                             <div class="dropdown">
                                 <button class="btn-secondary-premium dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-label="User menu">
                                     <i class="fas fa-user me-1"></i>{{ current_user.first_name }}
@@ -111,6 +89,9 @@
                                     </a></li>
                                     <li><a class="dropdown-item" href="{{ url_for('messages_inbox') }}">
                                         <i class="fas fa-envelope me-2"></i>Messages
+                                    </a></li>
+                                    <li><a class="dropdown-item" href="{{ url_for('notifications') }}">
+                                        <i class="fas fa-bell me-2"></i>Notifications
                                     </a></li>
                                     <li><a class="dropdown-item" href="{{ url_for('announcements') }}">
                                         <i class="fas fa-bullhorn me-2"></i>Announcements
@@ -134,7 +115,7 @@
                                 </ul>
                             </div>
                         {% else %}
-                            <a href="{{ url_for('login') }}" class="btn-secondary-premium me-2">
+                            <a href="{{ url_for('login') }}" class="btn-secondary-premium">
                                 <i class="fas fa-sign-in-alt me-1"></i>Login
                             </a>
                         {% endif %}

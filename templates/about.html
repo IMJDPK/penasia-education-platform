@@ -58,6 +58,33 @@
 .check-icon-premium {
     color: var(--accent-gold) !important;
 }
+
+@media (max-width: 768px) {
+    .about-hero {
+        padding: 3rem 0;
+        text-align: center;
+    }
+
+    .about-hero .row {
+        flex-direction: column-reverse;
+    }
+
+    .about-hero .hero-title {
+        font-size: 2.2rem;
+        margin-top: 1.5rem;
+    }
+
+    .about-hero .hero-subtitle {
+        font-size: 1rem;
+    }
+
+    .about-hero img {
+        width: 100%;
+        height: auto;
+        margin: 0 auto;
+        display: block;
+    }
+}
 </style>
 {% endblock %}
 
@@ -72,7 +99,7 @@
                 <p>With Education License No. 593958, we offer professional development opportunities in hospitality, business management, and culinary arts with programs designed to meet industry standards.</p>
             </div>
             <div class="col-lg-6">
-                <img src="{{ url_for('static', filename='images/university/campus-exterior-02.jpg') }}" alt="University of PenAsia Campus" class="img-fluid rounded shadow">
+                <img src="{{ url_for('static', filename='images/about/about-us-hero.png') }}" alt="University of PenAsia Campus" class="img-fluid rounded shadow">
             </div>
         </div>
     </div>
