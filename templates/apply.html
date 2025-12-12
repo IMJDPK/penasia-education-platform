@@ -665,11 +665,17 @@
 <script>
 // Update summary when moving to step 3
 document.addEventListener('DOMContentLoaded', function() {
-    const originalNextStep = window.nextStep;
+    // Make sure the multi-step helpers exist even if main.js fails to attach
+    if (typeof window.nextStep !== 'function' && typeof initializeMultiStepApplication === 'function') {
+        initializeMultiStepApplication();
+    }
+
+    const originalNextStep = typeof window.nextStep === 'function'
+        ? window.nextStep
+        : function() { console.warn('nextStep is not initialized'); };
+
     window.nextStep = function() {
-        if (typeof originalNextStep === 'function') {
-            originalNextStep();
-        }
+        originalNextStep();
         updateApplicationSummary();
     };
 });
