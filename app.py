@@ -1530,7 +1530,6 @@ def apply():
                 nationality = request.form.get('nationality')
                 address = request.form.get('address')
                 education_level = request.form.get('education_level')
-                english_level = request.form.get('english_level')
                 work_experience = request.form.get('work_experience')
                 motivation = request.form.get('motivation')
                 
@@ -1541,6 +1540,15 @@ def apply():
                         'error': 'Please fill in all required fields.'
                     })
                 
+                # Validate course_id is an integer
+                try:
+                    course_id = int(course_id)
+                except (ValueError, TypeError):
+                    return jsonify({
+                        'success': False,
+                        'error': 'Invalid course selection.'
+                    })
+                
                 # Get course
                 course = Course.query.get(course_id)
                 if not course:
@@ -1549,21 +1557,33 @@ def apply():
                         'error': 'Selected course not found.'
                     })
                 
+                # Check if user is logged in, if not create temporary record
+                user = None
+                if current_user and current_user.is_authenticated:
+                    user = current_user
+                else:
+                    # Check if user with this email exists
+                    user = User.query.filter_by(email=email).first()
+                    if not user:
+                        # Create new user account for applicant
+                        user = User(
+                            first_name=first_name,
+                            last_name=last_name,
+                            email=email,
+                            phone=phone,
+                            role='student'
+                        )
+                        user.set_password('temp_' + email.split('@')[0])  # Temporary password
+                        db.session.add(user)
+                        db.session.flush()
+                
                 # Create application
                 application = Application(
-                    first_name=first_name,
-                    last_name=last_name,
-                    email=email,
-                    phone=phone,
-                    date_of_birth=datetime.strptime(date_of_birth, '%Y-%m-%d').date() if date_of_birth else None,
-                    nationality=nationality,
-                    address=address,
+                    user_id=user.id,
+                    course_id=course_id,
                     education_level=education_level,
-                    english_level=english_level,
                     work_experience=work_experience,
                     motivation=motivation,
-                    course_id=course_id,
-                    application_date=datetime.utcnow(),
                     status='pending'
                 )
                 
@@ -1572,12 +1592,13 @@ def apply():
                 
                 # Create notifications for all admin users
                 admin_users = User.query.filter_by(role='admin').all()
+                full_name = f'{first_name} {last_name}'
                 for admin in admin_users:
                     notification = Notification(
                         user_id=admin.id,
                         type='application',
                         title=f'New Application: {course.title}',
-                        message=f'{first_name} {last_name} ({email}) has submitted an application for {course.title}. Phone: {phone}, DOB: {date_of_birth or "N/A"}, Nationality: {nationality or "N/A"}',
+                        message=f'{full_name} ({email}) has submitted an application for {course.title}. Phone: {phone}, Education: {education_level or "Not specified"}',
                         link_url=f'/admin/applications',
                         priority='high'
                     )

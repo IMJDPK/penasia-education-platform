@@ -438,14 +438,14 @@
                             <div class="col-md-6">
                                 <div class="form-group-premium">
                                     <label class="form-label-premium" for="firstName">First Name *</label>
-                                    <input type="text" class="form-control-premium" id="firstName" name="firstName" required>
+                                    <input type="text" class="form-control-premium" id="firstName" name="first_name" required>
                                     <div class="error-message" id="firstName-error">Please enter your first name</div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group-premium">
                                     <label class="form-label-premium" for="lastName">Last Name *</label>
-                                    <input type="text" class="form-control-premium" id="lastName" name="lastName" required>
+                                    <input type="text" class="form-control-premium" id="lastName" name="last_name" required>
                                     <div class="error-message" id="lastName-error">Please enter your last name</div>
                                 </div>
                             </div>
@@ -472,7 +472,7 @@
                             <div class="col-md-6">
                                 <div class="form-group-premium">
                                     <label class="form-label-premium" for="dateOfBirth">Date of Birth *</label>
-                                    <input type="date" class="form-control-premium" id="dateOfBirth" name="dateOfBirth" required>
+                                    <input type="date" class="form-control-premium" id="dateOfBirth" name="date_of_birth" required>
                                     <div class="error-message" id="dateOfBirth-error">Please select your date of birth</div>
                                 </div>
                             </div>
@@ -521,7 +521,7 @@
                             <div class="col-md-6">
                                 <div class="form-group-premium">
                                     <label class="form-label-premium" for="education">Highest Education Level *</label>
-                                    <select class="form-control-premium form-select-premium" id="education" name="education" required>
+                                    <select class="form-control-premium form-select-premium" id="education" name="education_level" required>
                                         <option value="">Select Education Level</option>
                                         <option value="secondary">Secondary School (Form 5/6)</option>
                                         <option value="diploma">Diploma/Higher Diploma</option>
@@ -538,7 +538,7 @@
                         
                         <div class="form-group-premium">
                             <label class="form-label-premium" for="experience">Relevant Work Experience</label>
-                            <textarea class="form-control-premium" id="experience" name="experience" rows="3" placeholder="Please describe any relevant work experience in hospitality, food service, or business (optional)"></textarea>
+                            <textarea class="form-control-premium" id="experience" name="work_experience" rows="3" placeholder="Please describe any relevant work experience in hospitality, food service, or business (optional)"></textarea>
                         </div>
                         
                         <div class="form-group-premium">
@@ -778,12 +778,22 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('summary-email').textContent = email;
         document.getElementById('summary-phone').textContent = phone;
         document.getElementById('summary-education').textContent = education.options[education.selectedIndex].text;
+        
+        // Program summary should already be populated when selecting in step 1
+        // This ensures all fields are populated when entering step 3
+        const selectedProgram = document.querySelector('.program-option.selected');
+        if (selectedProgram) {
+            document.getElementById('summary-program').textContent = selectedProgram.querySelector('.program-title').textContent;
+            document.getElementById('summary-fee').textContent = selectedProgram.querySelector('.program-fee').textContent;
+            document.getElementById('summary-duration').textContent = selectedProgram.dataset.duration;
+        }
     }
     
     // Form submission
     document.getElementById('applicationForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
         if (currentStep !== 3) {
-            e.preventDefault();
             return;
         }
         
@@ -791,13 +801,54 @@ document.addEventListener('DOMContentLoaded', function() {
         const terms = document.getElementById('terms');
         if (!terms.checked) {
             document.getElementById('terms-error').style.display = 'block';
-            e.preventDefault();
             return;
         }
         
         // Show loading state
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Submitting...';
         submitBtn.disabled = true;
+        
+        // Prepare form data
+        const formData = new FormData();
+        formData.append('course_id', document.getElementById('selectedProgram').value);
+        formData.append('first_name', document.getElementById('firstName').value);
+        formData.append('last_name', document.getElementById('lastName').value);
+        formData.append('email', document.getElementById('email').value);
+        formData.append('phone', document.getElementById('phone').value);
+        formData.append('date_of_birth', document.getElementById('dateOfBirth').value);
+        formData.append('nationality', document.getElementById('nationality').value);
+        formData.append('address', document.getElementById('address').value);
+        formData.append('education_level', document.getElementById('education').value);
+        formData.append('work_experience', document.getElementById('experience').value);
+        formData.append('motivation', document.getElementById('motivation').value);
+        
+        // Send AJAX request
+        fetch('{{ url_for("apply") }}', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Success!
+                alert('Application submitted successfully! Application ID: ' + data.application_id + '\n\nWe will contact you soon.');
+                window.location.href = '{{ url_for("index") }}';
+            } else {
+                // Show error
+                alert('Error: ' + (data.error || 'Failed to submit application'));
+                submitBtn.innerHTML = 'Submit Application';
+                submitBtn.disabled = false;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while submitting your application. Please try again.');
+            submitBtn.innerHTML = 'Submit Application';
+            submitBtn.disabled = false;
+        });
     });
     
     // Real-time validation
