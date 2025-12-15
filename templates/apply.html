@@ -688,21 +688,45 @@ function updateApplicationSummary() {
         document.getElementById('summary-fee').textContent = selectedProgram.querySelector('.program-fee').textContent;
         document.getElementById('summary-duration').textContent = selectedProgram.dataset.duration;
         
+        // Hide error alert if program is selected
+        const errorAlert = document.querySelector('[role="alert"]');
+        if (errorAlert && errorAlert.textContent.includes('Selected course not found')) {
+            errorAlert.style.display = 'none';
+        }
+        
         // Show CEF info if applicable
         if (selectedProgram.querySelector('.cef-badge-small')) {
             document.getElementById('cef-info').style.display = 'block';
         }
+    } else if (document.getElementById('summary-program')) {
+        // Only show error if we're on the summary page and nothing is selected
+        const currentStep = document.querySelector('.form-step.active');
+        if (currentStep && currentStep.id === 'step-3') {
+            // Silently return - don't show error on initial load
+            return;
+        }
     }
     
-    // Update personal info
-    const firstName = document.getElementById('firstName').value;
-    const lastName = document.getElementById('lastName').value;
-    const email = document.getElementById('email').value;
-    const phone = document.getElementById('phone').value;
+    // Update personal info - only if fields exist
+    const firstNameField = document.getElementById('firstName');
+    const lastNameField = document.getElementById('lastName');
+    const emailField = document.getElementById('email');
+    const phoneField = document.getElementById('phone');
     
-    document.getElementById('summary-name').textContent = `${firstName} ${lastName}`;
-    document.getElementById('summary-email').textContent = email;
-    document.getElementById('summary-phone').textContent = phone;
+    if (firstNameField && lastNameField && emailField && phoneField) {
+        const firstName = firstNameField.value || '';
+        const lastName = lastNameField.value || '';
+        const email = emailField.value || '';
+        const phone = phoneField.value || '';
+        
+        const summaryName = document.getElementById('summary-name');
+        const summaryEmail = document.getElementById('summary-email');
+        const summaryPhone = document.getElementById('summary-phone');
+        
+        if (summaryName) summaryName.textContent = `${firstName} ${lastName}`.trim() || '-';
+        if (summaryEmail) summaryEmail.textContent = email || '-';
+        if (summaryPhone) summaryPhone.textContent = phone || '-';
+    }
 }
 </script>
 {% endblock %}
