@@ -667,16 +667,28 @@
 const programDataMap = {};
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Build a map of program IDs to their data
-    document.querySelectorAll('.program-option').forEach(option => {
-        const programId = option.dataset.program;
-        programDataMap[programId] = {
-            title: option.querySelector('.program-title').textContent,
-            fee: option.querySelector('.program-fee').textContent,
-            duration: option.dataset.duration,
-            hasCEF: !!option.querySelector('.cef-badge-small')
-        };
-    });
+    // Wait a tick to ensure all DOM elements are rendered
+    setTimeout(function() {
+        // Build a map of program IDs to their data
+        const programOptions = document.querySelectorAll('.program-option');
+        console.log('Found', programOptions.length, 'program options');
+        
+        programOptions.forEach(option => {
+            const programId = option.dataset.program;
+            const titleEl = option.querySelector('.program-title');
+            const feeEl = option.querySelector('.program-fee');
+            
+            if (programId && titleEl && feeEl) {
+                programDataMap[programId] = {
+                    title: titleEl.textContent,
+                    fee: feeEl.textContent,
+                    duration: option.dataset.duration || 'N/A',
+                    hasCEF: !!option.querySelector('.cef-badge-small')
+                };
+                console.log('Mapped program', programId, ':', programDataMap[programId]);
+            }
+        });
+    }, 100);
 
     // Make sure the multi-step helpers exist even if main.js fails to attach
     if (typeof window.nextStep !== 'function' && typeof initializeMultiStepApplication === 'function') {
@@ -694,12 +706,18 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function updateApplicationSummary() {
+    console.log('updateApplicationSummary called');
+    
     // Get the selected program ID from the hidden input
     const selectedProgramInput = document.getElementById('selectedProgram');
     const selectedProgramId = selectedProgramInput ? selectedProgramInput.value : null;
     
+    console.log('Selected program ID:', selectedProgramId);
+    console.log('Program data map:', programDataMap);
+    
     if (selectedProgramId && programDataMap[selectedProgramId]) {
         const programData = programDataMap[selectedProgramId];
+        console.log('Using program data:', programData);
         
         document.getElementById('summary-program').textContent = programData.title;
         document.getElementById('summary-fee').textContent = programData.fee;
@@ -717,6 +735,8 @@ function updateApplicationSummary() {
                 alert.style.display = 'none';
             }
         });
+    } else {
+        console.warn('Program data not found for ID:', selectedProgramId);
     }
     
     // Update personal info from form fields
