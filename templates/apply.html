@@ -681,33 +681,34 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function updateApplicationSummary() {
-    // Update program info
+    // Update program info from the hidden input and selected program option
+    const selectedProgramInput = document.getElementById('selectedProgram');
     const selectedProgram = document.querySelector('.program-option.selected');
-    if (selectedProgram) {
-        document.getElementById('summary-program').textContent = selectedProgram.querySelector('.program-title').textContent;
-        document.getElementById('summary-fee').textContent = selectedProgram.querySelector('.program-fee').textContent;
-        document.getElementById('summary-duration').textContent = selectedProgram.dataset.duration;
+    
+    if (selectedProgram && selectedProgramInput.value) {
+        const programTitle = selectedProgram.querySelector('.program-title').textContent;
+        const programFee = selectedProgram.querySelector('.program-fee').textContent;
+        const programDuration = selectedProgram.dataset.duration;
         
-        // Hide error alert if program is selected
-        const errorAlert = document.querySelector('[role="alert"]');
-        if (errorAlert && errorAlert.textContent.includes('Selected course not found')) {
-            errorAlert.style.display = 'none';
-        }
+        document.getElementById('summary-program').textContent = programTitle;
+        document.getElementById('summary-fee').textContent = programFee;
+        document.getElementById('summary-duration').textContent = programDuration;
         
         // Show CEF info if applicable
-        if (selectedProgram.querySelector('.cef-badge-small')) {
-            document.getElementById('cef-info').style.display = 'block';
+        const cefInfo = document.getElementById('cef-info');
+        if (cefInfo) {
+            cefInfo.style.display = selectedProgram.querySelector('.cef-badge-small') ? 'block' : 'none';
         }
-    } else if (document.getElementById('summary-program')) {
-        // Only show error if we're on the summary page and nothing is selected
-        const currentStep = document.querySelector('.form-step.active');
-        if (currentStep && currentStep.id === 'step-3') {
-            // Silently return - don't show error on initial load
-            return;
-        }
+        
+        // Hide any error alerts when program is selected
+        document.querySelectorAll('[role="alert"]').forEach(alert => {
+            if (alert.textContent.includes('Selected course not found')) {
+                alert.style.display = 'none';
+            }
+        });
     }
     
-    // Update personal info - only if fields exist
+    // Update personal info from form fields
     const firstNameField = document.getElementById('firstName');
     const lastNameField = document.getElementById('lastName');
     const emailField = document.getElementById('email');
