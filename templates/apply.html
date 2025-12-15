@@ -779,5 +779,94 @@ function updateApplicationSummary() {
         if (summaryPhone) summaryPhone.textContent = phone || '-';
     }
 }
+
+// Handle AJAX submission to provide immediate success feedback
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('applicationForm');
+    if (!form) return;
+
+    form.addEventListener('submit', async function(e) {
+        // Let browser HTML5 validation run first
+        if (!form.checkValidity()) {
+            return;
+        }
+        e.preventDefault();
+
+        // Ensure a program is selected
+        const courseInput = document.getElementById('selectedProgram');
+        if (!courseInput || !courseInput.value) {
+            const err = document.getElementById('program-error');
+            if (err) err.style.display = 'block';
+            return;
+        }
+
+        const submitBtn = form.querySelector('button[type="submit"]');
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Submitting...';
+        }
+
+        try {
+            const formData = new FormData(form);
+            const resp = await fetch('/apply', {
+                method: 'POST',
+                headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                body: formData
+            });
+            const data = await resp.json();
+
+            if (data && data.success) {
+                // Show success alert at top of step-3
+                const step3 = document.getElementById('step-3');
+                if (step3) {
+                    // Remove any previous alerts
+                    step3.querySelectorAll('.alert').forEach(a => a.remove());
+                    const ok = document.createElement('div');
+                    ok.className = 'alert alert-success alert-dismissible fade show';
+                    ok.setAttribute('role', 'alert');
+                    ok.innerHTML = `
+                        <i class="fas fa-check-circle me-2"></i>${data.message || 'Application submitted successfully!'}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    `;
+                    step3.insertBefore(ok, step3.firstChild);
+                }
+                // Optionally redirect to a thank-you page
+                // window.location.href = `/thanks?app=${encodeURIComponent(data.application_id)}`;
+            } else {
+                // Show error alert
+                const step3 = document.getElementById('step-3');
+                if (step3) {
+                    step3.querySelectorAll('.alert').forEach(a => a.remove());
+                    const err = document.createElement('div');
+                    err.className = 'alert alert-danger alert-dismissible fade show';
+                    err.setAttribute('role', 'alert');
+                    err.innerHTML = `
+                        <i class="fas fa-exclamation-triangle me-2"></i>${(data && data.error) || 'Submission failed. Please try again.'}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    `;
+                    step3.insertBefore(err, step3.firstChild);
+                }
+            }
+        } catch (error) {
+            const step3 = document.getElementById('step-3');
+            if (step3) {
+                step3.querySelectorAll('.alert').forEach(a => a.remove());
+                const err = document.createElement('div');
+                err.className = 'alert alert-danger alert-dismissible fade show';
+                err.setAttribute('role', 'alert');
+                err.innerHTML = `
+                    <i class="fas fa-exclamation-triangle me-2"></i>Network error. Please check your connection and try again.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                `;
+                step3.insertBefore(err, step3.firstChild);
+            }
+        } finally {
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-paper-plane me-2"></i> Submit Application';
+            }
+        }
+    });
+});
 </script>
 {% endblock %}
