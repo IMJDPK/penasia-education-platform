@@ -714,9 +714,10 @@ document.addEventListener('DOMContentLoaded', function() {
 function updateApplicationSummary() {
     console.log('updateApplicationSummary called');
     
-    // Remove any existing error alerts first
-    document.querySelectorAll('[role="alert"]').forEach(alert => {
+    // Remove any existing error alerts first (search all alerts, not just role="alert")
+    document.querySelectorAll('.alert').forEach(alert => {
         if (alert.textContent.includes('Selected course not found')) {
+            console.log('Removing error alert');
             alert.remove();
         }
     });
@@ -743,18 +744,7 @@ function updateApplicationSummary() {
         }
     } else {
         console.warn('Program data not found for ID:', selectedProgramId);
-        // Show error alert only if no program found
-        const errorAlert = document.createElement('div');
-        errorAlert.className = 'alert alert-danger alert-dismissible fade show';
-        errorAlert.setAttribute('role', 'alert');
-        errorAlert.innerHTML = `
-            <i class="fas fa-exclamation-triangle me-2"></i>Selected course not found.
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        `;
-        const step3 = document.getElementById('step-3');
-        if (step3) {
-            step3.insertBefore(errorAlert, step3.firstChild);
-        }
+        // Don't show error alert - let validation handle it
     }
     
     // Update personal info from form fields
