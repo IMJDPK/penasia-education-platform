@@ -714,6 +714,13 @@ document.addEventListener('DOMContentLoaded', function() {
 function updateApplicationSummary() {
     console.log('updateApplicationSummary called');
     
+    // Remove any existing error alerts first
+    document.querySelectorAll('[role="alert"]').forEach(alert => {
+        if (alert.textContent.includes('Selected course not found')) {
+            alert.remove();
+        }
+    });
+    
     // Get the selected program ID from the hidden input
     const selectedProgramInput = document.getElementById('selectedProgram');
     const selectedProgramId = selectedProgramInput ? selectedProgramInput.value : null;
@@ -734,15 +741,20 @@ function updateApplicationSummary() {
         if (cefInfo) {
             cefInfo.style.display = programData.hasCEF ? 'block' : 'none';
         }
-        
-        // Hide any error alerts when program is selected
-        document.querySelectorAll('[role="alert"]').forEach(alert => {
-            if (alert.textContent.includes('Selected course not found')) {
-                alert.style.display = 'none';
-            }
-        });
     } else {
         console.warn('Program data not found for ID:', selectedProgramId);
+        // Show error alert only if no program found
+        const errorAlert = document.createElement('div');
+        errorAlert.className = 'alert alert-danger alert-dismissible fade show';
+        errorAlert.setAttribute('role', 'alert');
+        errorAlert.innerHTML = `
+            <i class="fas fa-exclamation-triangle me-2"></i>Selected course not found.
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        const step3 = document.getElementById('step-3');
+        if (step3) {
+            step3.insertBefore(errorAlert, step3.firstChild);
+        }
     }
     
     // Update personal info from form fields
