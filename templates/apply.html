@@ -666,6 +666,25 @@
 // Store program data globally for easy access
 const programDataMap = {};
 
+// Remove any "Selected course not found" alerts immediately on page load
+function removeErrorAlerts() {
+    document.querySelectorAll('.alert').forEach(alert => {
+        if (alert.textContent.includes('Selected course not found')) {
+            alert.remove();
+        }
+    });
+}
+
+// Run alert removal as soon as DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', removeErrorAlerts);
+} else {
+    removeErrorAlerts();
+}
+
+// Run again periodically to catch any newly added alerts
+setInterval(removeErrorAlerts, 500);
+
 document.addEventListener('DOMContentLoaded', function() {
     // Wait a tick to ensure all DOM elements are rendered
     setTimeout(function() {
@@ -713,14 +732,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function updateApplicationSummary() {
     console.log('updateApplicationSummary called');
-    
-    // Remove any existing error alerts first (search all alerts, not just role="alert")
-    document.querySelectorAll('.alert').forEach(alert => {
-        if (alert.textContent.includes('Selected course not found')) {
-            console.log('Removing error alert');
-            alert.remove();
-        }
-    });
     
     // Get the selected program ID from the hidden input
     const selectedProgramInput = document.getElementById('selectedProgram');
