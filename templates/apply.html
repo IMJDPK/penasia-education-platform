@@ -784,6 +784,7 @@ function updateApplicationSummary() {
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('applicationForm');
     if (!form) return;
+    let isSubmitting = false;
 
     form.addEventListener('submit', async function(e) {
         // Let browser HTML5 validation run first
@@ -791,6 +792,12 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         e.preventDefault();
+
+        if (isSubmitting) {
+            console.warn('Submission already in progress, ignoring duplicate click');
+            return;
+        }
+        isSubmitting = true;
 
         // Ensure a program is selected
         const courseInput = document.getElementById('selectedProgram');
@@ -885,6 +892,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = '<i class="fas fa-paper-plane me-2"></i> Submit Application';
             }
+            isSubmitting = false;
         }
     });
 });
