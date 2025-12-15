@@ -695,14 +695,20 @@ document.addEventListener('DOMContentLoaded', function() {
         initializeMultiStepApplication();
     }
 
-    const originalNextStep = typeof window.nextStep === 'function'
-        ? window.nextStep
-        : function() { console.warn('nextStep is not initialized'); };
+    // Wait for main.js to set up nextStep, then wrap it
+    setTimeout(function() {
+        const originalNextStep = typeof window.nextStep === 'function'
+            ? window.nextStep
+            : function() { console.warn('nextStep is not initialized'); };
 
-    window.nextStep = function() {
-        originalNextStep();
-        updateApplicationSummary();
-    };
+        window.nextStep = function() {
+            console.log('nextStep wrapper called');
+            originalNextStep();
+            setTimeout(updateApplicationSummary, 100);
+        };
+        
+        console.log('nextStep wrapper installed');
+    }, 200);
 });
 
 function updateApplicationSummary() {
