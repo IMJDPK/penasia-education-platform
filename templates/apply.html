@@ -807,13 +807,32 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         try {
+            console.log('Submitting application via AJAX...');
             const formData = new FormData(form);
+
+            // Add a timeout so we never spin forever
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 15000);
+
             const resp = await fetch('/apply', {
                 method: 'POST',
                 headers: { 'X-Requested-With': 'XMLHttpRequest' },
-                body: formData
+                body: formData,
+                signal: controller.signal
             });
-            const data = await resp.json();
+            clearTimeout(timeoutId);
+
+            console.log('Received response:', resp.status, resp.statusText);
+
+            let data = null;
+            const ct = resp.headers.get('content-type') || '';
+            if (ct.includes('application/json')) {
+                data = await resp.json();
+            } else {
+                const text = await resp.text();
+                console.warn('Non-JSON response:', text.slice(0, 500));
+                data = { success: resp.ok, message: 'Submitted', error: text };
+            }
 
             if (data && data.success) {
                 // Show success alert at top of step-3
@@ -841,13 +860,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     err.className = 'alert alert-danger alert-dismissible fade show';
                     err.setAttribute('role', 'alert');
                     err.innerHTML = `
-                        <i class="fas fa-exclamation-triangle me-2"></i>${(data && data.error) || 'Submission failed. Please try again.'}
+                        <i class="fas fa-exclamation-triangle me-2"></i>${(data && (data.error || data.message)) || 'Submission failed. Please try again.'}
                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     `;
                     step3.insertBefore(err, step3.firstChild);
                 }
             }
         } catch (error) {
+            console.error('Submit error:', error);
             const step3 = document.getElementById('step-3');
             if (step3) {
                 step3.querySelectorAll('.alert').forEach(a => a.remove());
@@ -855,7 +875,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 err.className = 'alert alert-danger alert-dismissible fade show';
                 err.setAttribute('role', 'alert');
                 err.innerHTML = `
-                    <i class="fas fa-exclamation-triangle me-2"></i>Network error. Please check your connection and try again.
+                    <i class="fas fa-exclamation-triangle me-2"></i>${error.name === 'AbortError' ? 'Request timed out. Please try again.' : 'Network error. Please try again.'}
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 `;
                 step3.insertBefore(err, step3.firstChild);
