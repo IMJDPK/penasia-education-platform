@@ -663,8 +663,21 @@
 </div>
 
 <script>
-// Update summary when moving to step 3
+// Store program data globally for easy access
+const programDataMap = {};
+
 document.addEventListener('DOMContentLoaded', function() {
+    // Build a map of program IDs to their data
+    document.querySelectorAll('.program-option').forEach(option => {
+        const programId = option.dataset.program;
+        programDataMap[programId] = {
+            title: option.querySelector('.program-title').textContent,
+            fee: option.querySelector('.program-fee').textContent,
+            duration: option.dataset.duration,
+            hasCEF: !!option.querySelector('.cef-badge-small')
+        };
+    });
+
     // Make sure the multi-step helpers exist even if main.js fails to attach
     if (typeof window.nextStep !== 'function' && typeof initializeMultiStepApplication === 'function') {
         initializeMultiStepApplication();
@@ -681,23 +694,21 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function updateApplicationSummary() {
-    // Update program info from the hidden input and selected program option
+    // Get the selected program ID from the hidden input
     const selectedProgramInput = document.getElementById('selectedProgram');
-    const selectedProgram = document.querySelector('.program-option.selected');
+    const selectedProgramId = selectedProgramInput ? selectedProgramInput.value : null;
     
-    if (selectedProgram && selectedProgramInput.value) {
-        const programTitle = selectedProgram.querySelector('.program-title').textContent;
-        const programFee = selectedProgram.querySelector('.program-fee').textContent;
-        const programDuration = selectedProgram.dataset.duration;
+    if (selectedProgramId && programDataMap[selectedProgramId]) {
+        const programData = programDataMap[selectedProgramId];
         
-        document.getElementById('summary-program').textContent = programTitle;
-        document.getElementById('summary-fee').textContent = programFee;
-        document.getElementById('summary-duration').textContent = programDuration;
+        document.getElementById('summary-program').textContent = programData.title;
+        document.getElementById('summary-fee').textContent = programData.fee;
+        document.getElementById('summary-duration').textContent = programData.duration;
         
         // Show CEF info if applicable
         const cefInfo = document.getElementById('cef-info');
         if (cefInfo) {
-            cefInfo.style.display = selectedProgram.querySelector('.cef-badge-small') ? 'block' : 'none';
+            cefInfo.style.display = programData.hasCEF ? 'block' : 'none';
         }
         
         // Hide any error alerts when program is selected
