@@ -162,11 +162,12 @@ def create_sample_data():
         
         # Create sample enrollments for approved applications
         approved_apps = Application.query.filter_by(status='approved').all()
-        for app in approved_apps:
+        # Use a different variable name to avoid shadowing the imported Flask `app`
+        for approved_app in approved_apps:
             enrollment = Enrollment(
-                user_id=app.user_id,
-                course_id=app.course_id,
-                application_id=app.id,
+                user_id=approved_app.user_id,
+                course_id=approved_app.course_id,
+                application_id=approved_app.id,
                 status='active',
                 start_date=date(2025, 9, 8),
                 expected_completion=date(2026, 6, 30),
