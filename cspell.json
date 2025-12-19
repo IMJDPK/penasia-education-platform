@@ -1,0 +1,37 @@
+{
+  "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
+  "version": "0.2",
+  "language": "en",
+  "words": [
+    "PenAsia",
+    "Penasia",
+    "penasia",
+    "HKD",
+    "BTEC",
+    "HND",
+    "RQF",
+    "DSE",
+    "IELTS",
+    "PythonAnywhere",
+    "Pylance",
+    "pyright",
+    "Kwai",
+    "Chuen",
+    "CEF",
+    "HKID",
+    "WhatsApp",
+    "E-mail",
+    "Penasia-Logo",
+    "NCR",
+    "RQF",
+    "HND",
+    "utcoffset"
+  ],
+  "ignorePaths": [
+    "**/.venv/**",
+    "**/venv/**",
+    "**/__pycache__/**",
+    "migrations/**",
+    "static/**"
+  ]
+}

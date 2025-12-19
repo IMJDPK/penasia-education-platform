@@ -1,12 +1,8 @@
-{% extends "base.html" %}
+{% extends "admin/base.html" %}
 
 {% block title %}Admin Dashboard - PenAsia Continuing Education Centre{% endblock %}
 
-{% block content %}
-<!-- Admin Sidebar -->
-{% include 'admin/sidebar.html' %}
-
-<div class="admin-main-content">
+{% block admin_content %}
 <!-- Admin Header -->
 <section class="py-4 bg-dark text-white">
     <div class="container">
@@ -549,6 +545,4 @@ function rejectApplication(applicationId) {
     }
 }
 </script>
-
-</div><!-- End admin-main-content -->
 {% endblock %}

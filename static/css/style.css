@@ -331,6 +331,19 @@ footer a:hover {
     outline-offset: 2px;
 }
 
+/* Active dropdown menu items */
+.dropdown-item.active {
+    background-color: #e7f3ff;
+    color: #0066cc;
+    font-weight: 600;
+    border-left: 3px solid #0066cc;
+}
+
+.dropdown-item.active:hover {
+    background-color: #cce5ff;
+    color: #004999;
+}
+
 /* Print styles */
 @media print {
     .navbar,

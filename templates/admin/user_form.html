@@ -1,12 +1,8 @@
-{% extends "base.html" %}
+{% extends "admin/base.html" %}
 
-{% block title %}{% if mode == 'create' %}Create User{% else %}Edit User{% endif %} - Admin Dashboard{% endblock %}
+{% block title %}{% if user %}Edit User{% else %}Add User{% endif %} - Admin Panel{% endblock %}
 
-{% block content %}
-<!-- Admin Sidebar -->
-{% include 'admin/sidebar.html' %}
-
-<div class="admin-main-content">
+{% block admin_content %}
     <!-- Admin Header -->
     <section class="py-4 bg-light border-bottom">
         <div class="container">

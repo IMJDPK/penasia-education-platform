@@ -1,5 +1,5 @@
 """
-Email notification system for PenAsia
+Email notification system for University of Penasia (Penasia School of Continuing Education)
 Handles sending emails for application updates, payment confirmations, etc.
 """
 import smtplib
@@ -94,7 +94,7 @@ Next Steps:
 If you have any questions, please contact us at enquiry@penasia.edu.hk or call (852) 2529 6138.
 
 Best regards,
-PenAsia Continuing Education Centre
+University of Penasia (Penasia School of Continuing Education)
 
 ---
 This is an automated email. Please do not reply to this message.
@@ -153,7 +153,7 @@ Next Steps:
 If you have any questions, please contact us at enquiry@penasia.edu.hk or call (852) 2529 6138.
 
 Best regards,
-PenAsia Continuing Education Centre
+University of Penasia (Penasia School of Continuing Education)
 
 ---
 This is an automated email. Please do not reply to this message.
@@ -183,15 +183,15 @@ Next Steps:
 
 Important Information:
 - Course Start Date: [TO BE CONFIRMED]
-- Location: PenAsia Continuing Education Centre
+- Location: University of Penasia (Penasia School of Continuing Education)
 - Address: 1/F, Block C, Cho Yiu Centre, Cho Yiu Chuen, No.6 King Cho Road, Kwai Chung, HK
 
 If you have any questions, please contact us at enquiry@penasia.edu.hk or call (852) 2529 6138.
 
-Thank you for choosing PenAsia Continuing Education Centre.
+Thank you for choosing University of Penasia (Penasia School of Continuing Education).
 
 Best regards,
-PenAsia Continuing Education Centre
+University of Penasia (Penasia School of Continuing Education)
 
 ---
 This is an automated email. Please do not reply to this message.
@@ -201,7 +201,7 @@ This is an automated email. Please do not reply to this message.
     
     def send_consultation_confirmation(self, consultation):
         """Send consultation booking confirmation email"""
-        subject = f"Consultation Booking Confirmation - PenAsia Education"
+        subject = f"Consultation Booking Confirmation - University of Penasia (Penasia School of Continuing Education)"
         
         consultation_type_display = {
             'course_info': 'Course Information',
@@ -220,7 +220,7 @@ This is an automated email. Please do not reply to this message.
         body = f"""
 Dear {consultation.full_name},
 
-Thank you for booking a consultation with PenAsia Education Group. We have received your request and are excited to help you achieve your educational goals.
+Thank you for booking a consultation with University of Penasia (Penasia School of Continuing Education). We have received your request and are excited to help you achieve your educational goals.
 
 CONSULTATION DETAILS:
 - Reference Number: #{consultation.id:06d}
@@ -256,7 +256,7 @@ If you need to reschedule or have any questions, please contact us:
 We look forward to speaking with you soon and helping you take the next step in your educational journey.
 
 Best regards,
-PenAsia Education Group
+University of Penasia (Penasia School of Continuing Education)
 
 ---
 This is an automated confirmation. Please do not reply to this message.
@@ -342,7 +342,7 @@ If you need to make any last-minute changes or have technical difficulties:
 We look forward to meeting with you and helping you achieve your educational goals.
 
 Best regards,
-PenAsia Education Group
+University of Penasia (Penasia School of Continuing Education)
         """
         
         return self.send_email(consultation.email, subject, body.strip())
@@ -354,7 +354,7 @@ PenAsia Education Group
         body = f"""
 Dear {user.first_name} {user.last_name},
 
-Welcome to PenAsia Continuing Education Centre!
+Welcome to University of Penasia (Penasia School of Continuing Education)!
 
 To complete your registration, please verify your email address by clicking the link below:
 
@@ -367,7 +367,7 @@ If you did not create this account or have any questions, please contact us at:
 - Email: enquiry@penasia.edu.hk
 
 Best regards,
-PenAsia Education Group
+University of Penasia (Penasia School of Continuing Education)
         """
         
         return self.send_email(user.email, subject, body.strip())

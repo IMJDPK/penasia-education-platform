@@ -90,6 +90,92 @@
                         </div>
                     </div>
                     {% endif %}
+
+                    <!-- Course Modules & Lessons -->
+                    {% if modules %}
+                    <div class="card mb-4">
+                        <div class="card-header bg-primary text-white">
+                            <h3 class="card-title mb-0">
+                                <i class="fas fa-list-ol me-2"></i>Course Curriculum ({{ modules|length }} Modules)
+                            </h3>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="accordion" id="modulesAccordion">
+                                {% for module in modules %}
+                                <div class="accordion-item border-0 border-bottom">
+                                    <h4 class="accordion-header" id="heading{{ module.id }}">
+                                        <button class="accordion-button {% if not loop.first %}collapsed{% endif %}" type="button" 
+                                                data-bs-toggle="collapse" data-bs-target="#collapse{{ module.id }}" 
+                                                aria-expanded="{% if loop.first %}true{% else %}false{% endif %}" 
+                                                aria-controls="collapse{{ module.id }}">
+                                            <div class="d-flex align-items-start w-100">
+                                                <div class="me-3">
+                                                    <span class="badge bg-primary rounded-circle" style="width: 35px; height: 35px; line-height: 35px;">
+                                                        {{ loop.index }}
+                                                    </span>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <div class="fw-bold">{{ module.title }}</div>
+                                                    {% if module.description %}
+                                                    <div class="text-muted small mt-1">{{ module.description[:100] }}{% if module.description|length > 100 %}...{% endif %}</div>
+                                                    {% endif %}
+                                                    <div class="text-muted small mt-1">
+                                                        <i class="fas fa-book me-1"></i>{{ module.lessons|length }} lessons
+                                                        {% if module.estimated_duration_hours %}
+                                                        · <i class="fas fa-clock me-1"></i>{{ module.estimated_duration_hours }}h
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </button>
+                                    </h4>
+                                    <div id="collapse{{ module.id }}" 
+                                         class="accordion-collapse collapse {% if loop.first %}show{% endif %}" 
+                                         aria-labelledby="heading{{ module.id }}" 
+                                         data-bs-parent="#modulesAccordion">
+                                        <div class="accordion-body bg-light">
+                                            {% if module.description %}
+                                            <p class="mb-3">{{ module.description }}</p>
+                                            {% endif %}
+                                            
+                                            {% if module.lessons %}
+                                            <h6 class="fw-bold mb-3">Lessons in this module:</h6>
+                                            <ul class="list-unstyled">
+                                                {% for lesson in module.lessons|sort(attribute='order') %}
+                                                <li class="mb-2 d-flex align-items-start">
+                                                    <span class="me-2 text-muted">{{ loop.index }}.</span>
+                                                    <div class="flex-grow-1">
+                                                        <div class="fw-semibold">
+                                                            {{ lesson.title }}
+                                                            {% if not is_enrolled %}
+                                                            <i class="fas fa-lock text-muted ms-2" title="Enroll to access"></i>
+                                                            {% endif %}
+                                                        </div>
+                                                        {% if lesson.description %}
+                                                        <div class="text-muted small">{{ lesson.description }}</div>
+                                                        {% endif %}
+                                                        {% if lesson.duration_minutes %}
+                                                        <div class="text-muted small">
+                                                            <i class="fas fa-clock me-1"></i>{{ lesson.duration_minutes }} min
+                                                        </div>
+                                                        {% endif %}
+                                                    </div>
+                                                </li>
+                                                {% endfor %}
+                                            </ul>
+                                            {% else %}
+                                            <p class="text-muted mb-0">
+                                                <i class="fas fa-info-circle me-2"></i>Lesson content will be available after enrollment.
+                                            </p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
 
                 <!-- Course Information Sidebar -->
@@ -103,7 +189,7 @@
                                         <i class="fas fa-check-circle me-2"></i>
                                         You have already applied for this course
                                     </div>
-                                    <a href="{{ url_for('student_dashboard') }}" class="btn btn-outline-primary">
+                                    <a href="{{ url_for('dashboard') }}" class="btn btn-outline-primary">
                                         View Application Status
                                     </a>
                                 {% elif course.is_full %}

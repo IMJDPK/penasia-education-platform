@@ -100,7 +100,7 @@ def login():
     form = LoginForm()
     
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data.lower()).first()
+        user = User.query.filter_by(email=(form.email.data or '').lower()).first()
         if user and user.check_password(form.password.data):
             login_user(user, remember=form.remember_me.data)
             user.last_login = datetime.utcnow()
@@ -131,7 +131,7 @@ def register():
     
     if form.validate_on_submit():
         user = User(
-            email=form.email.data.lower(),
+            email=(form.email.data or '').lower(),
             first_name=form.first_name.data,
             last_name=form.last_name.data,
             phone=form.phone.data,
@@ -355,15 +355,24 @@ def course_detail(course_id):
     """Display course detail page"""
     course = Course.query.get_or_404(course_id)
     
+    # Get course modules with lessons
+    modules = Module.query.filter_by(course_id=course_id).order_by(Module.order_index).all()
+    
     # Check if user is logged in and has already applied
     has_applied = False
+    is_enrolled = False
     if current_user.is_authenticated:
         has_applied = Application.query.filter_by(
             user_id=current_user.id,
             course_id=course_id
         ).first() is not None
+        
+        is_enrolled = Enrollment.query.filter_by(
+            user_id=current_user.id,
+            course_id=course_id
+        ).first() is not None
     
-    return render_template('courses/detail.html', course=course, has_applied=has_applied)
+    return render_template('courses/detail.html', course=course, modules=modules, has_applied=has_applied, is_enrolled=is_enrolled)
 
 
 @app.route('/courses/<int:course_id>/apply', methods=['GET', 'POST'])
@@ -380,7 +389,7 @@ def apply_course(course_id):
     
     if existing_application:
         flash('You have already applied for this course.', 'info')
-        return redirect(url_for('student_dashboard'))
+        return redirect(url_for('dashboard'))
     
     form = CourseApplicationForm()
     
@@ -418,8 +427,8 @@ def apply_course(course_id):
                 notification = Notification(
                     user_id=admin.id,
                     type='application',
-                    title=f'New Application: {course.name}',
-                    message=f'{current_user.first_name} {current_user.last_name} ({current_user.email}) has submitted an application for {course.name}. Phone: {current_user.phone or "N/A"}',
+                    title=f'New Application: {course.title}',
+                    message=f'{current_user.first_name} {current_user.last_name} ({current_user.email}) has submitted an application for {course.title}. Phone: {current_user.phone or "N/A"}',
                     link_url=f'/admin/applications',
                     priority='high'
                 )
@@ -433,8 +442,8 @@ def apply_course(course_id):
             except Exception as e:
                 print(f"Error sending email: {e}")
             
-            flash(f'Your application for {course.name} has been submitted successfully! We will review it within 3-5 business days and send you an email with the decision.', 'success')
-            return redirect(url_for('student_dashboard'))
+            flash(f'Your application for {course.title} has been submitted successfully! We will review it within 3-5 business days and send you an email with the decision.', 'success')
+            return redirect(url_for('dashboard'))
             
         except Exception as e:
             db.session.rollback()
@@ -453,29 +462,29 @@ def payment_checkout(application_id):
     # Verify user owns this application
     if application.user_id != current_user.id:
         flash('Unauthorized access to payment page.', 'error')
-        return redirect(url_for('student_dashboard'))
+        return redirect(url_for('dashboard'))
     
     # Verify application is approved
     if application.status != 'approved':
         flash('Payment is only available for approved applications.', 'error')
-        return redirect(url_for('student_dashboard'))
+        return redirect(url_for('dashboard'))
     
     course = application.course
     payment_method = application.payment_method or 'credit_card'
     
     # Generate payment reference and get instructions
     payment_data = payment_processor.process_payment(
-        current_user, course, course.fee, payment_method, application_id
+        current_user, course, float(course.fee_hkd), payment_method, application_id
     )
     
     instructions = payment_processor.get_payment_instructions(
-        payment_method, course.fee, payment_data['reference']
+        payment_method, float(course.fee_hkd), payment_data['reference']
     )
     
     return render_template('payment/checkout.html', 
                          course=course, 
                          application=application,
-                         amount=course.fee,
+                         amount=float(course.fee_hkd),
                          payment_method=payment_method,
                          payment_reference=payment_data['reference'],
                          instructions=instructions)
@@ -535,7 +544,7 @@ def process_payment_api():
                 'message': 'CEF application in progress',
                 'reference': data.get('reference'),
                 'amount': amount,
-                'cef_eligible': application.cef_eligible
+                'cef_eligible': application.course.cef_eligible
             }
         elif payment_method == 'installments':
             # Installment: first payment pending
@@ -649,6 +658,12 @@ def admin_dashboard():
                          recent_applications=recent_applications,
                          new_contact_inquiries=new_contact_inquiries,
                          pending_consultations=pending_consultations)
+
+# Alias for admin dashboard to support /admin/dashboard path used in links/bookmarks
+@app.route('/admin/dashboard')
+@login_required
+def admin_dashboard_alias():
+    return admin_dashboard()
 
 @app.route('/admin/courses')
 @login_required

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+<link href="{{ url_for('static', filename='css/admin.css') }}" rel="stylesheet">
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+<!-- Admin Sidebar -->
+{% include 'admin/sidebar.html' %}
+
+<!-- Admin Main Content Area -->
+<div class="admin-main-content">
+    {% block admin_content %}{% endblock %}
+</div>
+{% endblock %}
