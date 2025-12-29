@@ -93,15 +93,15 @@
             <div class="col-lg-6 mb-4">
                 <div class="card course-card-premium h-100">
                     {% if course.id == 169 %}
-                    <img src="{{ url_for('static', filename='images/courses/courses_01.jpg') }}" class="card-img-top" alt="{{ course.title }}" style="height: 250px; object-fit: cover;">
+                    <img src="{{ url_for('static', filename='images/courses/courses_01.png') }}" class="card-img-top" alt="{{ course.title }}" style="height: 250px; object-fit: cover;">
                     {% elif course.id == 1 %}
                     <img src="{{ url_for('static', filename='images/university/classroom-02.jpg') }}" class="card-img-top" alt="{{ course.title }}" style="height: 250px; object-fit: cover;">
                     {% elif course.id == 171 %}
-                    <img src="{{ url_for('static', filename='images/courses/courses_03.jpg') }}" class="card-img-top" alt="{{ course.title }}" style="height: 250px; object-fit: cover;">
+                    <img src="{{ url_for('static', filename='images/courses/courses_03.png') }}" class="card-img-top" alt="{{ course.title }}" style="height: 250px; object-fit: cover;">
                     {% elif course.id == 179 %}
-                    <img src="{{ url_for('static', filename='images/courses/courses_01.jpg') }}" class="card-img-top" alt="{{ course.title }}" style="height: 250px; object-fit: cover;">
+                    <img src="{{ url_for('static', filename='images/courses/courses_01.png') }}" class="card-img-top" alt="{{ course.title }}" style="height: 250px; object-fit: cover;">
                     {% else %}
-                    <img src="{{ url_for('static', filename='images/courses/courses_01.jpg') }}" class="card-img-top" alt="{{ course.title }}" style="height: 250px; object-fit: cover;">
+                    <img src="{{ url_for('static', filename='images/courses/courses_01.png') }}" class="card-img-top" alt="{{ course.title }}" style="height: 250px; object-fit: cover;">
                     {% endif %}
                     <div class="card-body">
                         <h5 class="card-title">{{ course.title }}</h5>
