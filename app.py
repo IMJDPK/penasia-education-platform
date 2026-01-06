@@ -1964,7 +1964,7 @@ def create_courses():
         certification='Pearson BTEC Higher National Diploma in Business'
     )
     
-    # Course 171: Western Bakery & Pastry - ADMISSIONS CLOSED
+    # Course 171: Western Bakery & Pastry
     course171 = Course(
         course_code='CEF-43C130000',
         title='Western Bakery & Pastry',
@@ -1980,13 +1980,13 @@ def create_courses():
         prerequisites='Form 3 completion, minimum age 18',
         category='Culinary',
         is_featured=True,
-        is_active=False,  # Admissions closed
+        is_active=True,  # Admissions open
         learning_outcomes='Western baking techniques, pastry skills, professional presentation',
         course_content='Course Introduction, Western Baking History, Bread Making, Cake Making, Pastry Making, Cookie & Biscuit Making, Advanced Pastry, Final Project',
         certification='Certificate in Western Bakery and Pastry (QF Level 2)'
     )
     
-    # Course 179: Western Cuisine Certificate - ADMISSIONS CLOSED
+    # Course 179: Western Cuisine Certificate
     course179 = Course(
         course_code='CEF-43C15919A',
         title='Western Cuisine Certificate',
@@ -2002,7 +2002,7 @@ def create_courses():
         prerequisites='Form 3 completion, minimum age 18',
         category='Culinary',
         is_featured=True,
-        is_active=False,  # Admissions closed
+        is_active=True,  # Admissions open
         learning_outcomes='Western cuisine fundamentals, professional cooking techniques, menu planning',
         course_content='Western Cuisine Fundamentals, Kitchen Tools & Equipment, Soups and Salads, Advanced Cooking Techniques, Menu Planning, Food Cost Control',
         certification='Certificate in Western Starter and Main Course (QF Level 2)'
