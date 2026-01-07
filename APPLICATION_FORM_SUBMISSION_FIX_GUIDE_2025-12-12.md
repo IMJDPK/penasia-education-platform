@@ -78,7 +78,7 @@ Personal information (name, email, phone) belongs on the **User model**, not the
 
 ### Fix #1: Updated HTML Form Field Names
 
-**File:** `templates/apply_new.html`
+**File:** `templates/apply.html`
 
 Changed all form fields to use snake_case:
 ```html
@@ -99,7 +99,7 @@ Changed all form fields to use snake_case:
 
 ### Fix #2: Implemented Proper AJAX Submission
 
-**File:** `templates/apply_new.html`
+**File:** `templates/apply.html`
 
 Added JavaScript to send AJAX request with proper headers:
 ```javascript
@@ -260,7 +260,7 @@ python
 ### Files Modified
 | File | Changes | Lines |
 |------|---------|-------|
-| `templates/apply_new.html` | Field name updates, AJAX submission | ~50 |
+| `templates/apply.html` | Field name updates, AJAX submission | ~50 |
 | `app.py` | Backend logic correction, user creation | ~80 |
 
 ### Commits
@@ -370,7 +370,7 @@ When an application is submitted:
 2. `GITHUB_TO_PYTHONANYWHERE_SYNC.md` - New
 3. `PYTHONANYWHERE_COMPLETE_GUIDE.md` - New
 4. `PYTHONANYWHERE_REFRESH_GUIDE.md` - New
-5. `templates/apply_new.html` - Modified
+5. `templates/apply.html` - Modified
 6. `app.py` - Modified
 
 ---

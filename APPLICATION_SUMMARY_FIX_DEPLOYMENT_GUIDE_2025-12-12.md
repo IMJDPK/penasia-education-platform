@@ -12,7 +12,7 @@ A critical bug fix has been implemented and is ready for deployment:
 **Issue:** Application review step was displaying dashes (-) instead of program details
 **Root Cause:** JavaScript `updateSummary()` function was incomplete
 **Solution:** Added program data retrieval and population code
-**Files Modified:** `templates/apply_new.html`
+**Files Modified:** `templates/apply.html`
 **Status:** ✅ Fixed, tested, committed to GitHub
 **Next Step:** Deploy to PythonAnywhere
 
@@ -33,13 +33,13 @@ Education: [correct]
 ```
 
 ### The Root Cause
-The `updateSummary()` JavaScript function in `templates/apply_new.html` was:
+The `updateSummary()` JavaScript function in `templates/apply.html` was:
 - ✅ Correctly updating personal information fields
 - ❌ Missing code to retrieve program data from Step 1
 - ❌ Not populating program-related summary fields
 
 ### The Solution
-**File:** `templates/apply_new.html`  
+**File:** `templates/apply.html`  
 **Function:** `updateSummary()` (lines ~790-810)
 
 **Code Added:**
@@ -158,7 +158,7 @@ If `git pull` doesn't work:
 If git and reload don't work:
 
 1. **Download fixed file from GitHub:**
-   - Visit: https://github.com/IMJDPK/penasia-education-platform/blob/main/templates/apply_new.html
+   - Note: `apply_new.html` has been removed; use `templates/apply.html`.
    - Click "Raw" button
    - Save file
 
@@ -166,7 +166,7 @@ If git and reload don't work:
    - Log in to pythonanywhere.com
    - Go to Files section
    - Navigate to: `/home/imjdpk/mysite/templates/`
-   - Upload `apply_new.html` (replace existing)
+   - Ensure `templates/apply.html` is deployed.
 
 3. **Reload app:**
    - Click "Reload" button in Web section
@@ -330,7 +330,7 @@ Should show `.git` folder and `flask_app.wsgi` file.
 ### Files Modified
 | File | Location | Change | Lines |
 |------|----------|--------|-------|
-| apply_new.html | templates/ | Added program data retrieval to updateSummary() | +8 |
+| apply.html | templates/ | Added program data retrieval to updateSummary() | +8 |
 
 ### Git Commit Information
 ```

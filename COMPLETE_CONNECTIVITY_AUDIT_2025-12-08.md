@@ -77,7 +77,7 @@
 #### Feature: Course Application
 | Component | Status | Validation |
 |-----------|--------|-----------|
-| Apply Form | ✅ | `templates/apply_new.html` / `templates/apply.html` |
+| Apply Form | ✅ | `templates/apply.html` |
 | Route: `/apply` | ✅ | Handles course selection and application |
 | Route: `/courses/<id>/apply` | ✅ | Pre-selects course ID |
 | Form Fields | ✅ | Education level, English level, experience, motivation |

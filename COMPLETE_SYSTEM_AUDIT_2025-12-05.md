@@ -835,7 +835,6 @@ templates/
 ├── terms.html                      # Terms of service
 │
 ├── apply.html                      # Application form (public)
-├── apply_new.html                  # New application form
 │
 ├── course_detail.html              # Course details
 ├── course_detail_premium.html      # Premium version

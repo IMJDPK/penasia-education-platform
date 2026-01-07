@@ -34,11 +34,8 @@ Updated course pricing to correct values and enabled admissions for all four cou
 - Removed `data-active="false"` attributes
 - Removed "Admissions Closed" badge elements
 
-#### `Flask Website/templates/apply_new.html`
-- Removed `disabled` class from Western Bakery program option
-- Removed `disabled` class from Western Cuisine program option
-- Removed `data-active="false"` attributes
-- Removed "Admissions Closed" badge elements
+#### Note: `Flask Website/templates/apply_new.html` removed
+All application form changes are consolidated in `Flask Website/templates/apply.html`.
 
 ### 3. Database Update Script
 **File**: `Flask Website/update_courses.py` (NEW)

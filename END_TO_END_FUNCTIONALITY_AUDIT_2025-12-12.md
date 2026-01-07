@@ -248,7 +248,7 @@ User visits /apply → Selects program → Fills personal details → Reviews su
 - ✅ Homepage (index.html) - 24 KB
 - ✅ Course Listing (courses.html) - 7.4 KB
 - ✅ Course Details (course_detail.html, course_detail_premium.html)
-- ✅ Application Form (apply_new.html) - 33.5 KB
+- ✅ Application Form (apply.html) - 33.5 KB
 - ✅ Dashboard (dashboard/student.html) - 22.3 KB
 
 **Authentication Pages:**
@@ -353,7 +353,7 @@ These are **CORRECT BEHAVIOR** - they should redirect unauthenticated users.
 **Problem:** Review & Submit step showed dashes (-) for program info  
 **Root Cause:** updateSummary() function missing program data  
 **Solution:** Added code to populate program name, fee, duration  
-**Status:** ✅ FIXED in apply_new.html
+**Status:** ✅ FIXED in apply.html
 
 ### Issue 2: Database SQL Expression Warning ℹ️ INFO
 **Problem:** "SELECT 1" showing text expression warning  
