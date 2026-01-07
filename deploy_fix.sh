@@ -97,21 +97,21 @@ with app.app_context():
         print(f"{status} ID {course.id:3d}: {course.title:40s} HK\${float(course.fee_hkd):>10,.0f}")
     print("-" * 70)
     
-    # Check specific prices
-    c169 = Course.query.get(169)
-    c1 = Course.query.get(1)
-    c171 = Course.query.get(171)
-    c179 = Course.query.get(179)
+    # Check specific prices by course_code (not ID)
+    hotel = Course.query.filter_by(course_code='PSCE-DHM-5266').first()
+    btec = Course.query.filter_by(course_code='PSCE-BTB-5001').first()
+    bakery = Course.query.filter_by(course_code='CEF-43C130000').first()
+    cuisine = Course.query.filter_by(course_code='CEF-43C15919A').first()
     
     errors = []
-    if c169 and float(c169.fee_hkd) != 125000:
-        errors.append(f"Course 169 fee is {c169.fee_hkd}, should be 125000")
-    if c1 and float(c1.fee_hkd) != 118000:
-        errors.append(f"Course 1 fee is {c1.fee_hkd}, should be 118000")
-    if c171 and float(c171.fee_hkd) != 12620:
-        errors.append(f"Course 171 fee is {c171.fee_hkd}, should be 12620")
-    if c179 and float(c179.fee_hkd) != 13200:
-        errors.append(f"Course 179 fee is {c179.fee_hkd}, should be 13200")
+    if hotel and float(hotel.fee_hkd) != 141000:
+        errors.append(f"Hotel Culinary (ID {hotel.id}) fee is {hotel.fee_hkd}, should be 141000")
+    if btec and float(btec.fee_hkd) != 118000:
+        errors.append(f"BTEC Business (ID {btec.id}) fee is {btec.fee_hkd}, should be 118000")
+    if bakery and float(bakery.fee_hkd) != 12620:
+        errors.append(f"Western Bakery (ID {bakery.id}) fee is {bakery.fee_hkd}, should be 12620")
+    if cuisine and float(cuisine.fee_hkd) != 13200:
+        errors.append(f"Western Cuisine (ID {cuisine.id}) fee is {cuisine.fee_hkd}, should be 13200")
     
     if errors:
         print("\n❌ PRICE ERRORS DETECTED:")
@@ -151,7 +151,7 @@ echo "3. Clear your browser cache (Ctrl+Shift+R)"
 echo "4. Visit: https://www.penasia.edu.hk/courses"
 echo ""
 echo "Expected results:"
-echo "  ✓ Hotel Culinary: HK\$125,000"
+echo "  ✓ Hotel Culinary: HK\$141,000"
 echo "  ✓ BTEC Business: HK\$118,000"
 echo "  ✓ Western Bakery: HK\$12,620"
 echo "  ✓ Western Cuisine: HK\$13,200"
