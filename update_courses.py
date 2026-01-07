@@ -66,6 +66,33 @@ def update_courses():
             status = "✓ Active" if course.is_active else "✗ Inactive"
             print(f"{course.id:3d} | {course.course_code:15s} | {course.title:40s} | HK${float(course.fee_hkd):>10,.0f} | {status}")
         print("-" * 80)
+        
+        # Verify correct pricing by course code
+        print("\n🔍 Verifying Pricing by Course Code:")
+        errors = []
+        
+        hotel = Course.query.filter_by(course_code='PSCE-DHM-5266').first()
+        if hotel and float(hotel.fee_hkd) != 125000:
+            errors.append(f"Hotel Culinary (code {hotel.course_code}) fee is {hotel.fee_hkd}, should be 125000")
+        
+        btec = Course.query.filter_by(course_code='PSCE-BTB-5001').first()
+        if btec and float(btec.fee_hkd) != 118000:
+            errors.append(f"BTEC Business (code {btec.course_code}) fee is {btec.fee_hkd}, should be 118000")
+        
+        bakery = Course.query.filter_by(course_code='CEF-43C130000').first()
+        if bakery and float(bakery.fee_hkd) != 12620:
+            errors.append(f"Western Bakery (code {bakery.course_code}) fee is {bakery.fee_hkd}, should be 12620")
+        
+        cuisine = Course.query.filter_by(course_code='CEF-43C15919A').first()
+        if cuisine and float(cuisine.fee_hkd) != 13200:
+            errors.append(f"Western Cuisine (code {cuisine.course_code}) fee is {cuisine.fee_hkd}, should be 13200")
+        
+        if errors:
+            print("❌ PRICE ERRORS DETECTED:")
+            for error in errors:
+                print(f"   - {error}")
+        else:
+            print("✅ All prices are CORRECT!")
 
 if __name__ == '__main__':
     update_courses()

@@ -92,13 +92,13 @@
             {% for course in courses %}
             <div class="col-lg-6 mb-4">
                 <div class="card course-card-premium h-100">
-                    {% if course.id == 169 %}
+                    {% if course.course_code == 'PSCE-DHM-5266' %}
                     <img src="{{ url_for('static', filename='images/four courses images/hotel_culinary.jpg') }}" class="card-img-top" alt="{{ course.title }}" style="height: 250px; object-fit: cover;">
-                    {% elif course.id == 1 %}
+                    {% elif course.course_code == 'PSCE-BTB-5001' %}
                     <img src="{{ url_for('static', filename='images/four courses images/Btec.jpg') }}" class="card-img-top" alt="{{ course.title }}" style="height: 250px; object-fit: cover;">
-                    {% elif course.id == 171 %}
+                    {% elif course.course_code == 'CEF-43C130000' %}
                     <img src="{{ url_for('static', filename='images/four courses images/western-bakery.png') }}" class="card-img-top" alt="{{ course.title }}" style="height: 250px; object-fit: cover;">
-                    {% elif course.id == 179 %}
+                    {% elif course.course_code == 'CEF-43C15919A' %}
                     <img src="{{ url_for('static', filename='images/four courses images/wester_cuisine.png') }}" class="card-img-top" alt="{{ course.title }}" style="height: 250px; object-fit: cover;">
                     {% else %}
                     <img src="{{ url_for('static', filename='images/courses/courses_01.png') }}" class="card-img-top" alt="{{ course.title }}" style="height: 250px; object-fit: cover;">
