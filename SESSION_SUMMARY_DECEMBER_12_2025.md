@@ -34,7 +34,7 @@
 ## 📊 Code Changes
 
 ### Files Modified: 2
-- `templates/apply_new.html` (~50 lines changed)
+- `templates/apply.html` (~50 lines changed)
 - `app.py` (~80 lines changed)
 
 ### Total Changes: ~130 lines
@@ -91,7 +91,7 @@
 
 ### Commit 1: cad87aa
 **Message:** "CRITICAL FIX: Application form submission - Fix field names and AJAX integration"
-- Modified: templates/apply_new.html
+- Modified: templates/apply.html
 - Modified: app.py
 - Files changed: 6
 - Insertions: 3058+

@@ -392,30 +392,14 @@
                         <p class="form-section-subtitle">Select the program that best matches your career goals</p>
                         
                         <div class="program-selection">
-                            <div class="program-option" data-program="169" data-fee="125000" data-duration="2 years">
-                                <div class="program-title">Hotel Culinary Management Diploma</div>
-                                <div class="program-details">2-year full-time program combining practical kitchen training with hospitality management theory</div>
-                                <div class="program-fee">HK$125,000</div>
-                                <div class="cef-badge-small">CEF Approved</div>
+                            {% for course in courses %}
+                            <div class="program-option" data-program="{{ course.id }}" data-fee="{{ "{:,.0f}".format(course.fee_hkd).replace(',', '') }}" data-duration="{% if course.duration_weeks %}{{ course.duration_weeks }} weeks{% else %}{{ course.duration_hours }} hours{% endif %}">
+                                <div class="program-title">{{ course.title }}</div>
+                                <div class="program-details">{{ course.description }}</div>
+                                <div class="program-fee">HK${{ "{:,.0f}".format(course.fee_hkd) }}</div>
+                                {% if course.id == 169 %}<div class="cef-badge-small">CEF Approved</div>{% endif %}
                             </div>
-                            
-                            <div class="program-option" data-program="1" data-fee="118000" data-duration="2 Years Full-Time">
-                                <div class="program-title">BTEC Business Management HND</div>
-                                <div class="program-details">Pearson Level 5 Higher National Diploma with UK university progression</div>
-                                <div class="program-fee">HK$118,000</div>
-                            </div>
-                            
-                            <div class="program-option" data-program="171" data-fee="12620" data-duration="11 weeks">
-                                <div class="program-title">Western Bakery & Pastry Certificate</div>
-                                <div class="program-details">QF Level 2 certificate with hands-on practical training</div>
-                                <div class="program-fee">HK$12,620</div>
-                            </div>
-                            
-                            <div class="program-option" data-program="179" data-fee="13200" data-duration="10 weeks">
-                                <div class="program-title">Western Cuisine Certificate</div>
-                                <div class="program-details">Professional culinary skills training with Western cooking techniques</div>
-                                <div class="program-fee">HK$13,200</div>
-                            </div>
+                            {% endfor %}
                         </div>
                         
                         <input type="hidden" name="course_id" id="selectedProgram" required>

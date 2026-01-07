@@ -1515,10 +1515,9 @@ def about():
 
 @app.route('/courses')
 def courses():
-    # Show only flagship programs: Pearson BTEC and Hotel Culinary Management
+    # Show all active courses
     courses = Course.query.filter(
-        Course.is_active == True,
-        (Course.title.ilike('%BTEC%') | Course.title.ilike('%Hotel Culinary Management%'))
+        Course.is_active == True
     ).all()
     return render_template('courses.html', courses=courses)
 
@@ -1656,10 +1655,9 @@ def apply():
                 return redirect(url_for('apply'))
     
     # GET request - show application form
-    # Limit to flagship programs for applications as well
+    # Show all active courses for applications
     courses = Course.query.filter(
-        Course.is_active == True,
-        (Course.title.ilike('%BTEC%') | Course.title.ilike('%Hotel Culinary Management%'))
+        Course.is_active == True
     ).all()
     return render_template('apply.html', courses=courses)
 
