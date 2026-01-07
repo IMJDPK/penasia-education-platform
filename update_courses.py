@@ -19,7 +19,7 @@ def update_courses():
         # Update or create Course 169: Hotel Culinary Management
         course169 = Course.query.filter_by(course_code='PSCE-DHM-5266').first()
         if course169:
-            course169.fee_hkd = 125000
+            course169.fee_hkd = 141000
             course169.duration_weeks = 104  # 2 years
             course169.is_active = True
             print(f"Updated: {course169.title} - Fee: HK${course169.fee_hkd}")
@@ -72,8 +72,8 @@ def update_courses():
         errors = []
         
         hotel = Course.query.filter_by(course_code='PSCE-DHM-5266').first()
-        if hotel and float(hotel.fee_hkd) != 125000:
-            errors.append(f"Hotel Culinary (code {hotel.course_code}) fee is {hotel.fee_hkd}, should be 125000")
+        if hotel and float(hotel.fee_hkd) != 141000:
+            errors.append(f"Hotel Culinary (code {hotel.course_code}) fee is {hotel.fee_hkd}, should be 141000")
         
         btec = Course.query.filter_by(course_code='PSCE-BTB-5001').first()
         if btec and float(btec.fee_hkd) != 118000:

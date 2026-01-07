@@ -1927,7 +1927,7 @@ def create_courses():
         description='2-year full-time diploma program providing professional culinary training and hotel management knowledge.',
         duration_weeks=104,  # 2 years
         duration_hours=2080,  # Approximate full-time hours
-        fee_hkd=125000,
+        fee_hkd=141000,
         cef_eligible=False,
         max_students=30,
         language='English',
