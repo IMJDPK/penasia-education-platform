@@ -15,10 +15,10 @@ def update_pricing():
     # Update Hotel Culinary Management
     cursor.execute("""
         UPDATE course 
-        SET fee_hkd = 125000 
+        SET fee_hkd = 141000 
         WHERE course_code = 'PSCE-DHM-5266'
     """)
-    print("✓ Updated Hotel Culinary Management: HK$141,100 → HK$125,000")
+    print("✓ Updated Hotel Culinary Management: → HK$141,000")
     
     # Update BTEC Business Management
     cursor.execute("""
@@ -26,7 +26,7 @@ def update_pricing():
         SET fee_hkd = 118000 
         WHERE course_code = 'PSCE-BTB-5001'
     """)
-    print("✓ Updated BTEC Business Management: HK$78,000 → HK$118,000")
+    print("✓ Updated BTEC Business Management: → HK$118,000")
     
     # Verify updates
     cursor.execute("""
