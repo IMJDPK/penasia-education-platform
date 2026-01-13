@@ -90,6 +90,26 @@ def index():
     featured_courses = Course.query.filter_by(is_featured=True, is_active=True).limit(3).all()
     return render_template('index.html', featured_courses=featured_courses)
 
+# Legacy redirect route for old PHP URLs
+@app.route('/penasia.php')
+def legacy_redirect():
+    # Get the 'id' from the URL query parameters
+    id_param = request.args.get('id', '')
+    
+    # Map the old IDs to the new URL
+    redirect_map = {
+        '169': 'https://www.penasia.edu.hk/courses',
+        '171': 'https://www.penasia.edu.hk/courses',
+        '179': 'https://www.penasia.edu.hk/courses'
+    }
+    
+    if id_param in redirect_map:
+        # Perform a Permanent 301 Redirect
+        return redirect(redirect_map[id_param], code=301)
+    else:
+        # If no ID matches, send to the courses page
+        return redirect('https://www.penasia.edu.hk/courses', code=302)
+
 # Authentication Routes
 @app.route('/login', methods=['GET', 'POST'])
 def login():

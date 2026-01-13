@@ -1,0 +1,20 @@
+# Apache .htaccess file for legacy URL redirects
+# This handles redirects for old PHP URLs to new Flask routes
+
+RewriteEngine On
+
+# Redirect penasia.php?id=169 to courses page
+RewriteCond %{QUERY_STRING} ^id=169$
+RewriteRule ^penasia\.php$ https://www.penasia.edu.hk/courses? [R=301,L]
+
+# Redirect penasia.php?id=171 to courses page
+RewriteCond %{QUERY_STRING} ^id=171$
+RewriteRule ^penasia\.php$ https://www.penasia.edu.hk/courses? [R=301,L]
+
+# Redirect penasia.php?id=179 to courses page
+RewriteCond %{QUERY_STRING} ^id=179$
+RewriteRule ^penasia\.php$ https://www.penasia.edu.hk/courses? [R=301,L]
+
+# For any other id or no id, redirect to courses page
+RewriteCond %{REQUEST_URI} ^/penasia\.php$
+RewriteRule ^penasia\.php$ https://www.penasia.edu.hk/courses? [R=302,L]
