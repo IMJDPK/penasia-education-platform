@@ -205,6 +205,10 @@
                                         This course is currently full
                                     </div>
                                     <button class="btn btn-secondary" disabled>Course Full</button>
+                                {% elif course.delivery_mode == 'offline' %}
+                                    <a href="{{ url_for('contact') }}" class="btn btn-primary btn-lg">
+                                        <i class="fas fa-envelope me-2"></i>Contact Us
+                                    </a>
                                 {% else %}
                                     <a href="{{ url_for('apply_course', course_id=course.id) }}" class="btn btn-primary btn-lg">
                                         <i class="fas fa-file-alt me-2"></i>Apply Now
