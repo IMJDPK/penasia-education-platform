@@ -728,6 +728,7 @@ def admin_course_add():
             language=form.language.data,
             level=form.level.data,
             category=form.category.data,
+            delivery_mode=form.delivery_mode.data,
             prerequisites=form.prerequisites.data,
             learning_outcomes=form.learning_outcomes.data,
             course_content=form.course_content.data,
@@ -782,6 +783,7 @@ def admin_course_edit(course_id):
         course.language = form.language.data
         course.level = form.level.data
         course.category = form.category.data
+        course.delivery_mode = form.delivery_mode.data
         course.prerequisites = form.prerequisites.data
         course.learning_outcomes = form.learning_outcomes.data
         course.course_content = form.course_content.data

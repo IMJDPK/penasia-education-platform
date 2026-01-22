@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Our Business Programs - University of Penasia (Penasia School of Continuing Education){% endblock %}
+{% block title %}Our Business Programs - Penasia School of Continuing Education{% endblock %}
 
 {% block extra_head %}
 <style>
@@ -118,6 +118,10 @@
                             </li>
                             <li class="mb-1"><i class="fas fa-dollar-sign course-icon-premium"></i> <strong>Fee:</strong> HK${{ "{:,.0f}".format(course.fee_hkd) }}</li>
                             <li class="mb-1"><i class="fas fa-language course-icon-premium"></i> <strong>Language:</strong> {{ course.language }}</li>
+                            <li class="mb-1"><i class="fas fa-{% if course.delivery_mode == 'online' %}laptop{% elif course.delivery_mode == 'offline' %}building{% else %}sync{% endif %} course-icon-premium"></i> <strong>Delivery:</strong> 
+                                {% if course.delivery_mode == 'online' %}Online
+                                {% elif course.delivery_mode == 'offline' %}In-Person
+                                {% else %}Hybrid{% endif %}</li>
                             {% if course.level %}
                             <li class="mb-1"><i class="fas fa-graduation-cap course-icon-premium"></i> <strong>Level:</strong> {{ course.level }}</li>
                             {% endif %}

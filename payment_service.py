@@ -100,7 +100,7 @@ class PaymentProcessor:
                 'description': f'Please transfer HK${amount:,.0f} to our bank account.',
                 'steps': [
                     'Bank: HSBC Hong Kong',
-                    'Account Name: University of Penasia (Penasia School of Continuing Education)',
+                    'Account Name: Penasia School of Continuing Education',
                     'Account Number: 123-456789-001',
                     f'Reference: {reference}',
                     'Send proof of transfer to finance@penasia.edu.hk'

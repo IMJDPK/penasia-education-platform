@@ -87,6 +87,12 @@ class CourseForm(FlaskForm):
         ('Other', 'Other')
     ])
     
+    delivery_mode = SelectField('Delivery Mode', validators=[DataRequired()], choices=[
+        ('offline', 'In-Person (Offline)'),
+        ('online', 'Online'),
+        ('hybrid', 'Hybrid (Online & In-Person)')
+    ], default='offline')
+    
     prerequisites = TextAreaField('Prerequisites', validators=[Optional(), Length(max=1000)])
     learning_outcomes = TextAreaField('Learning Outcomes', validators=[Optional(), Length(max=2000)])
     course_content = TextAreaField('Course Content', validators=[Optional(), Length(max=5000)])

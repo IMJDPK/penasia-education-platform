@@ -103,6 +103,15 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="mb-3">
+                                            {{ form.delivery_mode.label(class="form-label") }}
+                                            {{ form.delivery_mode(class="form-select" + (" is-invalid" if form.delivery_mode.errors else "")) }}
+                                            {% if form.delivery_mode.errors %}
+                                                <div class="invalid-feedback">{{ form.delivery_mode.errors[0] }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
                                             {{ form.level.label(class="form-label") }}
                                             {{ form.level(class="form-select" + (" is-invalid" if form.level.errors else "")) }}
                                             {% if form.level.errors %}

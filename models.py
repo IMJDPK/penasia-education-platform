@@ -101,6 +101,7 @@ class Course(db.Model):
     is_active = db.Column(db.Boolean, default=True)
     is_featured = db.Column(db.Boolean, default=False)
     category = db.Column(db.String(100))  # Culinary, Business, Professional, etc.
+    delivery_mode = db.Column(db.String(20), default='offline')  # online, offline, hybrid
     
     # Timestamps
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
