@@ -48,7 +48,8 @@ def create_sample_data():
                 'min_students': 10,
                 'category': 'business',
                 'level': 'advanced',
-                'is_featured': True
+                'is_featured': False,
+                'is_active': False
             },
             {
                 'course_code': 'WBP171',
