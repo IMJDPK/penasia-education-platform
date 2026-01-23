@@ -1963,27 +1963,6 @@ def create_courses():
         certification='Diploma in Hotel Culinary Management'
     )
     
-    # Course 1: BTEC Business Management
-    course1 = Course(
-        course_code='PSCE-BTB-5001',
-        title='BTEC Business Management HND',
-        description='Pearson BTEC Level 5 Higher National Diploma with direct progression to UK university final year. Build essential business and management skills.',
-        duration_weeks=104,  # 2 years
-        duration_hours=1200,
-        fee_hkd=118000,
-        cef_eligible=False,
-        max_students=30,
-        language='English',
-        level='RQF Level 5',
-        prerequisites='HKDSE: 5 subjects at Level 2+ (including Chinese and English), IELTS 5.5 or equivalent, Age 18+',
-        category='Business',
-        is_featured=True,
-        is_active=True,
-        learning_outcomes='Business management skills, strategic thinking, leadership development',
-        course_content='Business Environment, Marketing Essentials, HR Management, Management & Operations, Management Accounting, Business Project, Business Law, Business Strategy',
-        certification='Pearson BTEC Higher National Diploma in Business'
-    )
-    
     # Course 171: Western Bakery & Pastry
     course171 = Course(
         course_code='CEF-43C130000',
@@ -2029,12 +2008,11 @@ def create_courses():
     )
     
     # Add all courses to database
-    db.session.add_all([course169, course1, course171, course179])
+    db.session.add_all([course169, course171, course179])
     db.session.commit()
     
     # Update the IDs to match our templates
     course169.id = 169
-    course1.id = 1  
     course171.id = 171
     course179.id = 179
     db.session.commit()
