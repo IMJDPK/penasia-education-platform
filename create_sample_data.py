@@ -22,17 +22,17 @@ def create_sample_data():
         courses_data = [
             {
                 'course_code': 'HCM001',
-                'title': 'Hotel Culinary Management (Level 4)',
-                'description': 'Comprehensive program covering culinary arts, hotel management, and food service operations.',
-                'duration_weeks': 52,
-                'duration_hours': 1040,
-                'fee_hkd': 88000.00,
-                'cef_eligible': True,
-                'cef_fee_hkd': 66000.00,
-                'max_students': 20,
-                'min_students': 8,
+                'title': 'Hotel Culinary Management Diploma',
+                'description': '2-year full-time diploma program providing professional culinary training and hotel management knowledge.',
+                'duration_weeks': 104,
+                'duration_hours': 2080,
+                'fee_hkd': 141000.00,
+                'cef_eligible': False,
+                'cef_fee_hkd': 141000.00,
+                'max_students': 30,
+                'min_students': 10,
                 'category': 'culinary',
-                'level': 'intermediate',
+                'level': 'QF Level 3',
                 'is_featured': True
             },
             {
@@ -83,7 +83,11 @@ def create_sample_data():
         # Create courses
         for course_data in courses_data:
             existing_course = Course.query.filter_by(course_code=course_data['course_code']).first()
-            if not existing_course:
+            if existing_course:
+                # Update existing course with new data
+                for key, value in course_data.items():
+                    setattr(existing_course, key, value)
+            else:
                 course = Course(**course_data)
                 db.session.add(course)
         
