@@ -1541,6 +1541,9 @@ def courses():
     courses = Course.query.filter(
         Course.is_active == True
     ).all()
+    print(f"DEBUG: Found {len(courses)} active courses:")
+    for course in courses:
+        print(f"DEBUG: {course.course_code} - {course.title[:50]}")
     return render_template('courses.html', courses=courses)
 
 
