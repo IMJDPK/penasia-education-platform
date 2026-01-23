@@ -1535,16 +1535,13 @@ login_manager.login_view = 'login'
 def about():
     return render_template('about.html')
 
-@app.route('/courses')
-def courses():
-    # Show all active courses
-    courses = Course.query.filter(
-        Course.is_active == True
-    ).all()
-    print(f"DEBUG: Found {len(courses)} active courses:")
+@app.route('/debug/courses')
+def debug_courses():
+    courses = Course.query.filter(Course.is_active == True).all()
+    result = f"Active courses: {len(courses)}\n"
     for course in courses:
-        print(f"DEBUG: {course.course_code} - {course.title[:50]}")
-    return render_template('courses.html', courses=courses)
+        result += f"{course.course_code}: {course.title}\n"
+    return result
 
 
 @app.route('/admissions')
