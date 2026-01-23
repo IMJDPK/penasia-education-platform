@@ -31,7 +31,8 @@ def update_courses():
         if btec:
             btec.fee_hkd = 118000
             btec.duration_weeks = 104  # 2 years
-            btec.is_active = True
+            btec.is_active = False
+            btec.is_featured = False  # Ensure it's not featured on home page
             print(f"Updated: {btec.title} - Fee: HK${btec.fee_hkd}")
         else:
             print("BTEC Business (BTEC001) not found - needs to be created")
@@ -54,9 +55,37 @@ def update_courses():
         else:
             print("Western Cuisine (WC179) not found - needs to be created")
         
+        # Hide legacy duplicate courses
+        print("\nHiding legacy duplicate courses...")
+        
+        # Hide legacy BTEC Business Management HND
+        legacy_btec = Course.query.filter_by(course_code='PSCE-BTB-5001').first()
+        if legacy_btec:
+            legacy_btec.is_active = False
+            legacy_btec.is_featured = False  # Ensure it's not featured on home page
+            print(f"Hidden: {legacy_btec.title} (legacy duplicate)")
+        
+        # Hide legacy Hotel Culinary Management Diploma
+        legacy_hotel = Course.query.filter_by(course_code='PSCE-DHM-5266').first()
+        if legacy_hotel:
+            legacy_hotel.is_active = False
+            print(f"Hidden: {legacy_hotel.title} (legacy duplicate)")
+        
+        # Hide legacy Western Bakery & Pastry
+        legacy_bakery = Course.query.filter_by(course_code='CEF-43C130000').first()
+        if legacy_bakery:
+            legacy_bakery.is_active = False
+            print(f"Hidden: {legacy_bakery.title} (legacy duplicate)")
+        
+        # Hide legacy Western Cuisine Certificate
+        legacy_cuisine = Course.query.filter_by(course_code='CEF-43C15919A').first()
+        if legacy_cuisine:
+            legacy_cuisine.is_active = False
+            print(f"Hidden: {legacy_cuisine.title} (legacy duplicate)")
+        
         # Commit changes
         db.session.commit()
-        print("\n✅ All courses updated successfully!")
+        print("\n✅ All courses updated and duplicates hidden successfully!")
         
         # Display current courses
         print("\n📋 Current Course Status:")
