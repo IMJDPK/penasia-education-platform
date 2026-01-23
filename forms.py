@@ -477,7 +477,6 @@ class ContactForm(FlaskForm):
     program_interest = SelectField('Program of Interest', validators=[Optional()], choices=[
         ('', 'Select a program...'),
         ('169', 'Hotel Culinary Management Diploma'),
-        ('btec', 'BTEC Business Management'),
         ('171', 'Western Bakery & Pastry Certificate'),
         ('179', 'Western Cuisine Certificate')
     ])
