@@ -22,6 +22,7 @@ def update_courses():
             course_171.duration_hours = 33
             course_171.fee_hkd = 12620
             course_171.certification = 'Certificate in Western Bakery & Pastry (QF Level 2)'
+            course_171.is_active = True
             print(f"   ✅ Updated: {course_171.title}")
             print(f"   💰 Fee: HK${course_171.fee_hkd}")
             print(f"   📅 Duration: {course_171.duration_weeks} weeks")
@@ -38,11 +39,21 @@ def update_courses():
             course_179.duration_hours = 33
             course_179.fee_hkd = 12620
             course_179.certification = 'Certificate in Western Starter and Main Course (QF Level 2)'
+            course_179.is_active = True
             print(f"   ✅ Updated: {course_179.title}")
             print(f"   💰 Fee: HK${course_179.fee_hkd}")
             print(f"   📅 Duration: {course_179.duration_weeks} weeks")
         else:
             print("   ⚠️  Course 179 not found in database")
+        
+        # Update Hotel Culinary Management (Course ID 169)
+        course_169 = Course.query.filter_by(id=169).first()
+        if course_169:
+            print(f"\n📝 Updating Course 169: {course_169.title}")
+            course_169.is_active = True
+            print(f"   ✅ Updated: {course_169.title}")
+        else:
+            print("   ⚠️  Course 169 not found in database")
         
         # Commit changes
         try:
