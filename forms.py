@@ -477,8 +477,8 @@ class ContactForm(FlaskForm):
     program_interest = SelectField('Program of Interest', validators=[Optional()], choices=[
         ('', 'Select a program...'),
         ('169', 'Hotel Culinary Management Diploma'),
-        ('171', 'Western Bakery & Pastry Certificate'),
-        ('179', 'Western Cuisine Certificate')
+        ('171', 'Certificate in Western Bakery & Pastry'),
+        ('179', 'Certificate in Starter and Main Course')
     ])
     message = TextAreaField('Message', validators=[
         DataRequired(message='Message is required'),

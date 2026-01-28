@@ -410,12 +410,12 @@
     <div class="container">
         <h2 class="section-title mb-4">Facilities Gallery</h2>
         <div class="row g-3">
-            {% for i in range(1,5) %}
+            {% for i in range(2,5) %}
             <div class="col-md-3 col-sm-6">
                 <img src="{{ url_for('static', filename='images/facilities/facilities_%02d.jpg' % i) }}" class="img-fluid rounded" alt="Penasia School of Continuing Education — Facility {{ i }}">
             </div>
             {% endfor %}
-            {% for i in range(5,8) %}
+            {% for i in range(5,7) %}
             <div class="col-md-3 col-sm-6">
                 <img src="{{ url_for('static', filename='images/facilities/facilities_%02d.jpeg' % i) }}" class="img-fluid rounded" alt="Penasia School of Continuing Education — Facility {{ i }}">
             </div>

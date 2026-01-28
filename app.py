@@ -1966,7 +1966,7 @@ def create_courses():
     # Course 171: Western Bakery & Pastry
     course171 = Course(
         course_code='CEF-43C130000',
-        title='Western Bakery & Pastry',
+        title='Certificate in Western Bakery & Pastry',
         description='QF Level 2 certificate with hands-on practical training in Western baking techniques.',
         duration_weeks=11,
         duration_hours=33,
@@ -1982,19 +1982,19 @@ def create_courses():
         is_active=True,  # Admissions open
         learning_outcomes='Western baking techniques, pastry skills, professional presentation',
         course_content='Course Introduction, Western Baking History, Bread Making, Cake Making, Pastry Making, Cookie & Biscuit Making, Advanced Pastry, Final Project',
-        certification='Certificate in Western Bakery and Pastry (QF Level 2)'
+        certification='Certificate in Western Bakery & Pastry (QF Level 2)'
     )
     
-    # Course 179: Western Cuisine Certificate
+    # Course 179: Certificate in Starter and Main Course
     course179 = Course(
         course_code='CEF-43C15919A',
-        title='Western Cuisine Certificate',
+        title='Certificate in Starter and Main Course',
         description='Professional culinary skills training with focus on Western cooking techniques and presentation.',
-        duration_weeks=10,
+        duration_weeks=11,
         duration_hours=33,
-        fee_hkd=13200,
+        fee_hkd=12620,
         cef_eligible=True,
-        cef_fee_hkd=13200,
+        cef_fee_hkd=12620,
         max_students=20,
         language='English supplemented with Cantonese',
         level='QF Level 2',
